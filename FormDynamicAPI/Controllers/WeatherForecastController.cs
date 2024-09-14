@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DinamicFormAPI.Controllers
+namespace FormDynamicAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

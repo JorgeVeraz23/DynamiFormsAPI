@@ -1,4 +1,4 @@
-namespace DinamicFormAPI
+namespace FormDynamicAPI
 {
     public class WeatherForecast
     {
