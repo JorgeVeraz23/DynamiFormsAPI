@@ -7,13 +7,13 @@ const Home = () => {
       <Card sx={{ width: '100%', maxWidth: 600, textAlign: 'center' }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>
-            Welcome to the Dynamic Forms App
+            Bienvenido a la aplicación Dynamic Forms
           </Typography>
           <Typography variant="body1" paragraph>
-            This app allows you to dynamically create, edit, and manage forms for different purposes. You can create forms for persons, pets, and much more, with our intuitive interface.
+          Esta aplicación te permite crear, editar y gestionar formularios de manera dinámica para diferentes propósitos. Puedes crear formularios para personas, mascotas y mucho más, con nuestra interfaz intuitiva.
           </Typography>
-          <Button variant="contained" color="primary" href="/person-form">
-            Get Started
+          <Button variant="contained" color="primary" href="/form-page">
+            Ver Formularios
           </Button>
         </CardContent>
       </Card>
