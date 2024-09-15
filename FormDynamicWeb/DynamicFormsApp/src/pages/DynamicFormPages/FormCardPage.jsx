@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooksRedux';
-import { getAllFormAction } from '../../redux/action/FormAction';
+import { getAllFormAction, getFormByIdAction, deleteFormAction } from '../../redux/action/FormAction';
 import { Container, Typography, CircularProgress, Alert, Grid, Card, CardContent, CardActions, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
 
 const FormCardPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { forms, loading, error } = useAppSelector((state) => state.form);
 
   useEffect(() => {
@@ -22,6 +23,21 @@ const FormCardPage = () => {
     console.log('Error:', error);
   }, [loading, forms, error]);
 
+  const handleView = (id) => {
+    dispatch(getFormByIdAction(id)).then((result) => {
+      if (getFormByIdAction.fulfilled.match(result)) {
+        navigate(`/edit-form/${id}`);
+      }
+    });
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteFormAction(id)).then((result) => {
+      if (deleteFormAction.fulfilled.match(result)) {
+        // Optionally, you can show a success message or refresh the list
+      }
+    });
+  };
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
@@ -49,9 +65,6 @@ const FormCardPage = () => {
                 <CardActions sx={{ justifyContent: 'space-between' }}>
                   <IconButton onClick={() => handleView(form.idForm)} color="primary">
                     <VisibilityIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleEdit(form.idForm)} color="secondary">
-                    <EditIcon />
                   </IconButton>
                   <IconButton onClick={() => handleDelete(form.idForm)} color="error">
                     <DeleteIcon />

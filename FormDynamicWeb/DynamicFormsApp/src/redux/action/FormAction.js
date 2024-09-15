@@ -3,13 +3,12 @@ import FormRepositoryImpl from "../../data/repositoryImpl/FormRepositoryImpl";
 
 const repository = new FormRepositoryImpl();
 
-// Acción para obtener todos los formularios
 export const getAllFormAction = createAsyncThunk(
     "form/GetAllFormAction",
     async (_, thunkAPI) => {
         try {
             const forms = await repository.getAllForm();
-            return forms; // Retorna los datos sin tipo
+            return forms; 
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -17,13 +16,12 @@ export const getAllFormAction = createAsyncThunk(
     }
 );
 
-// Acción para obtener un formulario por ID
 export const getFormByIdAction = createAsyncThunk(
     "form/GetFormByIdAction",
     async (id, thunkAPI) => {
         try {
             const form = await repository.getFormById(id);
-            return form; // Retorna los datos sin tipo
+            return form;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -31,13 +29,13 @@ export const getFormByIdAction = createAsyncThunk(
     }
 );
 
-// Acción para eliminar un formulario
+
 export const deleteFormAction = createAsyncThunk(
     "form/DeleteFormAction",
     async (id, thunkAPI) => {
         try {
             await repository.deleteForm(id);
-            return id; // Retorna el ID del formulario eliminado
+            return id; 
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -51,7 +49,7 @@ export const createFormAction = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             await repository.createForm(data);
-            return data; // Retorna los datos enviados
+            return data;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -59,13 +57,13 @@ export const createFormAction = createAsyncThunk(
     }
 );
 
-// Acción para editar un formulario
+
 export const editFormAction = createAsyncThunk(
     "form/EditFormAction",
     async (data, thunkAPI) => {
         try {
             await repository.editForm(data);
-            return data; // Retorna los datos enviados
+            return data; 
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);

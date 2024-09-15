@@ -2,12 +2,11 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, CssBaseline, Drawer, List, ListItemIcon, ListItemText, Toolbar, Divider, ListItemButton } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import PersonIcon from '@mui/icons-material/Person';
-import PetsIcon from '@mui/icons-material/Pets';
+
 import Header from './Header';
 import Footer from './Footer';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
 
 const drawerWidth = 240;  // Define the drawer width here
 
@@ -25,34 +24,11 @@ const MainLayout = () => {
         <img src="your-logo-url.png" alt="App Logo" style={{ width: '100%', padding: '10px' }} />
       </Toolbar>
       <List>
-        <ListItemButton onClick={() => navigate('/')}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItemButton>
-
-        <ListItemButton onClick={() => navigate('/about')}>
-          <ListItemIcon>
-            <InfoIcon />
-          </ListItemIcon>
-          <ListItemText primary="About" />
-        </ListItemButton>
-
-        <Divider sx={{ my: 1 }} /> {/* Línea separadora */}
-
         <ListItemButton onClick={() => navigate('/form-page')}>
           <ListItemIcon>
-            <PersonIcon /> {/* Icono de persona */}
+            <AssignmentIcon />
           </ListItemIcon>
-          <ListItemText primary="Person Form" />
-        </ListItemButton>
-
-        <ListItemButton onClick={() => navigate('/pet-form')}>
-          <ListItemIcon>
-            <PetsIcon /> {/* Icono de mascota */}
-          </ListItemIcon>
-          <ListItemText primary="Pet Form" />
+          <ListItemText primary="Formularios" />
         </ListItemButton>
       </List>
     </div>

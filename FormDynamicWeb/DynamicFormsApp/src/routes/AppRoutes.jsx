@@ -22,10 +22,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
           <Route path="form-page" element={<FormCarPage />} />
-          <Route path='form-edit-page/:id' element={<EditFormPage />} />
-          <Route path="pet-form" element={<PetForm />} />
+          <Route path='/edit-form/:id' element={<EditFormPage />} />
         </Route>
       </Routes>
     </Router>

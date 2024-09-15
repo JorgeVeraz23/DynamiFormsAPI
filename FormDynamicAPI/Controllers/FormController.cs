@@ -29,7 +29,6 @@ namespace FormDynamicAPI.Controllers
         [HttpPost("CrearFormulario")]
         public async Task<IActionResult> CreateForm([FromBody] FormDTO formDTO)
         {
-            // Mapea el DTO a la entidad, pero no asignamos manualmente los IDs.
             var form = new Form
             {
                 Name = formDTO.Name,
@@ -43,7 +42,7 @@ namespace FormDynamicAPI.Controllers
                         Name = f.Name,
                         Index = f.Index,
                         IsOptional = f.IsOptional,
-                        FieldType = new FieldType { IdFieldType = f.TypeId } // Este es una FK, no se autogenera
+                        FieldType = new FieldType { IdFieldType = f.TypeId }
                     }).ToList()
                 }).ToList()
             };
@@ -52,7 +51,7 @@ namespace FormDynamicAPI.Controllers
 
             if (result.Success)
             {
-                // Devuelve el formulario recién creado con el ID generado por la BD.
+
                 return CreatedAtAction(nameof(GetForm), new { id = form.IdForm }, form);
             }
 

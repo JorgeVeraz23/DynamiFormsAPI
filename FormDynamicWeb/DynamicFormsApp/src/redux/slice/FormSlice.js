@@ -8,17 +8,17 @@ import {
 } from "../action/FormAction.js";
 
 const initialState = {
-    forms: [], // Lista de formularios, inicializada como un array vacío
-    selectedForm: null, // Formulario seleccionado, inicializado como null
-    loading: false, // Estado de carga, inicializado como false
-    error: null // Error, inicializado como null
+    forms: [], 
+    selectedForm: null,
+    loading: false, 
+    error: null 
 };
 
 const formSlice = createSlice({
     name: 'form',
     initialState,
     reducers: {
-        // Aquí puedes definir reducers adicionales si es necesario
+       
     },
     extraReducers: (builder) => {
         builder
@@ -28,7 +28,7 @@ const formSlice = createSlice({
             })
             .addCase(getAllFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.forms = action.payload; // Actualiza la lista de formularios
+                state.forms = action.payload; 
             })
             .addCase(getAllFormAction.rejected, (state, action) => {
                 state.loading = false;
@@ -41,11 +41,11 @@ const formSlice = createSlice({
             })
             .addCase(getFormByIdAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.selectedForm = action.payload; // Actualiza el formulario seleccionado
+                state.selectedForm = action.payload; 
             })
             .addCase(getFormByIdAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload; // Maneja el error
+                state.error = action.payload; 
             })
             
             .addCase(deleteFormAction.pending, (state) => {
@@ -54,12 +54,12 @@ const formSlice = createSlice({
             })
             .addCase(deleteFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Elimina el formulario de la lista
+               
                 state.forms = state.forms.filter(form => form.idForm !== action.payload);
             })
             .addCase(deleteFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload; // Maneja el error
+                state.error = action.payload; 
             })
             
             .addCase(createFormAction.pending, (state) => {
@@ -68,12 +68,11 @@ const formSlice = createSlice({
             })
             .addCase(createFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Agrega el nuevo formulario a la lista
                 state.forms.push(action.payload);
             })
             .addCase(createFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload; // Maneja el error
+                state.error = action.payload; 
             })
             
             .addCase(editFormAction.pending, (state) => {
@@ -82,7 +81,6 @@ const formSlice = createSlice({
             })
             .addCase(editFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Actualiza el formulario en la lista
                 const index = state.forms.findIndex(form => form.idForm === action.payload.idForm);
                 if (index !== -1) {
                     state.forms[index] = action.payload;
@@ -90,7 +88,7 @@ const formSlice = createSlice({
             })
             .addCase(editFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload; // Maneja el error
+                state.error = action.payload; 
             });
     }
 });
