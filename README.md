@@ -50,4 +50,4 @@
 
 ¡Con estos pasos, deberías estar listo para usar la aplicación Dynamic Forms! Si encuentras algún problema, no dudes en consultar la documentación o ponerte en contacto con el soporte.
 
-![Descripción de la imagen](images/FormulariosDispibles.png)
+![Descripción de la imagen](images/FormulariosDispibles.PNG)
