@@ -72,9 +72,8 @@ const formSlice = createSlice({
             })
             .addCase(deleteFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                if (state.data) {
-                    state.data = state.data.filter(form => form.idForm !== action.meta.arg);
-                }
+                // Filtrar el formulario eliminado
+                state.data = state.data.filter(form => form.idForm !== action.meta.arg);
             })
             .addCase(deleteFormAction.rejected, (state, action) => {
                 state.loading = false;
@@ -87,9 +86,11 @@ const formSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createFormAction.fulfilled, (state) => {
+            .addCase(createFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Aquí podrías actualizar la lista de formularios si es necesario
+                // Agregar el nuevo formulario a la lista
+                // `action.meta.arg` se usa para obtener el formulario creado (si se devuelve en la respuesta)
+                state.data.push(action.meta.arg);
             })
             .addCase(createFormAction.rejected, (state, action) => {
                 state.loading = false;
@@ -104,13 +105,10 @@ const formSlice = createSlice({
             })
             .addCase(editFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Aquí podrías actualizar la lista de formularios si es necesario
-                if (action.payload) {
-                    // Actualizar el formulario en el estado
-                    state.data = state.data?.map(form =>
-                      form.idForm === action.meta.arg.idForm ? action.meta.arg : form
-                    );
-                  }
+                // Actualizar el formulario en la lista
+                state.data = state.data.map(form =>
+                    form.idForm === action.meta.arg.idForm ? action.meta.arg : form
+                );
             })
             .addCase(editFormAction.rejected, (state, action) => {
                 state.loading = false;

@@ -2,10 +2,20 @@
 {
     public class FilledFormDTO
     {
-        public long IdFilledForm { get; set; }
-        public DateTime FillDate { get; set; }
-        public long? FormId { get; set; }
-        public FormDTO Form { get; set; }
-        public ICollection<FilledFormFieldDTO> FilledFormFields { get; set; }
+        public long IdForm { get; set; }
+        public List<FilledFormGroupDTO> FilledFormGroups { get; set; }
     }
+
+    public class FilledFormGroupDTO
+    {
+        public long IdFormGroup { get; set; }
+        public List<FilledFormFieldDTO> FilledFormFields { get; set; }
+    }
+
+    public class FilledFormFieldDTO
+    {
+        public long IdFormField { get; set; }
+        public string Value { get; set; } // El valor ingresado por el usuario
+    }
+
 }

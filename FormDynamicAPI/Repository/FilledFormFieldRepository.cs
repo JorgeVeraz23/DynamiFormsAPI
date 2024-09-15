@@ -31,12 +31,7 @@ namespace FormDynamicAPI.Repository
                 infoDTO.Success = true;
                 infoDTO.Message = "FilledFormField creado exitosamente!";
                 infoDTO.Status = 201;
-                infoDTO.Detail = new FilledFormFieldDTO
-                {
-                    IdFilledFormField = filledFormField.IdFilledFormField,
-                    FilledFormId = filledFormField.FilledFormId,
-                    FormFieldId = filledFormField.FormFieldId,
-                };
+                
 
                 return infoDTO;
             }

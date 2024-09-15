@@ -11,7 +11,7 @@ namespace FormDynamicAPI.Entity
         public int Index { get; set; }
         public bool IsOptional { get; set; }
         [ForeignKey("FieldType")]
-        public long? TypeId { get; set; }
+        public long TypeId { get; set; }
         public FieldType? FieldType { get; set; }
         [ForeignKey("FormGroup")]
         public long? FormGroupId { get; set; }

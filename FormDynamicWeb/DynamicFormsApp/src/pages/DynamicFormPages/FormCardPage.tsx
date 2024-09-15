@@ -15,7 +15,7 @@ const FormCardPage: React.FC = () => {
   const navigate = useNavigate();
 
   // Seleccionamos los datos del store, asegurándonos de que están bien tipados
-  const { data, loading, error } = useAppSelector((state: RootState) => state.Form);
+  const { data, loading, error } = useAppSelector((state: RootState) => state.form);
 
   useEffect(() => {
     dispatch(getAllFormAction());

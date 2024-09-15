@@ -5,6 +5,7 @@ using FormDynamicAPI.Entity;
 using FormDynamicAPI.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FormDynamicAPI.Repository;
 
 namespace FormDynamicAPI.Controllers
 {
@@ -23,18 +24,25 @@ namespace FormDynamicAPI.Controllers
         }
 
         [HttpPost("CrearFormularioLleno")]
-        public async Task<ActionResult> CrearFormularioLleno(FilledFormDTO filledFormDTO)
+        public async Task<ActionResult> CrearFormularioLleno([FromBody] FilledFormDTO filledFormDTO)
         {
             try
             {
+                // Mapear DTO a entidades para almacenar los datos llenados
                 var filledFormEntity = _mapper.Map<FilledForm>(filledFormDTO);
-                var response = await _filledFormRepository.CreateFilledForm(filledFormEntity);
 
-                return StatusCode(response.Status, response);
+                var result = await _filledFormRepository.CreateFilledForm(filledFormEntity);
+
+                if (result.Success)
+                {
+                    return Ok(new { Message = "Formulario guardado con éxito." });
+                }
+
+                return BadRequest(result.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar crear el formulario lleno."));
+                return StatusCode(500, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Error al guardar el formulario llenado."));
             }
         }
 

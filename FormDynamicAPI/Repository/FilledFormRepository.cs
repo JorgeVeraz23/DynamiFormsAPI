@@ -17,31 +17,16 @@ namespace FormDynamicAPI.Repository
 
         public async Task<MessageInfoDTO> CreateFilledForm(FilledForm filledForm)
         {
-            var infoDTO = new MessageInfoDTO();
             try
             {
-                if (filledForm == null)
-                {
-                    throw new ArgumentNullException(nameof(filledForm), "FilledForm cannot be null");
-                }
-
                 _context.FilledForms.Add(filledForm);
                 await _context.SaveChangesAsync();
 
-                infoDTO.Success = true;
-                infoDTO.Message = "FilledForm creado exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new FilledFormDTO
-                {
-                    IdFilledForm = filledForm.IdFilledForm,
-                    FillDate = filledForm.FillDate
-                };
-
-                return infoDTO;
+                return new MessageInfoDTO { Success = true, Message = "Formulario guardado exitosamente." };
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FilledFormRepository", "Error al intentar agregar el FilledForm");
+                return new MessageInfoDTO { Success = false, Message = "Error al guardar el formulario llenado: " + ex.Message };
             }
         }
 

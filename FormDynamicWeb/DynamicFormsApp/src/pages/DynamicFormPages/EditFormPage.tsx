@@ -12,9 +12,9 @@ const EditFormPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const form = useAppSelector((state: RootState) =>
-    state.Form.data?.find((f) => f.idForm === Number(id))
+    state.form.data?.find((f) => f.idForm === Number(id))
   );
-  const { loading, error } = useAppSelector((state: RootState) => state.Form);
+  const { loading, error } = useAppSelector((state: RootState) => state.form);
   const [formData, setFormData] = useState<Form | null>(null);
 
   useEffect(() => {

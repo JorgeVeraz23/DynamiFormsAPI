@@ -9,7 +9,9 @@ export const getAllFormAction = createAsyncThunk<Form[], void, { rejectValue: st
     "form/GetAllFormAction",
     async (_, thunkAPI) => {
         try {
-            return await repository.getAllForm();
+            const forms = await repository.getAllForm();
+            // Asegúrate de que `forms` tiene la forma correcta
+            return forms;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -22,7 +24,9 @@ export const getFormByIdAction = createAsyncThunk<Form, number, { rejectValue: s
     "form/GetFormByIdAction",
     async (id, thunkAPI) => {
         try {
-            return await repository.getFormById(id);
+            const form = await repository.getFormById(id);
+            // Asegúrate de que `form` tiene la forma correcta
+            return form;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);

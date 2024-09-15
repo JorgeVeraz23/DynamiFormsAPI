@@ -10,7 +10,6 @@ namespace FormDynamicAPI.DTO
         public string Name { get; set; }
         public int Index { get; set; }
         public long FormId { get; set; }
-        public FormDTO Form { get; set; }
         public ICollection<FormFieldDTO> FormFields { get; set; }
 
     }

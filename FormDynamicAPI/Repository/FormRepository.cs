@@ -17,124 +17,85 @@ namespace FormDynamicAPI.Repository
 
         public async Task<MessageInfoDTO> CreateForm(Form form)
         {
-            var infoDTO = new MessageInfoDTO(); // Crear una nueva instancia
+            var message = new MessageInfoDTO();
             try
             {
-                if (form == null)
-                {
-                    throw new ArgumentNullException(nameof(form), "FormDTO cannot be null");
-                }
-
-                form = new Form
-                {
-                    IdForm = form.IdForm,
-                    Name = form.Name,
-                    Description = form.Description,
-                    Active = true,
-                    DateRegister = DateTime.Now,
-                };
-
                 _context.Forms.Add(form);
                 await _context.SaveChangesAsync();
-
-                infoDTO.Success = true;
-                infoDTO.Message = "Formulario creado exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new FormDTO
-                {
-                    IdForm = form.IdForm,
-                    Name = form.Name,
-                    Description = form.Description
-                };
-
-                return infoDTO;
+                message.Success = true;
+                message.Message = "Form created successfully.";
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormRepository", "Error al intentar agregar el formulario");
+                message.Success = false;
+                message.Message = ex.Message;
             }
+            return message;
         }
 
         public async Task<MessageInfoDTO> DeleteForm(long id)
         {
-            var infoDTO = new MessageInfoDTO(); // Crear una nueva instancia
+            var message = new MessageInfoDTO();
             try
             {
-                if (id <= 0)
+                var form = await _context.Forms.FindAsync(id);
+                if (form != null)
                 {
-                    throw new ArgumentNullException(nameof(id), "Por favor ingrese el id requerido");
-                }
-
-                var formularioToDelete = await _context.Forms
-                    .Where(x => x.Active && x.IdForm == id)
-                    .FirstOrDefaultAsync();
-
-                if (formularioToDelete != null)
-                {
-                    formularioToDelete.Active = false;
-                    formularioToDelete.DateDelete = DateTime.Now;
-                    await _context.SaveChangesAsync();
-
-                    infoDTO.AccionCompletada("Se ha eliminado el formulario!");
+                    form.Active = false; // Marcar como inactivo
+                    _context.Forms.Update(form); // Actualizar la entidad en el contexto
+                    await _context.SaveChangesAsync(); // Guardar cambios en la base de datos
+                    message.Success = true;
+                    message.Message = "Form marked as inactive successfully.";
                 }
                 else
                 {
-                    infoDTO.AccionFallida("No se encontró el formulario ingresado", 404);
+                    message.Success = false;
+                    message.Message = "Form not found.";
                 }
-
-                return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormRepository", "Error al intentar eliminar el formulario");
+                message.Success = false;
+                message.Message = ex.Message;
             }
+            return message;
         }
+
 
         public async Task<List<Form>> GetAllForm()
         {
-            return await _context.Forms.Where(x => x.Active).ToListAsync();
+            return await _context.Forms
+            .Include(f => f.FormGroups)
+                .ThenInclude(g => g.FormFields)
+                    .ThenInclude(ff => ff.FieldType)
+            .ToListAsync();
         }
 
         public async Task<Form> GetForm(long id)
         {
-            var formularioSeleccionado = await _context.Forms
-                .FirstOrDefaultAsync(x => x.Active && x.IdForm == id);
-
-            if (formularioSeleccionado == null)
-            {
-                throw new ArgumentNullException(nameof(id), "No existe el formulario seleccionado");
-            }
-
-            return formularioSeleccionado;
+            return await _context.Forms
+            .Include(f => f.FormGroups)
+                .ThenInclude(g => g.FormFields)
+                    .ThenInclude(ff => ff.FieldType)
+            .FirstOrDefaultAsync(f => f.IdForm == id);
         }
 
-        public async Task<MessageInfoDTO> UpdateForm(Form formDTO)
+        public async Task<MessageInfoDTO> UpdateForm(Form form)
         {
-            var infoDTO = new MessageInfoDTO(); // Crear una nueva instancia
+            var message = new MessageInfoDTO();
             try
             {
-                var model = await _context.Forms
-                    .FirstOrDefaultAsync(x => x.Active && x.IdForm == formDTO.IdForm);
-
-                if (model == null)
-                {
-                    infoDTO.AccionFallida("No se encuentra el formulario que se intenta actualizar", 404);
-                    return infoDTO;
-                }
-
-                model.Name = formDTO.Name;
-                model.Description = formDTO.Description;
-                model.DateModification = DateTime.Now;
-
+                _context.Forms.Update(form);
                 await _context.SaveChangesAsync();
-
-                infoDTO.AccionCompletada("Se ha actualizado el formulario");
-                return infoDTO;
+                message.Success = true;
+                message.Message = "Form updated successfully.";
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormRepository", "Error al intentar editar el formulario");
+                message.Success = false;
+                message.Message = ex.Message;
             }
+            return message;
         }
     }
 
