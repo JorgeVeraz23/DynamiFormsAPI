@@ -36,7 +36,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins(["http://localhost:5173", "http://localhost:3000", "http://localhost:7275"]) // URL de tu aplicación React
+            policy.WithOrigins(["http://localhost:5173", "http://localhost:3000", "http://localhost:7275"]) 
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -53,12 +53,12 @@ builder.Services.AddScoped<IFilledFormRepository, FilledFormRepository>();
 
 var app = builder.Build();
 
-// Usar la política de CORS configurada
+
 app.UseCors("AllowReactApp");
 
-app.UseStaticFiles(); // Permite servir archivos estáticos
+app.UseStaticFiles(); 
 
-// Agrega esta línea para especificar la carpeta "uploads"
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
@@ -66,7 +66,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

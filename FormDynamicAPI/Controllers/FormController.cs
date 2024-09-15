@@ -68,18 +68,15 @@ namespace FormDynamicAPI.Controllers
                 return NotFound();
             }
 
-            // Actualizar propiedades del formulario
             existingForm.Name = formDTO.Name;
             existingForm.Description = formDTO.Description;
 
-            // Actualizamos los grupos y campos
             foreach (var groupDTO in formDTO.FormGroups)
             {
                 var group = existingForm.FormGroups.FirstOrDefault(g => g.IdFormGroup == groupDTO.IdFormGroup);
 
                 if (group == null)
                 {
-                    // Si el grupo no existe, lo agregamos
                     group = new FormGroup
                     {
                         Name = groupDTO.Name,
@@ -97,17 +94,14 @@ namespace FormDynamicAPI.Controllers
                 }
                 else
                 {
-                    // Actualizamos el grupo existente
                     group.Name = groupDTO.Name;
                     group.Index = groupDTO.Index;
 
-                    // Actualizamos los campos del grupo
                     foreach (var fieldDTO in groupDTO.FormFields)
                     {
                         var field = group.FormFields.FirstOrDefault(f => f.IdFormField == fieldDTO.IdFormField);
                         if (field == null)
                         {
-                            // Si el campo no existe, lo agregamos
                             field = new FormField
                             {
                                 Name = fieldDTO.Name,
@@ -120,7 +114,7 @@ namespace FormDynamicAPI.Controllers
                         }
                         else
                         {
-                            // Actualizamos el campo existente
+     
                             field.Name = fieldDTO.Name;
                             field.Index = fieldDTO.Index;
                             field.IsOptional = fieldDTO.IsOptional;

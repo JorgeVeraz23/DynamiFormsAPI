@@ -41,9 +41,9 @@ namespace FormDynamicAPI.Repository
                 var form = await _context.Forms.FindAsync(id);
                 if (form != null)
                 {
-                    form.Active = false; // Marcar como inactivo
-                    _context.Forms.Update(form); // Actualizar la entidad en el contexto
-                    await _context.SaveChangesAsync(); // Guardar cambios en la base de datos
+                    form.Active = false;
+                    _context.Forms.Update(form);
+                    await _context.SaveChangesAsync();
                     message.Success = true;
                     message.Message = "Form marked as inactive successfully.";
                 }
