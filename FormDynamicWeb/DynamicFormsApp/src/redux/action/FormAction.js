@@ -1,17 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import FormRepositoryImpl from "../../data/repositoryImpl/FormRepositoryImpl";
-import { Form } from "../../data/Entity/Entities";
 
 const repository = new FormRepositoryImpl();
 
 // Acción para obtener todos los formularios
-export const getAllFormAction = createAsyncThunk<Form[], void, { rejectValue: string }>(
+export const getAllFormAction = createAsyncThunk(
     "form/GetAllFormAction",
     async (_, thunkAPI) => {
         try {
             const forms = await repository.getAllForm();
-            // Asegúrate de que `forms` tiene la forma correcta
-            return forms;
+            return forms; // Retorna los datos sin tipo
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -20,13 +18,12 @@ export const getAllFormAction = createAsyncThunk<Form[], void, { rejectValue: st
 );
 
 // Acción para obtener un formulario por ID
-export const getFormByIdAction = createAsyncThunk<Form, number, { rejectValue: string }>(
+export const getFormByIdAction = createAsyncThunk(
     "form/GetFormByIdAction",
     async (id, thunkAPI) => {
         try {
             const form = await repository.getFormById(id);
-            // Asegúrate de que `form` tiene la forma correcta
-            return form;
+            return form; // Retorna los datos sin tipo
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -35,11 +32,12 @@ export const getFormByIdAction = createAsyncThunk<Form, number, { rejectValue: s
 );
 
 // Acción para eliminar un formulario
-export const deleteFormAction = createAsyncThunk<boolean, number, { rejectValue: string }>(
+export const deleteFormAction = createAsyncThunk(
     "form/DeleteFormAction",
     async (id, thunkAPI) => {
         try {
-            return await repository.deleteForm(id);
+            await repository.deleteForm(id);
+            return id; // Retorna el ID del formulario eliminado
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -47,12 +45,13 @@ export const deleteFormAction = createAsyncThunk<boolean, number, { rejectValue:
     }
 );
 
-// Acción para crear un nuevo formulario
-export const createFormAction = createAsyncThunk<boolean, Form, { rejectValue: string }>(
+// Acción para crear un formulario
+export const createFormAction = createAsyncThunk(
     "form/CreateFormAction",
-    async (formData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            return await repository.createForm(formData);
+            await repository.createForm(data);
+            return data; // Retorna los datos enviados
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);
@@ -60,12 +59,13 @@ export const createFormAction = createAsyncThunk<boolean, Form, { rejectValue: s
     }
 );
 
-// Acción para editar un formulario existente
-export const editFormAction = createAsyncThunk<boolean, Form, { rejectValue: string }>(
+// Acción para editar un formulario
+export const editFormAction = createAsyncThunk(
     "form/EditFormAction",
-    async (formData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            return await repository.editForm(formData);
+            await repository.editForm(data);
+            return data; // Retorna los datos enviados
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
             return thunkAPI.rejectWithValue(errorMessage);

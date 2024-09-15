@@ -1,10 +1,10 @@
-import { Form } from "../Entity/Entities";
+
 
 export default interface IFormRepository {
-    getAllForm(): Promise<Form[]>;
-    getFormById(id: number): Promise<Form>;
-    createForm(data: Form): Promise<boolean>;
-    editForm(data: Form): Promise<boolean>;
+    getAllForm(): Promise<any[]>;
+    getFormById(id: number): Promise<any>;
+    createForm(data: any): Promise<boolean>;
+    editForm(data: any): Promise<boolean>;
     deleteForm(id: number): Promise<boolean>;
 }
 

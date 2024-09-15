@@ -1,40 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Form } from "../../data/Entity/Entities";
 import {
     getAllFormAction,
     getFormByIdAction,
     deleteFormAction,
     createFormAction,
     editFormAction
-} from "../action/FormAction";
+} from "../action/FormAction.js";
 
-interface FormState {
-    data: Form[];
-    currentForm: Form | null;
-    loading: boolean;
-    error: string | null;
-}
-
-const initialState: FormState = {
-    data: [],
-    currentForm: null,
-    loading: false,
-    error: null,
+const initialState = {
+    forms: [], // Lista de formularios, inicializada como un array vacío
+    selectedForm: null, // Formulario seleccionado, inicializado como null
+    loading: false, // Estado de carga, inicializado como false
+    error: null // Error, inicializado como null
 };
 
 const formSlice = createSlice({
     name: 'form',
     initialState,
     reducers: {
-        resetState: (state) => {
-            state.data = [];
-            state.currentForm = null;
-            state.loading = false;
-            state.error = null;
-        },
+        // Aquí puedes definir reducers adicionales si es necesario
     },
     extraReducers: (builder) => {
-        // Obtener todos los formularios
         builder
             .addCase(getAllFormAction.pending, (state) => {
                 state.loading = true;
@@ -42,80 +28,72 @@ const formSlice = createSlice({
             })
             .addCase(getAllFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload;
+                state.forms = action.payload; // Actualiza la lista de formularios
             })
             .addCase(getAllFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Error al obtener los formularios';
-            });
-
-        // Obtener un formulario por ID
-        builder
+                state.error = action.payload; // Maneja el error
+            })
+            
             .addCase(getFormByIdAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(getFormByIdAction.fulfilled, (state, action) => {
                 state.loading = false;
-                state.currentForm = action.payload;
+                state.selectedForm = action.payload; // Actualiza el formulario seleccionado
             })
             .addCase(getFormByIdAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Error al obtener el formulario';
-            });
-
-        // Eliminar un formulario
-        builder
+                state.error = action.payload; // Maneja el error
+            })
+            
             .addCase(deleteFormAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(deleteFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Filtrar el formulario eliminado
-                state.data = state.data.filter(form => form.idForm !== action.meta.arg);
+                // Elimina el formulario de la lista
+                state.forms = state.forms.filter(form => form.idForm !== action.payload);
             })
             .addCase(deleteFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Error al eliminar el formulario';
-            });
-
-        // Crear un formulario
-        builder
+                state.error = action.payload; // Maneja el error
+            })
+            
             .addCase(createFormAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(createFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Agregar el nuevo formulario a la lista
-                // `action.meta.arg` se usa para obtener el formulario creado (si se devuelve en la respuesta)
-                state.data.push(action.meta.arg);
+                // Agrega el nuevo formulario a la lista
+                state.forms.push(action.payload);
             })
             .addCase(createFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Error al crear el formulario';
-            });
-
-        // Editar un formulario
-        builder
+                state.error = action.payload; // Maneja el error
+            })
+            
             .addCase(editFormAction.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(editFormAction.fulfilled, (state, action) => {
                 state.loading = false;
-                // Actualizar el formulario en la lista
-                state.data = state.data.map(form =>
-                    form.idForm === action.meta.arg.idForm ? action.meta.arg : form
-                );
+                // Actualiza el formulario en la lista
+                const index = state.forms.findIndex(form => form.idForm === action.payload.idForm);
+                if (index !== -1) {
+                    state.forms[index] = action.payload;
+                }
             })
             .addCase(editFormAction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Error al editar el formulario';
+                state.error = action.payload; // Maneja el error
             });
-    },
+    }
 });
 
-export const { resetState } = formSlice.actions;
-export default formSlice.reducer;
+export const { actions, reducer } = formSlice;
+export default reducer;

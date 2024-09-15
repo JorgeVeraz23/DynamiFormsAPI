@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../redux/hooksRedux';
-import { RootState } from '../../redux/store';
 import { editFormAction } from '../../redux/action/FormAction';
-import { Form } from '../../data/Entity/Entities';
 import { TextField, Button, Container, Typography, CircularProgress, Alert } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const EditFormPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+export const EditFormPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const form = useAppSelector((state: RootState) =>
+  const form = useAppSelector((state) =>
     state.form.data?.find((f) => f.idForm === Number(id))
   );
-  const { loading, error } = useAppSelector((state: RootState) => state.form);
-  const [formData, setFormData] = useState<Form | null>(null);
+  const { loading, error } = useAppSelector((state) => state.form);
+  const [formData, setFormData] = useState(null);
 
   useEffect(() => {
     if (form) {
@@ -23,20 +20,20 @@ const EditFormPage: React.FC = () => {
     }
   }, [form]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
-      ...prevState!,
+      ...prevState,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (formData) {
       dispatch(editFormAction(formData)).then((result) => {
         if (editFormAction.fulfilled.match(result)) {
-            navigate('/form-list'); // Redirigir a la lista de formularios
+          navigate('/form-list'); // Redirigir a la lista de formularios
         }
       });
     }
@@ -56,7 +53,7 @@ const EditFormPage: React.FC = () => {
             margin="normal"
             label="Nombre"
             name="name"
-            value={formData.name}
+            value={formData.name || ''}
             onChange={handleChange}
           />
           <TextField
@@ -64,7 +61,7 @@ const EditFormPage: React.FC = () => {
             margin="normal"
             label="Descripción"
             name="description"
-            value={formData.description}
+            value={formData.description || ''}
             onChange={handleChange}
           />
           <Button type="submit" variant="contained" color="primary">
@@ -75,5 +72,3 @@ const EditFormPage: React.FC = () => {
     </Container>
   );
 };
-
-export default EditFormPage;
