@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooksRedux';
 import { getFormByIdAction, editFormAction } from '../../redux/action/FormAction';
-import { TextField, Button, Container, Typography, CircularProgress, Alert, FormControlLabel, Checkbox, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, CircularProgress, Alert, Checkbox, FormControlLabel, MenuItem, Select, Box } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import CustomSelect from '../../components/CustomSelect'; // Asegúrate de que la ruta es correcta
+
+
+
 
 export const EditFormPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedForm, loading: formLoading, error: formError } = useAppSelector((state) => state.form);
-  const { selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError } = useAppSelector((state) => state.fieldType);
+  const { selectedForm,  loading: formLoading, error: formError } = useAppSelector((state) => state.form);
+  const {selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError} = useAppSelector((state) = state.fieldType);
 
   const [formData, setFormData] = useState(null);
 
@@ -32,13 +34,6 @@ export const EditFormPage = () => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: newValue,
-    }));
-  };
-
-  const handleSelectChange = (name, option) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: option
     }));
   };
 
@@ -75,7 +70,6 @@ export const EditFormPage = () => {
                     field={field}
                     value={formData[field.name] || ''}
                     onChange={handleChange}
-                    onSelectChange={handleSelectChange}
                   />
                 );
               })}
@@ -90,6 +84,7 @@ export const EditFormPage = () => {
   );
 };
 
+
 const TextFieldComponent = ({ field, value, onChange }) => (
   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
     <TextField
@@ -100,17 +95,18 @@ const TextFieldComponent = ({ field, value, onChange }) => (
       value={value}
       onChange={onChange}
       type="text"
-      sx={{ flexGrow: 1 }} 
+      sx={{ flexGrow: 1 }} // Permitir que el campo ocupe el mayor espacio
     />
     <Button 
       variant="outlined" 
       color="primary" 
-      sx={{ ml: 2 }} 
+      sx={{ ml: 2 }} // Margen izquierdo para separar del campo
     >
       Editar
     </Button>
   </Box>
 );
+
 
 const NumberFieldComponent = ({ field, value, onChange }) => (
   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -174,15 +170,24 @@ const CheckboxFieldComponent = ({ field, value, onChange }) => (
   </Box>
 );
 
-const SelectFieldComponent = ({ field, value, onSelectChange }) => (
+
+const SelectFieldComponent = ({ field, value, onChange }) => (
   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-    <CustomSelect
+    <Select
       fullWidth
-      placeholder={field.name}
+      margin="normal"
+      label={field.name}
+      name={field.name}
       value={value}
-      onChange={(option) => onSelectChange(field.name, option)}
-      options={field.options} // Asegúrate de que field.options esté en el formato correcto para CustomSelect
-    />
+      onChange={onChange}
+      sx={{ flexGrow: 1 }}
+    >
+      {field.options?.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
     <Button 
       variant="outlined" 
       color="primary" 
