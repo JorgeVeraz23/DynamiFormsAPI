@@ -12,8 +12,8 @@ export const EditFormPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { selectedForm,  loading: formLoading, error: formError } = useAppSelector((state) => state.form);
-  const {selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError} = useAppSelector((state) = state.fieldType);
-
+  // const {selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError} = useAppSelector((state) = state.fieldType);
+  const [openModal, setOpenModal] = useState(false)
   const [formData, setFormData] = useState(null);
 
   useEffect(() => {
@@ -21,6 +21,8 @@ export const EditFormPage = () => {
       dispatch(getFormByIdAction(Number(id)));
     }
   }, [id, dispatch]);
+
+  console.log(openModal)
 
   useEffect(() => {
     if (selectedForm) {
