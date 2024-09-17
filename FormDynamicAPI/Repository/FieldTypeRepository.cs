@@ -97,6 +97,17 @@ namespace FormDynamicAPI.Repository
             return fieldType;
         }
 
+        public async  Task<List<KeyValueDTO>> GetKeyValueFieldType()
+        {
+            var selectorFiedType = await _context.FieldTypes.Where(x => x.Active).Select(c => new KeyValueDTO
+            {
+                Key = c.IdFieldType,
+                Value = c.Name
+            }).ToListAsync();
+
+            return selectorFiedType;
+        }
+
         public async Task<MessageInfoDTO> UpdateFieldType(FieldType fieldType)
         {
             var infoDTO = new MessageInfoDTO();

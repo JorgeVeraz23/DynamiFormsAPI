@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooksRedux';
 import { getFormByIdAction, editFormAction } from '../../redux/action/FormAction';
-import { TextField, Button, Container, Typography, CircularProgress, Alert, Checkbox, FormControlLabel, MenuItem, Select } from '@mui/material';
+import { TextField, Button, Container, Typography, CircularProgress, Alert, FormControlLabel, Checkbox, Box } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import CustomSelect from '../../components/CustomSelect'; // Asegúrate de que la ruta es correcta
 
 export const EditFormPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedForm, loading, error } = useAppSelector((state) => state.form);
+  const { selectedForm, loading: formLoading, error: formError } = useAppSelector((state) => state.form);
+  const { selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError } = useAppSelector((state) => state.fieldType);
 
   const [formData, setFormData] = useState(null);
 
@@ -33,6 +35,13 @@ export const EditFormPage = () => {
     }));
   };
 
+  const handleSelectChange = (name, option) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: option
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData) {
@@ -44,11 +53,11 @@ export const EditFormPage = () => {
     }
   };
 
-  if (loading) return <CircularProgress />;
-  if (error) return <Alert severity="error">{error}</Alert>;
+  if (formLoading) return <CircularProgress />;
+  if (formError) return <Alert severity="error">{formError}</Alert>;
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" >
       <Typography variant="h4" component="h1" gutterBottom>
         Editar Formulario
       </Typography>
@@ -66,12 +75,13 @@ export const EditFormPage = () => {
                     field={field}
                     value={formData[field.name] || ''}
                     onChange={handleChange}
+                    onSelectChange={handleSelectChange}
                   />
                 );
               })}
             </div>
           ))}
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" sx={{ mb: 3 }}>
             Guardar Cambios
           </Button>
         </form>
@@ -80,66 +90,107 @@ export const EditFormPage = () => {
   );
 };
 
-
 const TextFieldComponent = ({ field, value, onChange }) => (
-  <TextField
-    fullWidth
-    margin="normal"
-    label={field.name}
-    name={field.name}
-    value={value}
-    onChange={onChange}
-    type="text"
-  />
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <TextField
+      fullWidth
+      margin="normal"
+      label={field.name}
+      name={field.name}
+      value={value}
+      onChange={onChange}
+      type="text"
+      sx={{ flexGrow: 1 }} 
+    />
+    <Button 
+      variant="outlined" 
+      color="primary" 
+      sx={{ ml: 2 }} 
+    >
+      Editar
+    </Button>
+  </Box>
 );
 
 const NumberFieldComponent = ({ field, value, onChange }) => (
-  <TextField
-    fullWidth
-    margin="normal"
-    label={field.name}
-    name={field.name}
-    value={value}
-    onChange={onChange}
-    type="number"
-  />
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <TextField
+      fullWidth
+      margin="normal"
+      label={field.name}
+      name={field.name}
+      value={value}
+      onChange={onChange}
+      type="number"
+      sx={{ flexGrow: 1 }}
+    />
+    <Button 
+      variant="outlined" 
+      color="primary" 
+      sx={{ ml: 2 }}
+    >
+      Editar
+    </Button>
+  </Box>
 );
 
 const DateFieldComponent = ({ field, value, onChange }) => (
-  <TextField
-    fullWidth
-    margin="normal"
-    label={field.name}
-    name={field.name}
-    value={value}
-    onChange={onChange}
-    type="date"
-    InputLabelProps={{ shrink: true }}
-  />
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <TextField
+      fullWidth
+      margin="normal"
+      label={field.name}
+      name={field.name}
+      value={value}
+      onChange={onChange}
+      type="date"
+      InputLabelProps={{ shrink: true }}
+      sx={{ flexGrow: 1 }}
+    />
+    <Button 
+      variant="outlined" 
+      color="primary" 
+      sx={{ ml: 2 }}
+    >
+      Editar
+    </Button>
+  </Box>
 );
 
 const CheckboxFieldComponent = ({ field, value, onChange }) => (
-  <FormControlLabel
-    control={<Checkbox checked={!!value} onChange={onChange} name={field.name} />}
-    label={field.name}
-  />
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <FormControlLabel
+      control={<Checkbox checked={!!value} onChange={onChange} name={field.name} />}
+      label={field.name}
+      sx={{ flexGrow: 1 }}
+    />
+    <Button 
+      variant="outlined" 
+      color="primary" 
+      sx={{ ml: 2 }}
+    >
+      Editar
+    </Button>
+  </Box>
 );
 
-const SelectFieldComponent = ({ field, value, onChange }) => (
-  <Select
-    fullWidth
-    margin="normal"
-    label={field.name}
-    name={field.name}
-    value={value}
-    onChange={onChange}
-  >
-    {field.options?.map((option) => (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    ))}
-  </Select>
+const SelectFieldComponent = ({ field, value, onSelectChange }) => (
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <CustomSelect
+      fullWidth
+      placeholder={field.name}
+      value={value}
+      onChange={(option) => onSelectChange(field.name, option)}
+      options={field.options} // Asegúrate de que field.options esté en el formato correcto para CustomSelect
+    />
+    <Button 
+      variant="outlined" 
+      color="primary" 
+      sx={{ ml: 2 }}
+    >
+      Editar
+    </Button>
+  </Box>
 );
 
 const getFieldComponent = (fieldType) => {
@@ -152,9 +203,9 @@ const getFieldComponent = (fieldType) => {
     case 10014: // ID de tipo "Fecha"
       return DateFieldComponent;
     case 10015: // ID de tipo "Checkbox"
-      return CheckboxFieldComponent;
-    case 10016: // ID de tipo "Opción" (Select)
       return SelectFieldComponent;
+    case 10016: // ID de tipo "Opción" (Select)
+      return CheckboxFieldComponent;
     default:
       return () => <div>Tipo de campo desconocido</div>;
   }

@@ -10,5 +10,6 @@ namespace FormDynamicAPI.Interface
         Task<MessageInfoDTO> DeleteFieldType(long id);
         Task<FieldType> GetFieldType(long id);
         Task<List<FieldType>> GetAllFieldTypes();
+        Task<List<KeyValueDTO>> GetKeyValueFieldType();
     }
 }

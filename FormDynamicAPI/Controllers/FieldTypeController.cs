@@ -85,6 +85,22 @@ namespace FormDynamicAPI.Controllers
             }
         }
 
+        [HttpGet("KeyValueFieldType")]
+        public async Task<ActionResult> KeyValueFieldType()
+        {
+            try
+            {
+               var response = await _fieldTypeRepository.GetKeyValueFieldType();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todos los tipos de campo."));
+            }
+        }
+
+
         [HttpGet("ObtenerTipoDeCampoPorId")]
         public async Task<ActionResult<FieldTypeDTO>> ObtenerTipoDeCampoPorId(long id)
         {

@@ -20,9 +20,10 @@ const MainLayout = () => {
 
   const drawer = (
     <div>
-      <Toolbar>
-        <img src="your-logo-url.png" alt="App Logo" style={{ width: '100%', padding: '10px' }} />
+            <Toolbar>
+        <h4 style={{ width: '50%',textAlign: 'center' }}>DynamicFormsApp</h4>
       </Toolbar>
+
       <List>
         <ListItemButton onClick={() => navigate('/form-page')}>
           <ListItemIcon>

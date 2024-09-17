@@ -15,3 +15,9 @@ export const DELETE_FORM = (id: number) => `${FORM_PREFIX}EliminarFormulario?id=
 export const GETFORM_BYID = (id: number) => `${FORM_PREFIX}ObtenerFormularioPorId?id=${id}`;
 
 //#endregion
+
+//#region FieldType
+const FIELDTYPE_PREFIX = "FieldType/";
+export const GETALL_FIELDTYPES = `${FIELDTYPE_PREFIX}ObtenerTodosLosTiposDeCampo`
+export const SELECTOR_FIELDTYPES = `${FIELDTYPE_PREFIX}KeyValueFieldType`
+//#endregion

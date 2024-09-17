@@ -13,7 +13,9 @@ const Footer = () => {
     textAlign: 'center',
     padding: '10px 0',
     position: 'fixed',
-    bottom: 0
+    bottom: 0,
+    marginTop: "10px",
+    paddingTop: "10px"
   }}
 >
   <Typography variant="body2">© 2024 Dynamic Forms App. All rights reserved.</Typography>
