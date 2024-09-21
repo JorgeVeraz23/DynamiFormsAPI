@@ -6,7 +6,7 @@ namespace FormDynamicAPI.Interface
 {
     public interface IFormRepository
     {
-        Task<MessageInfoDTO> CreateForm(Form form);
+        Task<bool> CreateForm(CreateFormDTO formDTO);
         Task<MessageInfoDTO> UpdateForm(Form form);
         Task<MessageInfoDTO> DeleteForm(long id);
         Task<Form> GetForm(long id);

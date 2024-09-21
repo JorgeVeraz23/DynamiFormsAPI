@@ -28,20 +28,16 @@ namespace FormDynamicAPI.Repository
                 _context.Options.Add(option);
                 await _context.SaveChangesAsync();
 
-                infoDTO.Success = true;
-                infoDTO.Message = "Option creada exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new OptionDTO
-                {
-                    IdOption = option.IdOption,
-                    Name = option.Name
-                };
+
+                infoDTO.Mensaje = "Option creada exitosamente!";
+                infoDTO.Cod = "201";
+                
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "OptionRepository", "Error al intentar agregar la Option");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -64,18 +60,18 @@ namespace FormDynamicAPI.Repository
                     _context.Options.Remove(optionToDelete);
                     await _context.SaveChangesAsync();
 
-                    infoDTO.AccionCompletada("Se ha eliminado la Option!");
+                    infoDTO.Mensaje = "Option eliminado correctamente";
                 }
                 else
                 {
-                    infoDTO.AccionFallida("No se encontró la Option ingresada", 404);
+                    infoDTO.Mensaje = "el Option ingresado fue nulo";
                 }
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "OptionRepository", "Error al intentar eliminar la Option");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -108,19 +104,19 @@ namespace FormDynamicAPI.Repository
 
                 if (model == null)
                 {
-                    infoDTO.AccionFallida("No se encuentra la Option que se intenta actualizar", 404);
+                    infoDTO.Mensaje = "el FormGroup ingresado fue nulo";
                     return infoDTO;
                 }
 
                 model.Name = option.Name;
                 await _context.SaveChangesAsync();
 
-                infoDTO.AccionCompletada("Se ha actualizado la Option");
+                infoDTO.Mensaje = "el FormGroup ingresado fue nulo";
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "OptionRepository", "Error al intentar editar la Option");
+                throw new Exception(ex.Message, ex);
             }
         }
     }

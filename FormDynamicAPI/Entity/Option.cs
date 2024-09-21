@@ -6,9 +6,11 @@ namespace FormDynamicAPI.Entity
     {
         [Key]
         public long IdOption { get; set; }
-        public string Name { get; set; }
 
-        public ICollection<OptionFormField>? OptionFormFields { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
+
+ 
     }
 }
 

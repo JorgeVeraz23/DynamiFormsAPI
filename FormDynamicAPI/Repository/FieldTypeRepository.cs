@@ -28,20 +28,16 @@ namespace FormDynamicAPI.Repository
                 _context.FieldTypes.Add(fieldType);
                 await _context.SaveChangesAsync();
 
-                infoDTO.Success = true;
-                infoDTO.Message = "FieldType creado exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new FieldTypeDTO
-                {
-                    IdFieldType = fieldType.IdFieldType,
-                    Name = fieldType.Name
-                };
+                infoDTO.Cod = "201";
+                infoDTO.Mensaje = "FieldType creado exitosamente!";
+                
+                
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FieldTypeRepository", "Error al intentar agregar el FieldType");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -64,18 +60,18 @@ namespace FormDynamicAPI.Repository
                     _context.FieldTypes.Remove(fieldTypeToDelete);
                     await _context.SaveChangesAsync();
 
-                    infoDTO.AccionCompletada("Se ha eliminado el FieldType!");
+                    infoDTO.Mensaje = "FieldType Eliminado correctamente";
                 }
                 else
                 {
-                    infoDTO.AccionFallida("No se encontró el FieldType ingresado", 404);
+                    infoDTO.Mensaje = "Hubo un error al intentar eliminar";
                 }
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FieldTypeRepository", "Error al intentar eliminar el FieldType");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -118,19 +114,19 @@ namespace FormDynamicAPI.Repository
 
                 if (model == null)
                 {
-                    infoDTO.AccionFallida("No se encuentra el FieldType que se intenta actualizar", 404);
+                    infoDTO.Mensaje = "el fieldType ingresado fue nulo";
                     return infoDTO;
                 }
 
                 model.Name = fieldType.Name;
                 await _context.SaveChangesAsync();
 
-                infoDTO.AccionCompletada("Se ha actualizado el FieldType");
+                infoDTO.Mensaje = "se a actualizado";
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FieldTypeRepository", "Error al intentar editar el FieldType");
+                throw new Exception(ex.Message, ex);
             }
         }
     }

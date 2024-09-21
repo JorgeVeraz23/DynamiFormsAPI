@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FormDynamicAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240914060916_FormDynamic-1")]
-    partial class FormDynamic1
+    [Migration("20240918042807_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,7 +104,7 @@ namespace FormDynamicAPI.Migrations
                     b.Property<DateTime>("FillDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("FormId")
+                    b.Property<long>("FormId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("IpDelete")
@@ -163,10 +163,10 @@ namespace FormDynamicAPI.Migrations
                     b.Property<DateTime?>("DateTimeValue")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("FilledFormId")
+                    b.Property<long>("FilledFormId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("FormFieldId")
+                    b.Property<long>("FormFieldId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("IpDelete")
@@ -191,7 +191,6 @@ namespace FormDynamicAPI.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("TextValue")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserDelete")
@@ -240,7 +239,6 @@ namespace FormDynamicAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IpDelete")
@@ -298,7 +296,10 @@ namespace FormDynamicAPI.Migrations
                     b.Property<DateTime>("DateRegister")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("FormGroupId")
+                    b.Property<long>("FieldTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FormGroupId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Index")
@@ -323,9 +324,6 @@ namespace FormDynamicAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("TypeId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("UserDelete")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -341,9 +339,9 @@ namespace FormDynamicAPI.Migrations
 
                     b.HasKey("IdFormField");
 
-                    b.HasIndex("FormGroupId");
+                    b.HasIndex("FieldTypeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("FormGroupId");
 
                     b.ToTable("FormFields");
                 });
@@ -371,9 +369,6 @@ namespace FormDynamicAPI.Migrations
 
                     b.Property<long>("FormId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("Index")
-                        .HasColumnType("int");
 
                     b.Property<string>("IpDelete")
                         .HasMaxLength(100)
@@ -468,11 +463,11 @@ namespace FormDynamicAPI.Migrations
 
             modelBuilder.Entity("FormDynamicAPI.Entity.OptionFormField", b =>
                 {
-                    b.Property<long>("OptionId")
+                    b.Property<long>("IdOptionFormField")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("FormFieldId")
-                        .HasColumnType("bigint");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdOptionFormField"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -487,6 +482,9 @@ namespace FormDynamicAPI.Migrations
                     b.Property<DateTime>("DateRegister")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("FormFieldId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("IpDelete")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -498,6 +496,9 @@ namespace FormDynamicAPI.Migrations
                     b.Property<string>("IpRegister")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<long>("OptionId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserDelete")
                         .HasMaxLength(100)
@@ -512,9 +513,11 @@ namespace FormDynamicAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("OptionId", "FormFieldId");
+                    b.HasKey("IdOptionFormField");
 
                     b.HasIndex("FormFieldId");
+
+                    b.HasIndex("OptionId");
 
                     b.ToTable("OptionFormFields");
                 });
@@ -523,7 +526,9 @@ namespace FormDynamicAPI.Migrations
                 {
                     b.HasOne("FormDynamicAPI.Entity.Form", "Form")
                         .WithMany("FilledForms")
-                        .HasForeignKey("FormId");
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Form");
                 });
@@ -532,11 +537,15 @@ namespace FormDynamicAPI.Migrations
                 {
                     b.HasOne("FormDynamicAPI.Entity.FilledForm", "FilledForm")
                         .WithMany("FilledFormFields")
-                        .HasForeignKey("FilledFormId");
+                        .HasForeignKey("FilledFormId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("FormDynamicAPI.Entity.FormField", "FormField")
-                        .WithMany()
-                        .HasForeignKey("FormFieldId");
+                        .WithMany("FilledFormFields")
+                        .HasForeignKey("FormFieldId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("FormDynamicAPI.Entity.Option", "SelectedOption")
                         .WithMany()
@@ -551,13 +560,17 @@ namespace FormDynamicAPI.Migrations
 
             modelBuilder.Entity("FormDynamicAPI.Entity.FormField", b =>
                 {
+                    b.HasOne("FormDynamicAPI.Entity.FieldType", "FieldType")
+                        .WithMany("FormFields")
+                        .HasForeignKey("FieldTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FormDynamicAPI.Entity.FormGroup", "FormGroup")
                         .WithMany("FormFields")
-                        .HasForeignKey("FormGroupId");
-
-                    b.HasOne("FormDynamicAPI.Entity.FieldType", "FieldType")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("FormGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("FieldType");
 
@@ -594,6 +607,11 @@ namespace FormDynamicAPI.Migrations
                     b.Navigation("Option");
                 });
 
+            modelBuilder.Entity("FormDynamicAPI.Entity.FieldType", b =>
+                {
+                    b.Navigation("FormFields");
+                });
+
             modelBuilder.Entity("FormDynamicAPI.Entity.FilledForm", b =>
                 {
                     b.Navigation("FilledFormFields");
@@ -608,6 +626,8 @@ namespace FormDynamicAPI.Migrations
 
             modelBuilder.Entity("FormDynamicAPI.Entity.FormField", b =>
                 {
+                    b.Navigation("FilledFormFields");
+
                     b.Navigation("OptionFormFields");
                 });
 

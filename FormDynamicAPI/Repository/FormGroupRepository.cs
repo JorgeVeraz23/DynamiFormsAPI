@@ -28,21 +28,16 @@ namespace FormDynamicAPI.Repository
                 _context.FormGroups.Add(formGroup);
                 await _context.SaveChangesAsync();
 
-                infoDTO.Success = true;
-                infoDTO.Message = "FormGroup creado exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new FormGroupDTO
-                {
-                    IdFormGroup = formGroup.IdFormGroup,
-                    Name = formGroup.Name,
-                    Index = formGroup.Index
-                };
+                
+                infoDTO.Mensaje = "FormGroup creado exitosamente!";
+                infoDTO.Cod = "201";
+                
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormGroupRepository", "Error al intentar agregar el FormGroup");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -65,18 +60,18 @@ namespace FormDynamicAPI.Repository
                     _context.FormGroups.Remove(formGroupToDelete);
                     await _context.SaveChangesAsync();
 
-                    infoDTO.AccionCompletada("Se ha eliminado el FormGroup!");
+                    infoDTO.Mensaje = "FormGroup eliminado correctamente";
                 }
                 else
                 {
-                    infoDTO.AccionFallida("No se encontró el FormGroup ingresado", 404);
+                    infoDTO.Mensaje = "el FormGroup ingresado fue nulo";
                 }
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormGroupRepository", "Error al intentar eliminar el FormGroup");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -108,20 +103,19 @@ namespace FormDynamicAPI.Repository
 
                 if (model == null)
                 {
-                    infoDTO.AccionFallida("No se encuentra el FormGroup que se intenta actualizar", 404);
+                    infoDTO.Mensaje = "el FormGroup ingresado fue nulo";
                     return infoDTO;
                 }
 
                 model.Name = formGroup.Name;
-                model.Index = formGroup.Index;
                 await _context.SaveChangesAsync();
 
-                infoDTO.AccionCompletada("Se ha actualizado el FormGroup");
+                infoDTO.Mensaje = "FormGroup eliminado correctamente";
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormGroupRepository", "Error al intentar editar el FormGroup");
+                throw new Exception(ex.Message, ex);
             }
         }
     }

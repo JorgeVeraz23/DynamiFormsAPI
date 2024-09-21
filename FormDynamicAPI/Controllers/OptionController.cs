@@ -31,11 +31,11 @@ namespace FormDynamicAPI.Controllers
                 var optionEntity = _mapper.Map<Option>(optionDTO);
                 var response = await _optionRepository.CreateOption(optionEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar crear la opción."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -47,11 +47,11 @@ namespace FormDynamicAPI.Controllers
                 var optionEntity = _mapper.Map<Option>(optionDTO);
                 var response = await _optionRepository.UpdateOption(optionEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar actualizar la opción."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -62,11 +62,11 @@ namespace FormDynamicAPI.Controllers
             {
                 var response = await _optionRepository.DeleteOption(id);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar eliminar la opción."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -82,7 +82,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todas las opciones."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -98,7 +98,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar la opción."));
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FormDynamicAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class FormDynamic1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,7 @@ namespace FormDynamicAPI.Migrations
                     IdForm = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateRegister = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -88,7 +88,7 @@ namespace FormDynamicAPI.Migrations
                     IdFilledForm = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FillDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FormId = table.Column<long>(type: "bigint", nullable: true),
+                    FormId = table.Column<long>(type: "bigint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateRegister = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -107,7 +107,8 @@ namespace FormDynamicAPI.Migrations
                         name: "FK_FilledForms_Forms_FormId",
                         column: x => x.FormId,
                         principalTable: "Forms",
-                        principalColumn: "IdForm");
+                        principalColumn: "IdForm",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,7 +118,6 @@ namespace FormDynamicAPI.Migrations
                     IdFormGroup = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Index = table.Column<int>(type: "int", nullable: false),
                     FormId = table.Column<long>(type: "bigint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -150,8 +150,8 @@ namespace FormDynamicAPI.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false),
                     IsOptional = table.Column<bool>(type: "bit", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: true),
-                    FormGroupId = table.Column<long>(type: "bigint", nullable: true),
+                    FieldTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    FormGroupId = table.Column<long>(type: "bigint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateRegister = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -167,15 +167,17 @@ namespace FormDynamicAPI.Migrations
                 {
                     table.PrimaryKey("PK_FormFields", x => x.IdFormField);
                     table.ForeignKey(
-                        name: "FK_FormFields_FieldTypes_TypeId",
-                        column: x => x.TypeId,
+                        name: "FK_FormFields_FieldTypes_FieldTypeId",
+                        column: x => x.FieldTypeId,
                         principalTable: "FieldTypes",
-                        principalColumn: "IdFieldType");
+                        principalColumn: "IdFieldType",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FormFields_FormGroups_FormGroupId",
                         column: x => x.FormGroupId,
                         principalTable: "FormGroups",
-                        principalColumn: "IdFormGroup");
+                        principalColumn: "IdFormGroup",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,11 +187,11 @@ namespace FormDynamicAPI.Migrations
                     IdFilledFormField = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsChecked = table.Column<bool>(type: "bit", nullable: true),
-                    TextValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TextValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumericValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DateTimeValue = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FilledFormId = table.Column<long>(type: "bigint", nullable: true),
-                    FormFieldId = table.Column<long>(type: "bigint", nullable: true),
+                    FilledFormId = table.Column<long>(type: "bigint", nullable: false),
+                    FormFieldId = table.Column<long>(type: "bigint", nullable: false),
                     SelectedOptionId = table.Column<long>(type: "bigint", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -209,12 +211,14 @@ namespace FormDynamicAPI.Migrations
                         name: "FK_FilledFormFields_FilledForms_FilledFormId",
                         column: x => x.FilledFormId,
                         principalTable: "FilledForms",
-                        principalColumn: "IdFilledForm");
+                        principalColumn: "IdFilledForm",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FilledFormFields_FormFields_FormFieldId",
                         column: x => x.FormFieldId,
                         principalTable: "FormFields",
-                        principalColumn: "IdFormField");
+                        principalColumn: "IdFormField",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FilledFormFields_Options_SelectedOptionId",
                         column: x => x.SelectedOptionId,
@@ -226,6 +230,8 @@ namespace FormDynamicAPI.Migrations
                 name: "OptionFormFields",
                 columns: table => new
                 {
+                    IdOptionFormField = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OptionId = table.Column<long>(type: "bigint", nullable: false),
                     FormFieldId = table.Column<long>(type: "bigint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
@@ -241,7 +247,7 @@ namespace FormDynamicAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OptionFormFields", x => new { x.OptionId, x.FormFieldId });
+                    table.PrimaryKey("PK_OptionFormFields", x => x.IdOptionFormField);
                     table.ForeignKey(
                         name: "FK_OptionFormFields_FormFields_FormFieldId",
                         column: x => x.FormFieldId,
@@ -277,14 +283,14 @@ namespace FormDynamicAPI.Migrations
                 column: "FormId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FormFields_FieldTypeId",
+                table: "FormFields",
+                column: "FieldTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FormFields_FormGroupId",
                 table: "FormFields",
                 column: "FormGroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FormFields_TypeId",
-                table: "FormFields",
-                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FormGroups_FormId",
@@ -295,6 +301,11 @@ namespace FormDynamicAPI.Migrations
                 name: "IX_OptionFormFields_FormFieldId",
                 table: "OptionFormFields",
                 column: "FormFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OptionFormFields_OptionId",
+                table: "OptionFormFields",
+                column: "OptionId");
         }
 
         /// <inheritdoc />

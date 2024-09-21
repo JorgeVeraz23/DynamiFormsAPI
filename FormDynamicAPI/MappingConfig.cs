@@ -11,8 +11,7 @@ namespace FormDynamicAPI
             try
             {
        
-                CreateMap<Form, FormDTO>()
-                    .ReverseMap();
+               
 
                 CreateMap<FormField, FormFieldDTO>()
                     .ReverseMap();

@@ -27,35 +27,47 @@ namespace FormDynamicAPI.Controllers
 
 
         [HttpPost("CrearFormulario")]
-        public async Task<IActionResult> CreateForm([FromBody] FormDTO formDTO)
+        public async Task<ActionResult> CreateForm([FromBody] CreateFormDTO formDTO)
         {
-            var form = new Form
+
+            try
             {
-                Name = formDTO.Name,
-                Description = formDTO.Description,
-                FormGroups = formDTO.FormGroups.Select(g => new FormGroup
-                {
-                    Name = g.Name,
-                    Index = g.Index,
-                    FormFields = g.FormFields.Select(f => new FormField
-                    {
-                        Name = f.Name,
-                        Index = f.Index,
-                        IsOptional = f.IsOptional,
-                        FieldType = new FieldType { IdFieldType = f.TypeId }
-                    }).ToList()
-                }).ToList()
-            };
+                var response = _formRepository.CreateForm(formDTO);
 
-            var result = await _formRepository.CreateForm(form);
 
-            if (result.Success)
+                return Ok(response);
+
+            }catch(Exception ex)
             {
-
-                return CreatedAtAction(nameof(GetForm), new { id = form.IdForm }, form);
+                throw new Exception(ex.Message);
             }
+            //var form = new Form
+            //{
+            //    Name = formDTO.Name,
+            //    Description = formDTO.Description,
+            //    FormGroups = formDTO.FormGroups.Select(g => new FormGroup
+            //    {
+            //        Name = g.Name,
+            //        Index = g.Index,
+            //        FormFields = g.FormFields.Select(f => new FormField
+            //        {
+            //            Name = f.Name,
+            //            Index = f.Index,
+            //            IsOptional = f.IsOptional,
+            //            FieldType = new FieldType { IdFieldType = f.TypeId }
+            //        }).ToList()
+            //    }).ToList()
+            //};
 
-            return BadRequest(result.Message);
+            //var result = await _formRepository.CreateForm(form);
+
+            //if (result.Success)
+            //{
+
+            //    return CreatedAtAction(nameof(GetForm), new { id = form.IdForm }, form);
+            //}
+
+            //return BadRequest(result.Message);
         }
 
 
@@ -80,13 +92,11 @@ namespace FormDynamicAPI.Controllers
                     group = new FormGroup
                     {
                         Name = groupDTO.Name,
-                        Index = groupDTO.Index,
                         FormFields = groupDTO.FormFields.Select(f => new FormField
                         {
                             Name = f.Name,
                             Index = f.Index,
                             IsOptional = f.IsOptional,
-                            TypeId = f.TypeId,
                             FieldType = new FieldType { IdFieldType = f.TypeId }
                         }).ToList()
                     };
@@ -95,7 +105,6 @@ namespace FormDynamicAPI.Controllers
                 else
                 {
                     group.Name = groupDTO.Name;
-                    group.Index = groupDTO.Index;
 
                     foreach (var fieldDTO in groupDTO.FormFields)
                     {
@@ -107,7 +116,6 @@ namespace FormDynamicAPI.Controllers
                                 Name = fieldDTO.Name,
                                 Index = fieldDTO.Index,
                                 IsOptional = fieldDTO.IsOptional,
-                                TypeId = fieldDTO.TypeId,
                                 FieldType = new FieldType { IdFieldType = fieldDTO.TypeId }
                             };
                             group.FormFields.Add(field);
@@ -118,19 +126,18 @@ namespace FormDynamicAPI.Controllers
                             field.Name = fieldDTO.Name;
                             field.Index = fieldDTO.Index;
                             field.IsOptional = fieldDTO.IsOptional;
-                            field.TypeId = fieldDTO.TypeId;
                         }
                     }
                 }
             }
 
             var result = await _formRepository.UpdateForm(existingForm);
-            if (result.Success)
+            if (result.Cod == "204" )
             {
                 return NoContent();
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result.Cod == "204");
         }
 
 
@@ -138,12 +145,12 @@ namespace FormDynamicAPI.Controllers
         public async Task<IActionResult> DeleteForm(long id)
         {
             var result = await _formRepository.DeleteForm(id);
-            if (result.Success)
+            if (result.Cod == "204")
             {
                 return NoContent();
             }
 
-            return NotFound(result.Message);
+            return NotFound(result.Cod == "404");
         }
 
 
@@ -166,7 +173,6 @@ namespace FormDynamicAPI.Controllers
                 {
                     IdFormGroup = g.IdFormGroup,
                     Name = g.Name,
-                    Index = g.Index,
                     FormId = g.FormId,
                     FormFields = g.FormFields.Select(f => new FormFieldDTO
                     {
@@ -174,7 +180,7 @@ namespace FormDynamicAPI.Controllers
                         Name = f.Name,
                         Index = f.Index,
                         IsOptional = f.IsOptional,
-                        TypeId = f.TypeId,
+
                         FieldType = new FieldTypeDTO { IdFieldType = f.FieldType.IdFieldType, Name = f.FieldType.Name },
                         FormGroupId = g.IdFormGroup
                     }).ToList()
@@ -200,14 +206,13 @@ namespace FormDynamicAPI.Controllers
                 {
                     IdFormGroup = g.IdFormGroup,
                     Name = g.Name,
-                    Index = g.Index,
+
                      FormFields = g.FormFields.Select(f => new FormFieldDTO
                      {
                          IdFormField = f.IdFormField,
                          Name = f.Name,
                          Index = f.Index,
                          IsOptional = f.IsOptional,
-                         TypeId = f.TypeId,
                          FieldType = new FieldTypeDTO { IdFieldType = f.FieldType.IdFieldType, Name = f.FieldType.Name },
                          FormGroupId = g.IdFormGroup
                      }).ToList()

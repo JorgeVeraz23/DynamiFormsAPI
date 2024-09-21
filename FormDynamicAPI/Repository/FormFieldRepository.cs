@@ -28,24 +28,19 @@ namespace FormDynamicAPI.Repository
                 _context.FormFields.Add(formField);
                 await _context.SaveChangesAsync();
 
-                infoDTO.Success = true;
-                infoDTO.Message = "FormField creado exitosamente!";
-                infoDTO.Status = 201;
-                infoDTO.Detail = new FormFieldDTO
-                {
-                    IdFormField = formField.IdFormField,
-                    Name = formField.Name,
-                    Index = formField.Index,
-                    IsOptional = formField.IsOptional
-                };
+
+                infoDTO.Mensaje = "FormField creado exitosamente!";
+                infoDTO.Cod = "201";
+               
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormFieldRepository", "Error al intentar agregar el FormField");
+                throw new Exception(ex.Message, ex);
             }
         }
+
 
         public async Task<MessageInfoDTO> DeleteFormField(long id)
         {
@@ -66,18 +61,18 @@ namespace FormDynamicAPI.Repository
                     _context.FormFields.Remove(formFieldToDelete);
                     await _context.SaveChangesAsync();
 
-                    infoDTO.AccionCompletada("Se ha eliminado el FormField!");
+                    infoDTO.Mensaje = "FormField eliminado correctamente";
                 }
                 else
                 {
-                    infoDTO.AccionFallida("No se encontró el FormField ingresado", 404);
+                    infoDTO.Mensaje = "el FormField ingresado fue nulo";
                 }
 
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormFieldRepository", "Error al intentar eliminar el FormField");
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -109,7 +104,7 @@ namespace FormDynamicAPI.Repository
 
                 if (model == null)
                 {
-                    infoDTO.AccionFallida("No se encuentra el FormField que se intenta actualizar", 404);
+                    infoDTO.Mensaje = "el FilledForm ingresado fue nulo";
                     return infoDTO;
                 }
 
@@ -118,12 +113,12 @@ namespace FormDynamicAPI.Repository
                 model.IsOptional = formField.IsOptional;
                 await _context.SaveChangesAsync();
 
-                infoDTO.AccionCompletada("Se ha actualizado el FormField");
+                infoDTO.Mensaje = "el filledForm ingresado fue actualizado";
                 return infoDTO;
             }
             catch (Exception ex)
             {
-                return infoDTO.ErrorInterno(ex, "FormFieldRepository", "Error al intentar editar el FormField");
+                throw new Exception(ex.Message, ex);
             }
         }
     }

@@ -21,17 +21,17 @@ namespace FormDynamicAPI
         public DbSet<FormField> FormFields { get; set; }
         public DbSet<FieldType> FieldTypes { get; set; }
         public DbSet<Option> Options { get; set; }
-        public DbSet<OptionFormField> OptionFormFields { get; set; }
         public DbSet<FilledForm> FilledForms { get; set; }
         public DbSet<FilledFormField> FilledFormFields { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<OptionFormField>()
-                .HasKey(of => new { of.OptionId, of.FormFieldId });
-
+           
             base.OnModelCreating(modelBuilder);
+
+            
+
 
         }
     }

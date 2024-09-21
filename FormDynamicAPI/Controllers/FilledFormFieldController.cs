@@ -30,11 +30,11 @@ namespace FormDynamicAPI.Controllers
                 var filledFormFieldEntity = _mapper.Map<FilledFormField>(filledFormFieldDTO);
                 var response = await _filledFormFieldRepository.CreateFilledFormField(filledFormFieldEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar crear el campo de formulario lleno."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -46,11 +46,11 @@ namespace FormDynamicAPI.Controllers
                 var filledFormFieldEntity = _mapper.Map<FilledFormField>(filledFormFieldDTO);
                 var response = await _filledFormFieldRepository.UpdateFilledFormField(filledFormFieldEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar actualizar el campo de formulario lleno."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -61,11 +61,11 @@ namespace FormDynamicAPI.Controllers
             {
                 var response = await _filledFormFieldRepository.DeleteFilledFormField(id);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar eliminar el campo de formulario lleno."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -81,7 +81,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todos los campos de formulario lleno."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -97,7 +97,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar el campo de formulario lleno."));
+                throw new Exception(ex.Message);
             }
         }
     }

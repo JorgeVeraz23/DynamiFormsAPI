@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
@@ -15,7 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
+    // Ignorar referencias circulares
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+
+    // Configurar conversión de enums a cadenas
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+    // Configurar el manejo de valores nulos
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
 
@@ -30,7 +37,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
     );
 
-// Agregar pol�tica de CORS
+// Agregar política de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",

@@ -34,7 +34,7 @@ const FormCardPage = () => {
   const handleDelete = (id) => {
     dispatch(deleteFormAction(id)).then((result) => {
       if (deleteFormAction.fulfilled.match(result)) {
-        // Optionally, you can show a success message or refresh the list
+
       }
     });
   };

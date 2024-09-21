@@ -6,7 +6,12 @@ namespace FormDynamicAPI.Entity
     {
         [Key]
         public long IdFieldType { get; set; }
-        public string Name { get; set; }
 
+        [Required]
+        public string Name { get; set; } = string.Empty;
+
+        // Relación con FormField
+        public ICollection<FormField> FormFields { get; set; } = new List<FormField>();
     }
+
 }

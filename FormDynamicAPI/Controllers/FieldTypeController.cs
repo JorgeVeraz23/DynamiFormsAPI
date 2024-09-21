@@ -30,11 +30,11 @@ namespace FormDynamicAPI.Controllers
                 var fieldTypeEntity = _mapper.Map<FieldType>(fieldTypeDTO);
                 var response = await _fieldTypeRepository.CreateFieldType(fieldTypeEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar crear el tipo de campo."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -46,11 +46,11 @@ namespace FormDynamicAPI.Controllers
                 var fieldTypeEntity = _mapper.Map<FieldType>(fieldTypeDTO);
                 var response = await _fieldTypeRepository.UpdateFieldType(fieldTypeEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar actualizar el tipo de campo."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -61,11 +61,11 @@ namespace FormDynamicAPI.Controllers
             {
                 var response = await _fieldTypeRepository.DeleteFieldType(id);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar eliminar el tipo de campo."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -81,7 +81,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todos los tipos de campo."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -96,7 +96,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todos los tipos de campo."));
+                throw new Exception($"{ex.Message}");
             }
         }
 
@@ -113,7 +113,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar el tipo de campo."));
+                throw new Exception(ex.Message);
             }
         }
 

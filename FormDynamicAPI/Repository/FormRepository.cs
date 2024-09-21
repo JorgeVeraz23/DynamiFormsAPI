@@ -15,22 +15,42 @@ namespace FormDynamicAPI.Repository
             _context = context;
         }
 
-        public async Task<MessageInfoDTO> CreateForm(Form form)
+        //public async Task<MessageInfoDTO> CreateForm(Form form)
+        //{
+        //    var message = new MessageInfoDTO();
+        //    try
+        //    {
+        //        _context.Forms.Add(form);
+        //        await _context.SaveChangesAsync();
+        //        message.Success = true;
+        //        message.Message = "Form created successfully.";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        message.Success = false;
+        //        message.Message = ex.Message;
+        //    }
+        //    return message;
+        //}
+
+        public async Task<bool> CreateForm(CreateFormDTO formDTO)
         {
-            var message = new MessageInfoDTO();
-            try
+            // Asegúrate de que el contexto no se utilice fuera de este método
+            var form = new Form
             {
-                _context.Forms.Add(form);
-                await _context.SaveChangesAsync();
-                message.Success = true;
-                message.Message = "Form created successfully.";
-            }
-            catch (Exception ex)
-            {
-                message.Success = false;
-                message.Message = ex.Message;
-            }
-            return message;
+                Active = true,
+                Name = formDTO.Name,
+                Description = formDTO.Description,
+                DateRegister = DateTime.Now,
+                UserRegister = "SYSTEM",
+                IpRegister = "127.0.0.1"
+            };
+
+            await _context.Forms.AddAsync(form);
+            await _context.SaveChangesAsync();
+
+            
+            return true;
         }
 
         public async Task<MessageInfoDTO> DeleteForm(long id)
@@ -44,19 +64,17 @@ namespace FormDynamicAPI.Repository
                     form.Active = false;
                     _context.Forms.Update(form);
                     await _context.SaveChangesAsync();
-                    message.Success = true;
-                    message.Message = "Form marked as inactive successfully.";
+
+                    message.Mensaje = "Form marked as inactive successfully.";
                 }
                 else
                 {
-                    message.Success = false;
-                    message.Message = "Form not found.";
+                    message.Mensaje = "Form not found.";
                 }
             }
             catch (Exception ex)
             {
-                message.Success = false;
-                message.Message = ex.Message;
+                message.Mensaje = ex.Message;
             }
             return message;
         }
@@ -87,13 +105,13 @@ namespace FormDynamicAPI.Repository
             {
                 _context.Forms.Update(form);
                 await _context.SaveChangesAsync();
-                message.Success = true;
-                message.Message = "Form updated successfully.";
+
+                message.Mensaje = "Form updated successfully.";
             }
             catch (Exception ex)
             {
-                message.Success = false;
-                message.Message = ex.Message;
+    
+                message.Mensaje = ex.Message;
             }
             return message;
         }

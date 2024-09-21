@@ -31,11 +31,11 @@ namespace FormDynamicAPI.Controllers
                 var formGroupEntity = _mapper.Map<FormGroup>(formGroupDTO);
                 var response = await _formGroupRepository.CreateFormGroup(formGroupEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar crear el grupo de formulario."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -47,11 +47,11 @@ namespace FormDynamicAPI.Controllers
                 var formGroupEntity = _mapper.Map<FormGroup>(formGroupDTO);
                 var response = await _formGroupRepository.UpdateFormGroup(formGroupEntity);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar actualizar el grupo de formulario."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -62,11 +62,11 @@ namespace FormDynamicAPI.Controllers
             {
                 var response = await _formGroupRepository.DeleteFormGroup(id);
 
-                return StatusCode(response.Status, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar eliminar el grupo de formulario."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -82,7 +82,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar todos los grupos de formulario."));
+                throw new Exception(ex.Message);
             }
         }
 
@@ -98,7 +98,7 @@ namespace FormDynamicAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, new MessageInfoDTO().ErrorInterno(ex, _nameController, "Se produjo una excepción al intentar mostrar el grupo de formulario."));
+                throw new Exception(ex.Message);
             }
         }
 

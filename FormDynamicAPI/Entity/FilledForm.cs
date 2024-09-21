@@ -7,12 +7,15 @@ namespace FormDynamicAPI.Entity
     {
         [Key]
         public long IdFilledForm { get; set; }
+
         public DateTime FillDate { get; set; }
 
+        // Relación con Form
         [ForeignKey("Form")]
-        public long? FormId { get; set; }
-        public Form? Form { get; set; }
+        public long FormId { get; set; }
+        public Form Form { get; set; }
 
-        public ICollection<FilledFormField>? FilledFormFields { get; set; }
+        // Relación con FilledFormField
+        public ICollection<FilledFormField> FilledFormFields { get; set; } = new List<FilledFormField>();
     }
 }

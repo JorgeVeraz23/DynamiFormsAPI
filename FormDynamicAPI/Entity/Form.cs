@@ -6,10 +6,15 @@ namespace FormDynamicAPI.Entity
     {
         [Key]
         public long IdForm { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
 
-        public ICollection<FormGroup>? FormGroups { get; set; }
-        public ICollection<FilledForm>? FilledForms { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
+
+        public string? Description { get; set; }
+
+        // Relación con FormGroup y FilledForm
+        public ICollection<FormGroup> FormGroups { get; set; } = new List<FormGroup>();
+        public ICollection<FilledForm> FilledForms { get; set; } = new List<FilledForm>();
     }
+
 }

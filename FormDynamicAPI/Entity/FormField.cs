@@ -7,16 +7,27 @@ namespace FormDynamicAPI.Entity
     {
         [Key]
         public long IdFormField { get; set; }
-        public string Name { get; set; }
+
+        [Required]
+        public string Name { get; set; } = string.Empty;
+
         public int Index { get; set; }
         public bool IsOptional { get; set; }
-        [ForeignKey("FieldType")]
-        public long TypeId { get; set; }
-        public FieldType? FieldType { get; set; }
-        [ForeignKey("FormGroup")]
-        public long? FormGroupId { get; set; }
-        public FormGroup? FormGroup { get; set; }
 
-        public ICollection<OptionFormField>? OptionFormFields { get; set; }
+        // Relación con FieldType
+        [ForeignKey("FieldType")]
+        public long FieldTypeId { get; set; }
+        public FieldType FieldType { get; set; }
+
+        // Relación con FormGroup
+        [ForeignKey("FormGroup")]
+        public long FormGroupId { get; set; }
+        public FormGroup FormGroup { get; set; }
+
+        // Relación con OptionFormField
+        public ICollection<Option> Options { get; set; } = new List<Option>();
+
+        // Relación con FilledFormField
+        public ICollection<FilledFormField> FilledFormFields { get; set; } = new List<FilledFormField>();
     }
 }
