@@ -1,6 +1,0 @@
-@FormDynamicAPI_HostAddress = http://localhost:5226
-
-GET {{FormDynamicAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
