@@ -1,6 +1,6 @@
 export type KeyValueEntity = {
-    Key: number,
-    Value: string,
+    key: number,
+    value: string,
 }
 
 

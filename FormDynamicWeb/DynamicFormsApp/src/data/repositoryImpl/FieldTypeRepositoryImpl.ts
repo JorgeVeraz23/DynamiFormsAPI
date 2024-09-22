@@ -4,17 +4,22 @@ import { GETALL_FORM, GETFORM_BYID, CREATE_FORM, UPDATE_FORM, DELETE_FORM } from
 // import IFormRepository from "../repository/FormRepository";
 import FileTypeRepository from "../repository/FieldTypeRepository"
 import { SELECTOR_FIELDTYPES } from "../../url/url";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 export default class FieldTypeRepositoryImpl implements FileTypeRepository {
 
-    async selectorFielType(): Promise<any[]> {
+    async selectorFielType(): Promise<KeyValueEntity[]> {
         try {
             const response = await axiosClient.get(SELECTOR_FIELDTYPES);
-            console.log("console selector selector field type",response.data); // Verifica la estructura de los datos aquí
-            return response.data;
+            console.log("xd", response.data);
+            const result: KeyValueEntity[] = response.data.map((item: any) => ({
+                key: item.key,
+                value: item.value,
+            }));
+            console.log("xd era aca la webada",result)
+            return result;
         } catch (error) {
-            console.error('Error al obtener los formularios', error);
-            throw error; // Maneja el error adecuadamente
+            throw new Error(AxiosException(error));
         }
     }
 

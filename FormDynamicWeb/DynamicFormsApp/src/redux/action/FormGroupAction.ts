@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import FormGroupRepositoryImpl from "../../data/repositoryImpl/FormGroupRepositoryImpl";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 import { CreateFormResponse } from "./FormAction";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 const repository = new FormGroupRepositoryImpl();
 
 
@@ -11,7 +12,7 @@ const repository = new FormGroupRepositoryImpl();
 export const getAllFormGroupAction = createAsyncThunk<FormGroupEntity[], void>(
     "formGroup/GetAllFormGroupAction",
     async (_, thunkAPI) => {
-        try {
+        try { 
             const forms = await repository.getAllFormGroup();
             return forms;
         } catch (error) {
@@ -20,6 +21,39 @@ export const getAllFormGroupAction = createAsyncThunk<FormGroupEntity[], void>(
         }
     }
 );
+
+// Acción para obtener los formularios del selector
+export const getFormGroupSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
+    "formGroup/GetFormGroupSelectorAction",
+    async (_, thunkAPI) => {
+        try {
+            const forms = await repository.selectorFormGroup();
+            console.log("selectorform grpup en el action", forms)
+            return forms;
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+            console.log("mensaje de error",error.message)
+            return thunkAPI.rejectWithValue(errorMessage);
+        }
+    }
+);
+
+
+// // Acción para obtener los formularios del selector
+// export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
+//     "form/GetFormSelectorAction",
+//     async (_, thunkAPI) => {
+//         try {
+//             const forms = await repository.selectorForm();
+//             return forms;
+//         } catch (error) {
+//             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+//             return thunkAPI.rejectWithValue(errorMessage);
+//         }
+//     }
+// );
+
+
 
 // Acción para obtener un formulario por ID
 export const getFormGroupByIdAction = createAsyncThunk<FormGroupEntity, number>(

@@ -27,6 +27,16 @@ namespace TicketsAPI.Controllers
             return Ok(response);    
         }
 
+
+        [HttpGet("SelectorFieldType")]
+        public async Task<ActionResult> SelectorFieldType()
+        {
+            var response = await _fieldTypeInterface.SelectorFieldType();
+
+            return Ok(response);
+        }
+
+
         [HttpGet("ObtenerFieldType")]
         public async Task<ActionResult> ObtenerFieldType(long id)
         {
@@ -45,7 +55,7 @@ namespace TicketsAPI.Controllers
             return Ok(response);
         }
 
-
+        
 
 
     }

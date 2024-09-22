@@ -1,21 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-
-import { getAllFormGroupAction,
+import {
+    getAllFormGroupAction,
     getFormGroupByIdAction,
     deleteFormGroupAction,
     createFormGroupAction,
-    editFormGroupAction
- } from "../action/FormGroupAction";
+    editFormGroupAction,
+    getFormGroupSelectorAction // Importa la nueva acción
+} from "../action/FormGroupAction";
 
- import { CreateFormResponse } from "redux/action/FormAction";
-
+import { CreateFormResponse } from "redux/action/FormAction";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 // Tipos para el estado
 interface FormGroupState {
     formsGroup: FormGroupEntity[];
     selectedFormGroup: FormGroupEntity | null;
+    KeyValueSelectorFormGroup: KeyValueEntity[];
     loading: boolean;
     error: string | null;
 }
@@ -24,6 +25,7 @@ interface FormGroupState {
 const initialState: FormGroupState = {
     formsGroup: [],
     selectedFormGroup: null,
+    KeyValueSelectorFormGroup: [],
     loading: false,
     error: null
 };
@@ -79,7 +81,6 @@ const formGroupSlice = createSlice({
                 state.loading = false;
                 state.error = null;
             })
-            
             .addCase(createFormGroupAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
                 state.error = action.payload as string;
@@ -96,6 +97,19 @@ const formGroupSlice = createSlice({
                 }
             })
             .addCase(editFormGroupAction.rejected, (state, action: PayloadAction<string | unknown>) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(getFormGroupSelectorAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getFormGroupSelectorAction.fulfilled, (state, action: PayloadAction<KeyValueEntity[]>) => {
+                console.log("Datos de tipos de campo almacenados:", action.payload);
+                state.loading = false;
+                state.KeyValueSelectorFormGroup = action.payload; // Aquí puedes ajustar según cómo quieras manejar el estado
+            })
+            .addCase(getFormGroupSelectorAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

@@ -57,5 +57,5 @@ export const UPDATE_FORMFIELD = `${FORMFIELD_PREFIX}ActualizarFormField`;
 //#region FieldType
 const FIELDTYPE_PREFIX = "FieldType/";
 export const GETALL_FIELDTYPES = `${FIELDTYPE_PREFIX}ObtenerTodosLosTiposDeCampo`
-export const SELECTOR_FIELDTYPES = `${FIELDTYPE_PREFIX}KeyValueFieldType`
+export const SELECTOR_FIELDTYPES = `${FIELDTYPE_PREFIX}SelectorFieldType`
 //#endregion

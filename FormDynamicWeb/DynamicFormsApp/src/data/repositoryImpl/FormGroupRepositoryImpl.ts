@@ -2,7 +2,7 @@ import { FormEntity } from "data/Entity/FormEntity";
 import axiosClient from "../../api/apiClient";
 import { AxiosException } from "../../api/exception";
 
-import { GETALL_FORMGROUP, GET_FORMGROUP, CREATE_FORMGROUP,UPDATE_FORMGROUP, DELETE_FORMGROUP } from "../../url/url";
+import { GETALL_FORMGROUP, GET_FORMGROUP, CREATE_FORMGROUP,UPDATE_FORMGROUP, DELETE_FORMGROUP, SELECTOR_FORMGROUP } from "../../url/url";
 import IFormGroupRepository from "data/repository/FormGroupRepository";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
@@ -22,9 +22,19 @@ export default class FormGroupRepositoryImpl implements IFormGroupRepository {
             throw new Error(AxiosException(error));
         }
     }
-    
+
     async selectorFormGroup(): Promise<KeyValueEntity[]> {
-        
+        try {
+            const response = await axiosClient.get(SELECTOR_FORMGROUP);
+            console.log("xdd group form",response.data)
+            const result: KeyValueEntity[] = response.data.map((item: any) => ({
+                Key: item.Key,
+                Value: item.Value,
+            }));
+            return result;
+        } catch (error) {
+            throw new Error(AxiosException(error));
+        }
     }
     
 
