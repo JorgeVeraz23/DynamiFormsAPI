@@ -9,9 +9,15 @@ import {
   Box,
   CircularProgress,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "redux/store";
 import { createFormFieldAction } from "../../redux/action/FormFieldAction";
@@ -20,12 +26,15 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { FormFieldEntity } from "data/Entity/FormFieldEntity";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 import { getFileTypeSelectorAction } from "../../redux/action/FieldTypeAction";
-import { getFormGroupSelectorAction } from "../../redux/action/FormGroupAction";  // Importar la acción para obtener los grupos de formulario
+import { getFormGroupSelectorAction } from "../../redux/action/FormGroupAction";
 
 const CreateFormFilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  // Estado local para los valores del formulario
+  // Estado para opciones del dropdown
+  const [dropdownOptions, setDropdownOptions] = useState<{ idOption: number, name: string }[]>([]);
+  const [newOption, setNewOption] = useState<string>("");
+
   const [formFile, setFormFile] = useState<FormFieldEntity>({
     idFormField: 0,
     name: '',
@@ -39,18 +48,15 @@ const CreateFormFilePage: React.FC = () => {
   const [selectedFormGroup, setSelectedFormGroup] = useState<KeyValueEntity | null>(null);
   const [error, setError] = useState(false);
 
-  // Obtener el estado desde el store de Redux
   const { formFields, loading } = useSelector((state: RootState) => state.formField);
   const { fieldTypes, loading: formsLoading } = useSelector((state: RootState) => state.fielType);
   const { KeyValueSelectorFormGroup, loading: formGroupLoading } = useSelector((state: RootState) => state.formGroup);
 
-  // Obtener los tipos de campo y grupos de formulario al cargar el componente
   useEffect(() => {
     dispatch(getFileTypeSelectorAction());
     dispatch(getFormGroupSelectorAction());
   }, [dispatch]);
 
-  // Manejar cambios en los campos del formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string, value: unknown }>) => {
     const { name, value } = e.target as HTMLInputElement;
     setFormFile({
@@ -82,7 +88,18 @@ const CreateFormFilePage: React.FC = () => {
     });
   };
 
-  // Enviar formulario
+  // Manejar opciones del dropdown
+  const handleAddOption = () => {
+    if (newOption.trim()) {
+      setDropdownOptions([...dropdownOptions, { idOption: 0, name: newOption }]);
+      setNewOption("");
+    }
+  };
+
+  const handleDeleteOption = (index: number) => {
+    setDropdownOptions(dropdownOptions.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -93,11 +110,15 @@ const CreateFormFilePage: React.FC = () => {
 
     setError(false);
 
-    // Despachar acción para crear el campo del formulario
-    const response = await dispatch(createFormFieldAction(formFile)) as { payload: any };
+    // Crear payload incluyendo las opciones del dropdown si es el tipo seleccionado
+    const payload = {
+      ...formFile,
+      dropdownOptions: formFile.fieldTypeId === 1 ? dropdownOptions : [], // 1 es un ejemplo del id del tipo dropdown
+    };
+
+    const response = await dispatch(createFormFieldAction(payload)) as { payload: any };
 
     if (response.payload.success) {
-      // Muestra el alert de éxito
       Swal.fire({
         title: "Campo de formulario creado",
         text: response.payload.message,
@@ -105,7 +126,6 @@ const CreateFormFilePage: React.FC = () => {
         confirmButtonText: "Aceptar",
       });
 
-      // Limpiar los campos del formulario
       setFormFile({
         idFormField: 0,
         name: '',
@@ -116,6 +136,7 @@ const CreateFormFilePage: React.FC = () => {
       });
       setSelectedFormType(null);
       setSelectedFormGroup(null);
+      setDropdownOptions([]);
     } else {
       Swal.fire({
         title: "Error",
@@ -147,7 +168,6 @@ const CreateFormFilePage: React.FC = () => {
               />
             </Grid>
 
-            {/* Autocomplete para Tipo de Campo */}
             <Grid item xs={12}>
               <Autocomplete
                 options={fieldTypes || []}
@@ -165,7 +185,6 @@ const CreateFormFilePage: React.FC = () => {
               />
             </Grid>
 
-            {/* Autocomplete para Grupo de Formulario */}
             <Grid item xs={12}>
               <Autocomplete
                 options={KeyValueSelectorFormGroup || []}
@@ -196,7 +215,6 @@ const CreateFormFilePage: React.FC = () => {
               />
             </Grid>
 
-            {/* Checkbox para Campo Opcional */}
             <Grid item xs={12}>
               <FormControlLabel
                 control={
@@ -210,16 +228,49 @@ const CreateFormFilePage: React.FC = () => {
               />
             </Grid>
 
+            {/* Mostrar sección de opciones si el tipo es dropdown */}
+            {formFile.fieldTypeId === 1 && (
+              <Grid item xs={12}>
+                <Typography variant="h6">Opciones del Dropdown</Typography>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      label="Nueva Opción"
+                      value={newOption}
+                      onChange={(e) => setNewOption(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleAddOption}
+                    >
+                      <AddCircleIcon />
+                    </Button>
+                  </Grid>
+                </Grid>
+
+                {/* Lista de opciones */}
+                <List>
+                  {dropdownOptions.map((option, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={option.name} />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" onClick={() => handleDeleteOption(index)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
+            )}
+
             <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                startIcon={<AddCircleIcon />}
-                fullWidth
-                disabled={loading || formsLoading || formGroupLoading}
-              >
-                {loading || formsLoading || formGroupLoading ? <CircularProgress size={24} /> : "Crear Campo"}
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                {loading ? <CircularProgress size={24} /> : "Crear Campo"}
               </Button>
             </Grid>
           </Grid>

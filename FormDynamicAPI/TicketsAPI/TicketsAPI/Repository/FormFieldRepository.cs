@@ -62,6 +62,32 @@ namespace TicketsAPI.Repository
             return infoSolicitudDTO;
         }
 
+        public async Task<FormField> CreateFormFieldAsync(NewFormFieldDto formFieldDto)
+        {
+            var formField = new FormField
+            {
+                Name = formFieldDto.Name,
+                Index = formFieldDto.Index,
+                IsOptional = formFieldDto.IsOptional,
+                FieldTypeId = formFieldDto.FieldTypeId,
+                FormGroupId = formFieldDto.FormGroupId,
+            };
+
+            // Si el FieldType es un dropdown, agregamos las opciones
+            if (formFieldDto.FieldTypeId == 3 /* ID del FieldType para Dropdown */)
+            {
+                formField.Options = formFieldDto.DropdownOptions?.Select(option => new Option
+                {
+                    Name = option.Name
+                }).ToList();
+            }
+
+            await _context.FormFields.AddAsync(formField);
+            await _context.SaveChangesAsync();
+
+            return formField;
+        }
+
         public async Task<MessageInfoSolicitudDTO> EliminarFormField(long id)
         {
             var formFielIngresado = await _context.FormFields.Where(x => x.Active && x.IdFormField == id).FirstOrDefaultAsync() ?? throw new ArgumentNullException("el form field que se intenta eliminar no existe");

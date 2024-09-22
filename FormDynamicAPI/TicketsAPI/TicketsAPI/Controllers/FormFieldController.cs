@@ -24,6 +24,9 @@ namespace TicketsAPI.Controllers
             return Ok(response);
         }
 
+
+
+
         [HttpGet("ObtenerFormField")]
         public async Task<ActionResult> ObtenerFormField(long id)
         {
@@ -57,6 +60,18 @@ namespace TicketsAPI.Controllers
 
             return Ok(response);
         }
+
+
+
+        [HttpPost("CrearFormFieldConOption")]
+        public async Task<ActionResult> CrearFormFieldConOption(NewFormFieldDto newFormFieldDto)
+        {
+            var response = await _formFieldInterface.CreateFormFieldAsync(newFormFieldDto);
+
+            return Ok(response);
+        }
+
+
 
         [HttpPut("ActualizarFormField")]
         public async Task<ActionResult> ActualizarFormField(FormFieldDTO formFieldDTO)

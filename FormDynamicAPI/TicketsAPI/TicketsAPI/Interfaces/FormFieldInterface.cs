@@ -1,4 +1,5 @@
 ﻿using TicketsAPI.DTO;
+using TicketsAPI.Entities;
 
 namespace TicketsAPI.Interfaces
 {
@@ -6,6 +7,7 @@ namespace TicketsAPI.Interfaces
     {
         public Task<MessageInfoSolicitudDTO> CrearFormField(FormFieldDTO formFieldDTO);
         public Task<MessageInfoSolicitudDTO> ActualizarFormField(FormFieldDTO formFieldDTO);
+        Task<FormField> CreateFormFieldAsync(NewFormFieldDto formFieldDto);
         public Task<MessageInfoSolicitudDTO> EliminarFormField(long id);
         public Task<FormFieldDTO> ObtenerFormField(long id);
         public Task<List<FormFieldDTO>> ObtenerTodosLosFormField();
