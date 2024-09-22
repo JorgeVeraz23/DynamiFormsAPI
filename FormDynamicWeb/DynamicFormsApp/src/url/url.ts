@@ -47,7 +47,8 @@ export const GETALL_FORMFIELD = `${FORMFIELD_PREFIX}ObtenerTodosLosFormFields`;
 export const GET_FORMFIELD = (id: number) => `${FORMFIELD_PREFIX}ObtenerFormField`;
 export const SELECTOR_FORMFIELD = `${FORMFIELD_PREFIX}SelectorFormField`;
 export const DELETE_FORMFIELD = (id: number) => `${FORMFIELD_PREFIX}EliminarFormField`;
-export const CREATE_FORMFIELD = `${FORMFIELD_PREFIX}CrearFormField`;
+// export const CREATE_FORMFIELD = `${FORMFIELD_PREFIX}CrearFormField`;
+export const CREATE_FORMFIELD = `${FORMFIELD_PREFIX}CrearFormFieldConOption`;
 export const UPDATE_FORMFIELD = `${FORMFIELD_PREFIX}ActualizarFormField`;
 
 //#endregion

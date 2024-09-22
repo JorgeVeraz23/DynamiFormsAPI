@@ -113,7 +113,7 @@ const CreateFormFilePage: React.FC = () => {
     // Crear payload incluyendo las opciones del dropdown si es el tipo seleccionado
     const payload = {
       ...formFile,
-      dropdownOptions: formFile.fieldTypeId === 1 ? dropdownOptions : [], // 1 es un ejemplo del id del tipo dropdown
+      dropdownOptions: formFile.fieldTypeId === 3 ? dropdownOptions : [], // 1 es un ejemplo del id del tipo dropdown
     };
 
     const response = await dispatch(createFormFieldAction(payload)) as { payload: any };
@@ -229,7 +229,7 @@ const CreateFormFilePage: React.FC = () => {
             </Grid>
 
             {/* Mostrar sección de opciones si el tipo es dropdown */}
-            {formFile.fieldTypeId === 1 && (
+            {formFile.fieldTypeId === 3 && (
               <Grid item xs={12}>
                 <Typography variant="h6">Opciones del Dropdown</Typography>
                 <Grid container spacing={2} alignItems="center">
