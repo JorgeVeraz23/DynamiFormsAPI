@@ -7,6 +7,9 @@ import Header from './Header';
 import Footer from './Footer';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddIcon from '@mui/icons-material/Add';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
+
 
 const drawerWidth = 240;  // Define the drawer width here
 
@@ -36,6 +39,18 @@ const MainLayout = () => {
             <AddIcon />
           </ListItemIcon>
           <ListItemText primary="Crear Formularios" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('/create-form-group')}>
+          <ListItemIcon>
+            <TableRowsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Crear Grupo Formularios" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('/create-form-field')}>
+          <ListItemIcon>
+            <TextFieldsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Crear Campo" />
         </ListItemButton>
       </List>
     </div>

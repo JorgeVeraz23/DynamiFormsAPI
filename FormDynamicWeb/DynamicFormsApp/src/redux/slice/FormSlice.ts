@@ -5,15 +5,18 @@ import {
     deleteFormAction,
     createFormAction,
     editFormAction,
-    CreateFormResponse
+    CreateFormResponse,
+    getFormSelectorAction
 } from "../action/FormAction";
 import { FormEntity } from "data/Entity/FormEntity";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 // Tipos para el estado
 interface FormState {
     forms: FormEntity[];
     selectedForm: FormEntity | null;
+    KeyValueForm: KeyValueEntity[];
     loading: boolean;
     error: string | null;
 }
@@ -22,6 +25,7 @@ interface FormState {
 const initialState: FormState = {
     forms: [],
     selectedForm: null,
+    KeyValueForm: null,
     loading: false,
     error: null
 };
@@ -94,6 +98,18 @@ const formSlice = createSlice({
                 }
             })
             .addCase(editFormAction.rejected, (state, action: PayloadAction<string | unknown>) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(getFormSelectorAction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getFormSelectorAction.fulfilled, (state, action: PayloadAction<KeyValueEntity[]>) => {
+                state.loading = false;
+                state.KeyValueForm = action.payload;
+            })
+            .addCase(getFormSelectorAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

@@ -2,9 +2,10 @@ import { FormEntity } from "data/Entity/FormEntity";
 import axiosClient from "../../api/apiClient";
 import { AxiosException } from "../../api/exception";
 
-import { GETALL_FORMGROUP, GET_FORMGROUP, CREATE_FORMGROUP,UPDATE_FORMGROUP, DELETE_FORMGROUP } from "url/url";
+import { GETALL_FORMGROUP, GET_FORMGROUP, CREATE_FORMGROUP,UPDATE_FORMGROUP, DELETE_FORMGROUP } from "../../url/url";
 import IFormGroupRepository from "data/repository/FormGroupRepository";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 export default class FormGroupRepositoryImpl implements IFormGroupRepository {
 
@@ -22,7 +23,9 @@ export default class FormGroupRepositoryImpl implements IFormGroupRepository {
         }
     }
     
-
+    async selectorFormGroup(): Promise<KeyValueEntity[]> {
+        
+    }
     
 
     async getFormGroupById(id: number): Promise<FormGroupEntity> {

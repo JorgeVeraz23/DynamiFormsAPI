@@ -1,4 +1,5 @@
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 export default interface IFormGroupRepository {
     getAllFormGroup(): Promise<FormGroupEntity[]>;

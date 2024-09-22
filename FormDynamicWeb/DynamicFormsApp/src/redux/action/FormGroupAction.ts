@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import FormGroupRepositoryImpl from "data/repositoryImpl/FormGroupRepositoryImpl";
+import FormGroupRepositoryImpl from "../../data/repositoryImpl/FormGroupRepositoryImpl";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 import { CreateFormResponse } from "./FormAction";
 const repository = new FormGroupRepositoryImpl();

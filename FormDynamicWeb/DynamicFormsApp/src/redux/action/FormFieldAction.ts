@@ -1,9 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import FormRepositoryImpl from "../../data/repositoryImpl/FormRepositoryImpl";
-import { FormEntity } from "data/Entity/FormEntity";
+// import FormRepositoryImpl from "../../data/repositoryImpl/FormRepositoryImpl";
+// import { FormEntity } from "data/Entity/FormEntity";
+import FormFieldRepositoryImpl from "../../data/repositoryImpl/FormFieldRepositoryImpl";
+import { FormFieldEntity } from "data/Entity/FormFieldEntity";
+
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
-const repository = new FormRepositoryImpl();
+const repository = new FormFieldRepositoryImpl();
 
 export interface CreateFormResponse {
     success: boolean;
@@ -11,11 +14,11 @@ export interface CreateFormResponse {
 }
 
 // Acción para obtener todos los formularios
-export const getAllFormAction = createAsyncThunk<FormEntity[], void>(
-    "form/GetAllFormAction",
+export const getAllFormFieldAction = createAsyncThunk<FormFieldEntity[], void>(
+    "formField/GetAllFormFieldAction",
     async (_, thunkAPI) => {
         try {
-            const forms = await repository.getAllForm();
+            const forms = await repository.getAllFormField();
             return forms;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
@@ -25,11 +28,11 @@ export const getAllFormAction = createAsyncThunk<FormEntity[], void>(
 );
 
 // Acción para obtener los formularios del selector
-export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
-    "form/GetFormSelectorAction",
+export const getFormFieldSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
+    "formField/GetFormFieldSelectorAction",
     async (_, thunkAPI) => {
         try {
-            const forms = await repository.selectorForm();
+            const forms = await repository.selectorFormField();
             return forms;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
@@ -39,11 +42,11 @@ export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
 );
 
 // Acción para obtener un formulario por ID
-export const getFormByIdAction = createAsyncThunk<FormEntity, number>(
-    "form/GetFormByIdAction",
+export const getFormFieldByIdAction = createAsyncThunk<FormFieldEntity, number>(
+    "formField/GetFormFieldByIdAction",
     async (id, thunkAPI) => {
         try {
-            const form = await repository.getFormById(id);
+            const form = await repository.getFormFieldById(id);
             return form;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
@@ -53,11 +56,11 @@ export const getFormByIdAction = createAsyncThunk<FormEntity, number>(
 );
 
 // Acción para eliminar un formulario
-export const deleteFormAction = createAsyncThunk<number, number>(
-    "form/DeleteFormAction",
+export const deleteFormFieldAction = createAsyncThunk<number, number>(
+    "formField/DeleteFormFieldAction",
     async (id, thunkAPI) => {
         try {
-            await repository.deleteForm(id);
+            await repository.deleteFormField(id);
             return id;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
@@ -67,11 +70,11 @@ export const deleteFormAction = createAsyncThunk<number, number>(
 );
 
 // Acción para crear un formulario
-export const createFormAction = createAsyncThunk<CreateFormResponse, FormEntity>(
-    "form/CreateFormAction",
+export const createFormFieldAction = createAsyncThunk<CreateFormResponse, FormFieldEntity>(
+    "formField/CreateFormFieldAction",
     async (data, thunkAPI) => {
         try {
-            await repository.createForm(data);
+            await repository.createFormField(data);
             return { success: true, message: "Formulario creado correctamente." };
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
@@ -81,11 +84,11 @@ export const createFormAction = createAsyncThunk<CreateFormResponse, FormEntity>
 );
 
 // Acción para editar un formulario
-export const editFormAction = createAsyncThunk<FormEntity, FormEntity>(
-    "form/EditFormAction",
+export const editFormFieldAction = createAsyncThunk<FormFieldEntity, FormFieldEntity>(
+    "formField/editFormFieldAction",
     async (data, thunkAPI) => {
         try {
-            await repository.editForm(data);
+            await repository.editFormField(data);
             return data;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Error desconocido";

@@ -1,20 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import {
-//     getAllFormAction,
-//     getFormByIdAction,
-//     deleteFormAction,
-//     createFormAction,
-//     editFormAction,
-//     CreateFormResponse
-// } from "../action/FormAction";
 
-import { 
-    getAllFormGroupAction,
+
+import { getAllFormGroupAction,
     getFormGroupByIdAction,
     deleteFormGroupAction,
     createFormGroupAction,
-    editFormGroupAction,
- } from "redux/action/FormGroupAction";
+    editFormGroupAction
+ } from "../action/FormGroupAction";
 
  import { CreateFormResponse } from "redux/action/FormAction";
 

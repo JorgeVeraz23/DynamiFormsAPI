@@ -1,8 +1,9 @@
 import { FormEntity } from "data/Entity/FormEntity";
 import axiosClient from "../../api/apiClient";
 import { AxiosException } from "../../api/exception";
-import { GETALL_FORM, GETFORM_BYID, CREATE_FORM, UPDATE_FORM, DELETE_FORM } from "../../url/url";
+import { GETALL_FORM, GETFORM_BYID, CREATE_FORM, UPDATE_FORM, DELETE_FORM, SELECTOR_FORMS } from "../../url/url";
 import IFormRepository from "../repository/FormRepository";
+import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
 export default class FormRepositoryImpl implements IFormRepository {
 
@@ -20,7 +21,19 @@ export default class FormRepositoryImpl implements IFormRepository {
         }
     }
     
-
+    
+    async selectorForm(): Promise<KeyValueEntity[]> {
+        try {
+            const response = await axiosClient.get(SELECTOR_FORMS);
+            const result: KeyValueEntity[] = response.data.map((item: any) => ({
+                Key: item.Key,
+                Value: item.Value,
+            }));
+            return result;
+        } catch (error) {
+            throw new Error(AxiosException(error));
+        }
+    }
     
 
     async getFormById(id: number): Promise<FormEntity> {
