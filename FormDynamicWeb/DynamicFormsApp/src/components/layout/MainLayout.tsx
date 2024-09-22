@@ -6,7 +6,7 @@ import { Box, CssBaseline, Drawer, List, ListItemIcon, ListItemText, Toolbar, Di
 import Header from './Header';
 import Footer from './Footer';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-
+import AddIcon from '@mui/icons-material/Add';
 
 const drawerWidth = 240;  // Define the drawer width here
 
@@ -30,6 +30,12 @@ const MainLayout = () => {
             <AssignmentIcon />
           </ListItemIcon>
           <ListItemText primary="Formularios" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('/create-form-page')}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Crear Formularios" />
         </ListItemButton>
       </List>
     </div>

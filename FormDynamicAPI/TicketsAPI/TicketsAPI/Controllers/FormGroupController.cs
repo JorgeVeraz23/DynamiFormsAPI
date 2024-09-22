@@ -17,16 +17,16 @@ namespace TicketsAPI.Controllers
             _formGroupInterface = formGroupInterface; 
         }
 
-        [HttpPost("CrearFormulario")]
-        public async Task<ActionResult> CrearFormulario(FormGroupDTO formGroupDTO)
+        [HttpPost("CrearGrupoDeFormulario")]
+        public async Task<ActionResult> CrearGrupoDeFormulario(FormGroupDTO formGroupDTO)
         {
             var response = await _formGroupInterface.CrearFormGroup(formGroupDTO);
 
             return Ok(response);    
         }
 
-        [HttpPut("ActualizarFormulario")]
-        public async Task<ActionResult> ActualizarFormulario(FormGroupDTO formGroup)
+        [HttpPut("ActualizarGrupoDeFormulario")]
+        public async Task<ActionResult> ActualizarGrupoDeFormulario(FormGroupDTO formGroup)
         {
             var response = await _formGroupInterface.ActualizarFormulario(formGroup);
 
@@ -34,31 +34,31 @@ namespace TicketsAPI.Controllers
         }
 
 
-        [HttpGet("ObtenerTodosLosFormularios")]
-        public async Task<ActionResult> ObtenerTodosLosFormularios()
+        [HttpGet("ObtenerTodosLosGruposFormularios")]
+        public async Task<ActionResult> ObtenerTodosLosGruposFormularios()
         {
             var response = await _formGroupInterface.ObtenerTodosLosFormularios();
 
             return Ok(response);    
         }
 
-        [HttpGet("ObtenerFormularioPorId")]
-        public async Task<ActionResult> ObtenerFormularioPorId(long id)
+        [HttpGet("ObtenerGruposFormularioPorId")]
+        public async Task<ActionResult> ObtenerGruposFormularioPorId(long id)
         {
             var response = await _formGroupInterface.ObtenerFormularioPorId(id);
 
             return Ok(response);
         }
 
-        [HttpDelete("EliminarFormulario")]
-        public async Task<ActionResult> EliminarFormularioPorId(long id)
+        [HttpDelete("EliminarGrupoFormulario")]
+        public async Task<ActionResult> EliminarGrupoFormulario(long id)
         {
             var response = await _formGroupInterface.EliminarFormGroup(id);
 
             return Ok(response);
         }
 
-        [HttpGet("SelectorFormulario")]
+        [HttpGet("SelectorGrupoFormulario")]
         public async Task<ActionResult> SelectorFormulario()
         {
             var response = await _formGroupInterface.KeyValueFormGroup();

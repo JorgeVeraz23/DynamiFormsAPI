@@ -15,6 +15,9 @@ import FormCarPage from "../pages/DynamicFormPages/FormCardPage"
 import PetForm from '../pages/DynamicFormPages/PetForm';
 // import EditFormPage from '../pages/DynamicFormPages/EditFormPage';
 import { EditFormPage } from '../pages/DynamicFormPages/EditFormPage';
+// import {CreateFormPage} from '../pages/DynamicFormPages/CreateFormPage.tsx';
+import CreateFormPage from '../pages/DynamicFormPages/CreateFormPage'
+
 
 const AppRoutes = () => {
   return (
@@ -24,6 +27,7 @@ const AppRoutes = () => {
           <Route index element={<Home />} />
           <Route path="form-page" element={<FormCarPage />} />
           <Route path='/edit-form/:id' element={<EditFormPage />} />
+          <Route path='create-form-page' element={<CreateFormPage/>} />
         </Route>
       </Routes>
     </Router>

@@ -1,10 +1,11 @@
+import { FormEntity } from "data/Entity/FormEntity";
 
 
 export default interface IFormRepository {
-    getAllForm(): Promise<any[]>;
-    getFormById(id: number): Promise<any>;
-    createForm(data: any): Promise<boolean>;
-    editForm(data: any): Promise<boolean>;
+    getAllForm(): Promise<FormEntity[]>;
+    getFormById(id: number): Promise<FormEntity>;
+    createForm(data: FormEntity): Promise<boolean>;
+    editForm(data: FormEntity): Promise<boolean>;
     deleteForm(id: number): Promise<boolean>;
 }
 
