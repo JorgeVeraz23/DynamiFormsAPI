@@ -4,9 +4,11 @@ import {
     getFormByIdAction,
     deleteFormAction,
     createFormAction,
-    editFormAction
+    editFormAction,
+    CreateFormResponse
 } from "../action/FormAction";
 import { FormEntity } from "data/Entity/FormEntity";
+import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 
 // Tipos para el estado
 interface FormState {
@@ -71,10 +73,11 @@ const formSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createFormAction.fulfilled, (state, action: PayloadAction<FormEntity>) => {
+            .addCase(createFormAction.fulfilled, (state, action: PayloadAction<CreateFormResponse>) => {
                 state.loading = false;
-                state.forms.push(action.payload);
+                state.error = null;
             })
+            
             .addCase(createFormAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
                 state.error = action.payload as string;

@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import formSlice from "./slice/FormSlice.js"; // Asegúrate de que la ruta sea correcta
-// import formReducer from "./slice/FormSlice"
 import formReducer from "./slice/FormSlice"
+import formGroupSlice from "./slice/FormGroupSlice";
+// import formGroupReducer from './slice/FormGroupSlice'
+
 // import fieldTypeReducer from "./slice/FieldTypeSlice";
 export const store = configureStore({
     reducer: {
         form: formReducer, // Nombre de la propiedad en el reducer debe coincidir con el nombre del slice
+        formGroup: formGroupSlice,
     },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself
