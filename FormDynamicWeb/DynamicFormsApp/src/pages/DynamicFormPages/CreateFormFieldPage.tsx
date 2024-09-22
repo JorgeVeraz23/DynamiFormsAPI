@@ -8,18 +8,20 @@ import {
   Grid,
   Box,
   CircularProgress,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "redux/store";
-import { createFormFieldAction, getAllFormFieldAction } from "../../redux/action/FormFieldAction";
-import { getAllFormAction } from "../../redux/action/FormAction";
+import { createFormFieldAction } from "../../redux/action/FormFieldAction";
 import Swal from "sweetalert2";
 import Autocomplete from '@mui/material/Autocomplete';
 import { FormFieldEntity } from "data/Entity/FormFieldEntity";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
-// import { getFieldTypeSelectorAction } from "../../redux/action/FieldTypeAction";
 import { getFileTypeSelectorAction } from "../../redux/action/FieldTypeAction";
+import { getFormGroupSelectorAction } from "../../redux/action/FormGroupAction";  // Importar la acción para obtener los grupos de formulario
+
 const CreateFormFilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
@@ -33,16 +35,19 @@ const CreateFormFilePage: React.FC = () => {
     formGroupId: 0,
   });
 
-  const [selectedForm, setSelectedForm] = useState<KeyValueEntity | null>(null); // Cambié a FormEntity
+  const [selectedFormType, setSelectedFormType] = useState<KeyValueEntity | null>(null);
+  const [selectedFormGroup, setSelectedFormGroup] = useState<KeyValueEntity | null>(null);
   const [error, setError] = useState(false);
 
   // Obtener el estado desde el store de Redux
   const { formFields, loading } = useSelector((state: RootState) => state.formField);
   const { fieldTypes, loading: formsLoading } = useSelector((state: RootState) => state.fielType);
+  const { KeyValueSelectorFormGroup, loading: formGroupLoading } = useSelector((state: RootState) => state.formGroup);
 
+  // Obtener los tipos de campo y grupos de formulario al cargar el componente
   useEffect(() => {
-    // Obtener los formularios al cargar el componente
     dispatch(getFileTypeSelectorAction());
+    dispatch(getFormGroupSelectorAction());
   }, [dispatch]);
 
   // Manejar cambios en los campos del formulario
@@ -54,12 +59,26 @@ const CreateFormFilePage: React.FC = () => {
     });
   };
 
-  const handleSelectChange = (event: React.SyntheticEvent, value: KeyValueEntity | null) => {
-    setSelectedForm(value);
+  const handleSelectFormTypeChange = (event: React.SyntheticEvent, value: KeyValueEntity | null) => {
+    setSelectedFormType(value);
     setFormFile({
       ...formFile,
       fieldTypeId: value ? value.key : 0,
-      formGroupId: value ? value.key : 0, // Asegúrate de que `id` sea la propiedad correcta
+    });
+  };
+
+  const handleSelectFormGroupChange = (event: React.SyntheticEvent, value: KeyValueEntity | null) => {
+    setSelectedFormGroup(value);
+    setFormFile({
+      ...formFile,
+      formGroupId: value ? value.key : 0,
+    });
+  };
+
+  const handleOptionalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormFile({
+      ...formFile,
+      isOptional: event.target.checked,
     });
   };
 
@@ -87,10 +106,17 @@ const CreateFormFilePage: React.FC = () => {
       });
 
       // Limpiar los campos del formulario
-      setFormFile({ idFormField: 0, name: "", fieldTypeId: 0, formGroupId: 0, index: 0, isOptional: false });
-      setSelectedForm(null); // Limpiar el valor del Autocomplete
+      setFormFile({
+        idFormField: 0,
+        name: '',
+        index: 0,
+        isOptional: false,
+        fieldTypeId: 0,
+        formGroupId: 0,
+      });
+      setSelectedFormType(null);
+      setSelectedFormGroup(null);
     } else {
-      // Mostrar alert de error
       Swal.fire({
         title: "Error",
         text: response.payload.message,
@@ -101,68 +127,103 @@ const CreateFormFilePage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: 4 }}>
-      <Paper elevation={6} sx={{ padding: 4, borderRadius: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center" color="primary">
+    <Container>
+      <Paper elevation={3} style={{ padding: 20 }}>
+        <Typography variant="h5" component="h2" gutterBottom>
           Crear Campo de Formulario
         </Typography>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Nombre del Campo"
-              variant="outlined"
-              name="name"
-              value={formFile.name}
-              onChange={handleChange}
-              error={error && formFile.name === ""}
-              helperText={error && formFile.name === "" ? "El nombre es obligatorio" : ""}
-            />
-          </Grid>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Nombre del Campo"
+                name="name"
+                value={formFile.name}
+                onChange={handleChange}
+                error={error && formFile.name === ''}
+                helperText={error && formFile.name === '' ? "Este campo es obligatorio" : ''}
+              />
+            </Grid>
 
-          <Grid item xs={12}>
-            {formsLoading ? (
-              <CircularProgress />
-            ) : (
+            {/* Autocomplete para Tipo de Campo */}
+            <Grid item xs={12}>
               <Autocomplete
-                value={selectedForm} // Vinculado al estado para que se limpie correctamente
-                options={fieldTypes} // Lista de formularios disponibles
-                getOptionLabel={(option: KeyValueEntity) => option.value} // Etiqueta mostrada
-                onChange={handleSelectChange} // Cambiar el valor seleccionado
+                options={fieldTypes || []}
+                getOptionLabel={(option: KeyValueEntity) => option.value}
+                value={selectedFormType}
+                onChange={handleSelectFormTypeChange}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Selecciona un tipo de formulario"
-                    variant="outlined"
+                    label="Seleccionar Tipo de Campo"
                     error={error && formFile.fieldTypeId === 0}
-                    helperText={error && formFile.fieldTypeId === 0 ? "El formulario es obligatorio" : ""}
+                    helperText={error && formFile.fieldTypeId === 0 ? "Este campo es obligatorio" : ''}
                   />
                 )}
               />
-            )}
-          </Grid>
+            </Grid>
 
-          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-            <Box>
+            {/* Autocomplete para Grupo de Formulario */}
+            <Grid item xs={12}>
+              <Autocomplete
+                options={KeyValueSelectorFormGroup || []}
+                getOptionLabel={(option: KeyValueEntity) => option.value}
+                value={selectedFormGroup}
+                onChange={handleSelectFormGroupChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccionar Grupo de Formulario"
+                    error={error && formFile.formGroupId === 0}
+                    helperText={error && formFile.formGroupId === 0 ? "Este campo es obligatorio" : ''}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Índice"
+                name="index"
+                type="number"
+                value={formFile.index}
+                onChange={handleChange}
+                error={error && formFile.index === 0}
+                helperText={error && formFile.index === 0 ? "Este campo es obligatorio" : ''}
+              />
+            </Grid>
+
+            {/* Checkbox para Campo Opcional */}
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formFile.isOptional}
+                    onChange={handleOptionalChange}
+                    name="isOptional"
+                  />
+                }
+                label="Campo Opcional"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
               <Button
+                type="submit"
                 variant="contained"
+                color="primary"
                 startIcon={<AddCircleIcon />}
-                sx={{
-                  backgroundColor: "#2196f3",
-                  borderRadius: 10,
-                  padding: "10px 20px",
-                  "&:hover": { backgroundColor: "#1976d2" },
-                  fontSize: "16px",
-                }}
-                onClick={handleSubmit}
-                disabled={loading}
+                fullWidth
+                disabled={loading || formsLoading || formGroupLoading}
               >
-                {loading ? "Creando..." : "Crear Campo"}
+                {loading || formsLoading || formGroupLoading ? <CircularProgress size={24} /> : "Crear Campo"}
               </Button>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </form>
       </Paper>
     </Container>
   );

@@ -28,8 +28,8 @@ export default class FormGroupRepositoryImpl implements IFormGroupRepository {
             const response = await axiosClient.get(SELECTOR_FORMGROUP);
             console.log("xdd group form",response.data)
             const result: KeyValueEntity[] = response.data.map((item: any) => ({
-                Key: item.Key,
-                Value: item.Value,
+                key: item.key,
+                value: item.value,
             }));
             return result;
         } catch (error) {

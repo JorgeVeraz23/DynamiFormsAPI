@@ -38,23 +38,6 @@ export const getFormGroupSelectorAction = createAsyncThunk<KeyValueEntity[], voi
     }
 );
 
-
-// // Acción para obtener los formularios del selector
-// export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
-//     "form/GetFormSelectorAction",
-//     async (_, thunkAPI) => {
-//         try {
-//             const forms = await repository.selectorForm();
-//             return forms;
-//         } catch (error) {
-//             const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-//             return thunkAPI.rejectWithValue(errorMessage);
-//         }
-//     }
-// );
-
-
-
 // Acción para obtener un formulario por ID
 export const getFormGroupByIdAction = createAsyncThunk<FormGroupEntity, number>(
     "formGroup/GetFormGroupByIdAction",
