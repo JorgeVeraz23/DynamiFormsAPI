@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.SqlServer.Server;
+using System.Reflection.Metadata.Ecma335;
 using TicketsAPI.DTO;
 using TicketsAPI.Entities;
 using TicketsAPI.Interfaces;
@@ -7,20 +9,20 @@ namespace TicketsAPI.Repository
 {
     public class FormRepository : FormInterface
     {
-        
+
         private readonly ApplicationDbContext _context;
         MessageInfoSolicitudDTO infoDTO = new MessageInfoSolicitudDTO();
         public FormRepository(ApplicationDbContext context) {
             _context = context;
-         
+
         }
 
         public async Task<MessageInfoSolicitudDTO> ActualizarFormulario(FormDTO formDTO)
         {
             var model = await _context.Forms.FirstOrDefaultAsync(x => x.IdForm == formDTO.IdForm) ?? throw new ArgumentNullException("Formulario ingresado no existe");
 
-           
-          
+
+
             model.Name = formDTO.Name;
             model.Description = formDTO.Description;
 
@@ -31,7 +33,7 @@ namespace TicketsAPI.Repository
             await _context.SaveChangesAsync();
             infoDTO.Cod = "201";
             infoDTO.Mensaje = "Formulario actualizado correactamente";
-          
+
 
             return infoDTO;
 
@@ -45,7 +47,7 @@ namespace TicketsAPI.Repository
             form.Description = formDTO.Description;
             form.Active = true;
             form.DateRegister = DateTime.Now;
-            
+
 
             // Agregar el nuevo formulario al contexto
             await _context.Forms.AddAsync(form);
@@ -66,10 +68,10 @@ namespace TicketsAPI.Repository
 
         public async Task<MessageInfoSolicitudDTO> ELiminarFormulario(long id)
         {
-           
+
             var formularioBusqueda = await _context.Forms.Where(x => x.Active && x.IdForm == id).FirstOrDefaultAsync();
 
-            if(formularioBusqueda == null)
+            if (formularioBusqueda == null)
             {
                 infoDTO.Cod = "400";
                 infoDTO.Mensaje = "No existe el formulario a eliminar";
@@ -97,6 +99,47 @@ namespace TicketsAPI.Repository
 
             return selectorFormulario;
         }
+
+        public async Task<FormDynamicDTO> MostrarFormularioConGruposYCampos(long idForm)
+        {
+            // Consulta a la base de datos con Include y ThenInclude
+            var form = await _context.Forms
+                .Include(f => f.FormGroups)                // Incluye los grupos de formulario relacionados
+                    .ThenInclude(fg => fg.FormFields)      // Incluye los campos de formulario dentro de cada grupo
+                        .ThenInclude(ff => ff.FieldType)   // Incluye el tipo de campo relacionado con cada FormField
+                .FirstOrDefaultAsync(f => f.IdForm == idForm);  // Filtra por el Id del formulario
+
+            if (form == null)
+            {
+                 throw new ArgumentNullException("formulario ingresado es invalido");
+            }
+
+            // Creación de un DTO para devolver los datos relevantes
+            var formDto = new FormDynamicDTO
+            {
+                IdForm = form.IdForm,
+                Name = form.Name,
+                Description = form.Description,
+                FormGroups = form.FormGroups.Select(group => new FormGroupDynamicDTO
+                {
+                    IdFormGroup = group.IdFormGroup,
+                    Name = group.Name,
+                    FormFields = group.FormFields.Select(field => new FormFielDynamicDTO
+                    {
+                        IdFormField = field.IdFormField,
+                        Name = field.Name,
+                        IsOptional = field.IsOptional,
+                        Index = field.Index,
+                        FieldType = field.FieldType.Name // Incluimos el tipo de campo (FieldType)
+                    }).ToList()
+                }).ToList()
+            };
+
+
+            return formDto;
+        }
+
+
 
         public async Task<FormDTO> ObtenerFormularioPorId(long id)
         {

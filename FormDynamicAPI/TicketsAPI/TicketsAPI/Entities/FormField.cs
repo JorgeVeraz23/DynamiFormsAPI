@@ -29,6 +29,6 @@ namespace TicketsAPI.Entities
         public ICollection<Option>? Options { get; set; } 
 
         // Relación con FilledFormField
-        public ICollection<FilledFormField>? FilledFormFields { get; set; }
+        public ICollection<FilledFormField> FilledFormFields { get; set; } = new List<FilledFormField>();
     }
 }

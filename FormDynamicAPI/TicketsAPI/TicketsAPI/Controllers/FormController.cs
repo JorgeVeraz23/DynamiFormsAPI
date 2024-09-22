@@ -60,6 +60,15 @@ namespace TicketsAPI.Controllers
         }
 
 
+        [HttpGet("MostrarFormulariosConCamposYGrupos")]
+        public async Task<ActionResult> MostrarFormulariosConCamposYGrupos(long id)
+        {
+            var response = await _formInterface.MostrarFormularioConGruposYCampos(id);
+
+            return Ok(response);
+        }
+
+
         [HttpGet("SelectorFormularios")]
         public async Task<ActionResult> SelectorFormularios()
         {

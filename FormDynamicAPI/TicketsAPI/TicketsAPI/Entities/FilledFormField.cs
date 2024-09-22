@@ -17,9 +17,7 @@ namespace TicketsAPI.Entities
         // Relación con FilledForm
         [ForeignKey("FilledForm")]
         public long FilledFormId { get; set; }
-        public FilledForm FilledForm { get; set; }
-
-        
+        public FilledForm FilledForm { get; set; } 
 
         // Relación con Option
         [ForeignKey("SelectedOption")]

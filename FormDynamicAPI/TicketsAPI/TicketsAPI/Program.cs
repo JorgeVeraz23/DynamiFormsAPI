@@ -48,6 +48,8 @@ builder.Services.AddScoped<FormGroupInterface, FormGroupRepository>();
 builder.Services.AddScoped<FormFieldInterface, FormFieldRepository>();
 builder.Services.AddScoped<OptionInterface, OptionRepository>();
 builder.Services.AddScoped<FieldTypeInterface, FieldTypeRepository>();
+builder.Services.AddScoped<FilledFormInterface, FilledFormRepository>();
+builder.Services.AddScoped<FilledFormFieldInterface, FilledFormFieldRepository>();
 
 
 var app = builder.Build();

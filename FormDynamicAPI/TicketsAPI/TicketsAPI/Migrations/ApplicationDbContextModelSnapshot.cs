@@ -74,7 +74,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasKey("IdFieldType");
 
-                    b.ToTable("FieldTypes");
+                    b.ToTable("FieldTypes", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledForm", b =>
@@ -133,7 +133,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormId");
 
-                    b.ToTable("FilledForms");
+                    b.ToTable("FilledForms", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledFormField", b =>
@@ -211,7 +211,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("SelectedOptionId");
 
-                    b.ToTable("FilledFormField");
+                    b.ToTable("FilledFormField", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Form", b =>
@@ -269,7 +269,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasKey("IdForm");
 
-                    b.ToTable("Forms");
+                    b.ToTable("Forms", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FormField", b =>
@@ -340,7 +340,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormGroupId");
 
-                    b.ToTable("FormFields");
+                    b.ToTable("FormFields", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FormGroup", b =>
@@ -400,7 +400,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormId");
 
-                    b.ToTable("FormGroups");
+                    b.ToTable("FormGroups", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Option", b =>
@@ -460,7 +460,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("idFormField");
 
-                    b.ToTable("Options");
+                    b.ToTable("Options", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Solicitud", b =>
@@ -505,7 +505,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("Solicituds");
+                    b.ToTable("Solicituds", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Usuario", b =>
@@ -529,7 +529,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasKey("IdUsuario");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledForm", b =>

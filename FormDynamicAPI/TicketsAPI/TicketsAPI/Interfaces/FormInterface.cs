@@ -5,6 +5,9 @@ namespace TicketsAPI.Interfaces
     public interface FormInterface
     {
         public Task<MessageInfoSolicitudDTO> CrearFormulario(FormDTO formDTO);
+        public Task<FormDynamicDTO> MostrarFormularioConGruposYCampos(long idForm);
+       
+        
         public Task<List<FormDTO>> ObtenerFormularios();
         public Task<List<KeyValueDTO>> KeyValueFormuario();
         public Task<FormDTO> ObtenerFormularioPorId(long id);
