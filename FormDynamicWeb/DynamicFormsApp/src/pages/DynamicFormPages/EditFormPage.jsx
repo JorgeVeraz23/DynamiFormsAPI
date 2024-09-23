@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Grid, Paper, CircularProgress, Alert, Card, CardContent, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Container, Typography, Grid, Paper, CircularProgress, Alert, Card, CardContent, Select, MenuItem, FormControl, InputLabel, TextField, Checkbox, FormControlLabel, RadioGroup, Radio, Button, Slider, Switch } from "@mui/material";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ const FormDisplay = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
+  const [fieldsEnabled, setFieldsEnabled] = useState(false);
 
   useEffect(() => {
     const fetchForm = async () => {
@@ -38,6 +39,10 @@ const FormDisplay = () => {
             {formData.description}
           </Typography>
 
+          <Button variant="contained" onClick={() => setFieldsEnabled(!fieldsEnabled)}>
+            {fieldsEnabled ? "Desactivar" : "Activar"}
+          </Button>
+
           {formData.formGroups.map(group => (
             <Card key={group.idFormGroup} variant="outlined" sx={{ marginBottom: 2 }}>
               <CardContent>
@@ -50,12 +55,31 @@ const FormDisplay = () => {
                       <Typography variant="body2" gutterBottom>
                         {field.name}
                       </Typography>
+                      {field.fieldType === "TextField" && (
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          placeholder={field.name}
+                          disabled={!fieldsEnabled}
+                        />
+                      )}
+                      {field.fieldType === "TextArea" && (
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          placeholder={field.name}
+                          multiline
+                          rows={4}
+                          disabled={!fieldsEnabled}
+                        />
+                      )}
                       {field.fieldType === "DropDown" && (
                         <FormControl fullWidth variant="outlined">
                           <InputLabel>{field.name}</InputLabel>
                           <Select
                             label={field.name}
                             defaultValue=""
+                            disabled={!fieldsEnabled}
                           >
                             <MenuItem value=""><em>Seleccione</em></MenuItem>
                             {field.options.map(option => (
@@ -67,7 +91,62 @@ const FormDisplay = () => {
                         </FormControl>
                       )}
                       {field.fieldType === "CheckBox" && (
-                        <input type="checkbox" />
+                        <FormControlLabel
+                          control={<Checkbox disabled={!fieldsEnabled} />}
+                          label={field.name}
+                        />
+                      )}
+                      {field.fieldType === "RadioButton" && (
+                        <RadioGroup disabled={!fieldsEnabled}>
+                          {field.options.map(option => (
+                            <FormControlLabel
+                              key={option.idOption}
+                              value={option.idOption}
+                              control={<Radio disabled={!fieldsEnabled} />}
+                              label={option.name}
+                            />
+                          ))}
+                        </RadioGroup>
+                      )}
+                      {field.fieldType === "NumberField" || field.fieldType === "PhoneNumberField" && (
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          type="number"
+                          placeholder={field.name}
+                          disabled={!fieldsEnabled}
+                        />
+                      )}
+                      {field.fieldType === "DatePicker" && (
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          type="date"
+                          placeholder={field.name}
+                          InputLabelProps={{ shrink: true }}
+                          disabled={!fieldsEnabled}
+                        />
+                      )}
+                      {field.fieldType === "Slider" && (
+                        <Slider
+                          defaultValue={30}
+                          aria-labelledby="continuous-slider"
+                          disabled={!fieldsEnabled}
+                        />
+                      )}
+                      {field.fieldType === "Switch" && (
+                        <FormControlLabel
+                          control={<Switch disabled={!fieldsEnabled} />}
+                          label={field.name}
+                        />
+                      )}
+                      {field.fieldType === "ColorPicker" && (
+                        <TextField
+                          type="color"
+                          label={field.name}
+                          variant="outlined"
+                          disabled={!fieldsEnabled}
+                        />
                       )}
                       {/* Agrega más tipos de campo según sea necesario */}
                     </Grid>
@@ -83,226 +162,3 @@ const FormDisplay = () => {
 };
 
 export default FormDisplay;
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { useAppDispatch, useAppSelector } from '../../redux/hooksRedux';
-// import { getFormByIdAction, editFormAction } from '../../redux/action/FormAction';
-// import { TextField, Button, Container, Typography, CircularProgress, Alert, Checkbox, FormControlLabel, MenuItem, Select, Box } from '@mui/material';
-// import { useParams, useNavigate } from 'react-router-dom';
-
-
-
-
-// export const EditFormPage = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const dispatch = useAppDispatch();
-//   const { selectedForm,  loading: formLoading, error: formError } = useAppSelector((state) => state.form);
-//   // const {selectedFieldType, loading: fieldTypeLoading, error: fieldTypeError} = useAppSelector((state) = state.fieldType);
-//   const [openModal, setOpenModal] = useState(false)
-//   const [formData, setFormData] = useState(null);
-
-//   useEffect(() => {
-//     if (id) {
-//       dispatch(getFormByIdAction(Number(id)));
-//     }
-//   }, [id, dispatch]);
-
-//   console.log(openModal)
-
-//   useEffect(() => {
-//     if (selectedForm) {
-//       setFormData(selectedForm);
-//     }
-//   }, [selectedForm]);
-
-//   const handleChange = (e) => {
-//     const { name, value, checked, type } = e.target;
-//     const newValue = type === 'checkbox' ? checked : value;
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: newValue,
-//     }));
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (formData) {
-//       dispatch(editFormAction(formData)).then((result) => {
-//         if (editFormAction.fulfilled.match(result)) {
-//           navigate('/form-list'); 
-//         }
-//       });
-//     }
-//   };
-
-//   if (formLoading) return <CircularProgress />;
-//   if (formError) return <Alert severity="error">{formError}</Alert>;
-
-//   return (
-//     <Container maxWidth="sm" >
-//       <Typography variant="h4" component="h1" gutterBottom>
-//         Editar Formulario
-//       </Typography>
-//       {formData && (
-//         <form onSubmit={handleSubmit}>
-//           {formData.formGroups.map((group) => (
-//             <div key={group.idFormGroup}>
-//               <Typography variant="h6">{group.name}</Typography>
-//               {group.formFields.map((field) => {
-//                 console.log('Field:', field); 
-//                 const FieldComponent = getFieldComponent(field.typeId);
-//                 return (
-//                   <FieldComponent
-//                     key={field.idFormField}
-//                     field={field}
-//                     value={formData[field.name] || ''}
-//                     onChange={handleChange}
-//                   />
-//                 );
-//               })}
-//             </div>
-//           ))}
-//           <Button type="submit" variant="contained" color="primary" sx={{ mb: 3 }}>
-//             Guardar Cambios
-//           </Button>
-//         </form>
-//       )}
-//     </Container>
-//   );
-// };
-
-
-// const TextFieldComponent = ({ field, value, onChange }) => (
-//   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//     <TextField
-//       fullWidth
-//       margin="normal"
-//       label={field.name}
-//       name={field.name}
-//       value={value}
-//       onChange={onChange}
-//       type="text"
-//       sx={{ flexGrow: 1 }} // Permitir que el campo ocupe el mayor espacio
-//     />
-//     <Button 
-//       variant="outlined" 
-//       color="primary" 
-//       sx={{ ml: 2 }} // Margen izquierdo para separar del campo
-//     >
-//       Editar
-//     </Button>
-//   </Box>
-// );
-
-
-// const NumberFieldComponent = ({ field, value, onChange }) => (
-//   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//     <TextField
-//       fullWidth
-//       margin="normal"
-//       label={field.name}
-//       name={field.name}
-//       value={value}
-//       onChange={onChange}
-//       type="number"
-//       sx={{ flexGrow: 1 }}
-//     />
-//     <Button 
-//       variant="outlined" 
-//       color="primary" 
-//       sx={{ ml: 2 }}
-//     >
-//       Editar
-//     </Button>
-//   </Box>
-// );
-
-// const DateFieldComponent = ({ field, value, onChange }) => (
-//   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//     <TextField
-//       fullWidth
-//       margin="normal"
-//       label={field.name}
-//       name={field.name}
-//       value={value}
-//       onChange={onChange}
-//       type="date"
-//       InputLabelProps={{ shrink: true }}
-//       sx={{ flexGrow: 1 }}
-//     />
-//     <Button 
-//       variant="outlined" 
-//       color="primary" 
-//       sx={{ ml: 2 }}
-//     >
-//       Editar
-//     </Button>
-//   </Box>
-// );
-
-// const CheckboxFieldComponent = ({ field, value, onChange }) => (
-//   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//     <FormControlLabel
-//       control={<Checkbox checked={!!value} onChange={onChange} name={field.name} />}
-//       label={field.name}
-//       sx={{ flexGrow: 1 }}
-//     />
-//     <Button 
-//       variant="outlined" 
-//       color="primary" 
-//       sx={{ ml: 2 }}
-//     >
-//       Editar
-//     </Button>
-//   </Box>
-// );
-
-
-// const SelectFieldComponent = ({ field, value, onChange }) => (
-//   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//     <Select
-//       fullWidth
-//       margin="normal"
-//       label={field.name}
-//       name={field.name}
-//       value={value}
-//       onChange={onChange}
-//       sx={{ flexGrow: 1 }}
-//     >
-//       {field.options?.map((option) => (
-//         <MenuItem key={option.value} value={option.value}>
-//           {option.label}
-//         </MenuItem>
-//       ))}
-//     </Select>
-//     <Button 
-//       variant="outlined" 
-//       color="primary" 
-//       sx={{ ml: 2 }}
-//     >
-//       Editar
-//     </Button>
-//   </Box>
-// );
-
-// const getFieldComponent = (fieldType) => {
-//   console.log('FieldType:', fieldType); 
-//   switch (fieldType) {
-//     case 10012: // ID de tipo "Texto"
-//       return TextFieldComponent;
-//     case 10013: // ID de tipo "Número"
-//       return NumberFieldComponent;
-//     case 10014: // ID de tipo "Fecha"
-//       return DateFieldComponent;
-//     case 10015: // ID de tipo "Checkbox"
-//       return SelectFieldComponent;
-//     case 10016: // ID de tipo "Opción" (Select)
-//       return CheckboxFieldComponent;
-//     default:
-//       return () => <div>Tipo de campo desconocido</div>;
-//   }
-// };
-
