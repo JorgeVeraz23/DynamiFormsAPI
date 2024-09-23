@@ -43,6 +43,14 @@ namespace TicketsAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetFormWithGroupsAndFieldsAndResponsesAsyncNew")]
+        public async Task<ActionResult> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long id)
+        {
+            var response = await _filledFormFieldInterace.GetFormWithGroupsAndFieldsAndResponsesAsyncNew(id);
+
+            return Ok(response);
+        }
+
 
 
         [HttpPost("CrearFilledFormField")]

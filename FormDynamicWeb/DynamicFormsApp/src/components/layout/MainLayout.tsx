@@ -9,6 +9,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddIcon from '@mui/icons-material/Add';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 const drawerWidth = 240;  // Define the drawer width here
@@ -36,9 +37,9 @@ const MainLayout = () => {
         </ListItemButton>
         <ListItemButton onClick={() => navigate('/filled-form-page')}>
           <ListItemIcon>
-            <AssignmentIcon />
+            <CheckCircleIcon />
           </ListItemIcon>
-          <ListItemText primary="Formularios Lleno" />
+          <ListItemText primary="Formularios Llenos" />
         </ListItemButton>
         <ListItemButton onClick={() => navigate('/create-form-page')}>
           <ListItemIcon>

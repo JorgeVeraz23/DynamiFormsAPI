@@ -10,6 +10,8 @@ namespace TicketsAPI.Interfaces
         public Task<List<FilledFormFieldDTO>> GetAlFilledFormField();
         public Task<FilledFormFieldDTO> GetFilledFormField(long id);
         public Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsync(long formId);
+        //GetFormWithGroupsAndFieldsAndResponsesAsyncNew
+        public Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long formId);
 
     }
 }
