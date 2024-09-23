@@ -74,7 +74,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasKey("IdFieldType");
 
-                    b.ToTable("FieldTypes", (string)null);
+                    b.ToTable("FieldTypes");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledForm", b =>
@@ -133,7 +133,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormId");
 
-                    b.ToTable("FilledForms", (string)null);
+                    b.ToTable("FilledForms");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledFormField", b =>
@@ -211,7 +211,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("SelectedOptionId");
 
-                    b.ToTable("FilledFormField", (string)null);
+                    b.ToTable("FilledFormField");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Form", b =>
@@ -269,7 +269,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasKey("IdForm");
 
-                    b.ToTable("Forms", (string)null);
+                    b.ToTable("Forms");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FormField", b =>
@@ -340,7 +340,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormGroupId");
 
-                    b.ToTable("FormFields", (string)null);
+                    b.ToTable("FormFields");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FormGroup", b =>
@@ -400,7 +400,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("FormId");
 
-                    b.ToTable("FormGroups", (string)null);
+                    b.ToTable("FormGroups");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.Option", b =>
@@ -460,76 +460,7 @@ namespace TicketsAPI.Migrations
 
                     b.HasIndex("idFormField");
 
-                    b.ToTable("Options", (string)null);
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Solicitud", b =>
-                {
-                    b.Property<long>("IdSolicitud")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdSolicitud"));
-
-                    b.Property<string>("DescripcionSolicitud")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DetalleGestion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaGestion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("IdUsuario")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Justificativo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("estadoSolicitud")
-                        .HasColumnType("int");
-
-                    b.Property<int>("tipoSolicitud")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdSolicitud");
-
-                    b.HasIndex("IdUsuario");
-
-                    b.ToTable("Solicituds", (string)null);
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Usuario", b =>
-                {
-                    b.Property<long>("IdUsuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdUsuario"));
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rol")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdUsuario");
-
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Options");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledForm", b =>
@@ -605,17 +536,6 @@ namespace TicketsAPI.Migrations
                     b.Navigation("FormField");
                 });
 
-            modelBuilder.Entity("TicketsAPI.Entities.Solicitud", b =>
-                {
-                    b.HasOne("TicketsAPI.Entities.Usuario", "Usuario")
-                        .WithMany("Solicituds")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("TicketsAPI.Entities.FieldType", b =>
                 {
                     b.Navigation("FormFields");
@@ -643,11 +563,6 @@ namespace TicketsAPI.Migrations
             modelBuilder.Entity("TicketsAPI.Entities.FormGroup", b =>
                 {
                     b.Navigation("FormFields");
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Usuario", b =>
-                {
-                    b.Navigation("Solicituds");
                 });
 #pragma warning restore 612, 618
         }

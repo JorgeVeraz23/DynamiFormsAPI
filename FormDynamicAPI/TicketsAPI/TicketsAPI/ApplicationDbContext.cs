@@ -10,8 +10,6 @@ namespace TicketsAPI
             
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Solicitud> Solicituds { get; set; }
         public DbSet<Option> Options { get; set; }
         public DbSet<Form> Forms { get; set; }
         public DbSet<FilledForm> FilledForms { get; set; }

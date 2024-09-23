@@ -12,7 +12,7 @@ using TicketsAPI;
 namespace TicketsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240918224136_ticket-1")]
+    [Migration("20240923191132_ticket-1")]
     partial class ticket1
     {
         /// <inheritdoc />
@@ -427,9 +427,6 @@ namespace TicketsAPI.Migrations
                     b.Property<DateTime>("DateRegister")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("FormFieldIdFormField")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("IpDelete")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -459,80 +456,14 @@ namespace TicketsAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<long>("idFormField")
+                        .HasColumnType("bigint");
+
                     b.HasKey("IdOption");
 
-                    b.HasIndex("FormFieldIdFormField");
+                    b.HasIndex("idFormField");
 
                     b.ToTable("Options");
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Solicitud", b =>
-                {
-                    b.Property<long>("IdSolicitud")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdSolicitud"));
-
-                    b.Property<string>("DescripcionSolicitud")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DetalleGestion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaGestion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("IdUsuario")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Justificativo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("estadoSolicitud")
-                        .HasColumnType("int");
-
-                    b.Property<int>("tipoSolicitud")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdSolicitud");
-
-                    b.HasIndex("IdUsuario");
-
-                    b.ToTable("Solicituds");
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Usuario", b =>
-                {
-                    b.Property<long>("IdUsuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdUsuario"));
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rol")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdUsuario");
-
-                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FilledForm", b =>
@@ -599,20 +530,13 @@ namespace TicketsAPI.Migrations
 
             modelBuilder.Entity("TicketsAPI.Entities.Option", b =>
                 {
-                    b.HasOne("TicketsAPI.Entities.FormField", null)
+                    b.HasOne("TicketsAPI.Entities.FormField", "FormField")
                         .WithMany("Options")
-                        .HasForeignKey("FormFieldIdFormField");
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Solicitud", b =>
-                {
-                    b.HasOne("TicketsAPI.Entities.Usuario", "Usuario")
-                        .WithMany("Solicituds")
-                        .HasForeignKey("IdUsuario")
+                        .HasForeignKey("idFormField")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.Navigation("FormField");
                 });
 
             modelBuilder.Entity("TicketsAPI.Entities.FieldType", b =>
@@ -642,11 +566,6 @@ namespace TicketsAPI.Migrations
             modelBuilder.Entity("TicketsAPI.Entities.FormGroup", b =>
                 {
                     b.Navigation("FormFields");
-                });
-
-            modelBuilder.Entity("TicketsAPI.Entities.Usuario", b =>
-                {
-                    b.Navigation("Solicituds");
                 });
 #pragma warning restore 612, 618
         }

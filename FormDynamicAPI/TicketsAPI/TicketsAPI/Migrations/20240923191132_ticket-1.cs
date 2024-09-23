@@ -59,21 +59,6 @@ namespace TicketsAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
-                columns: table => new
-                {
-                    IdUsuario = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FilledForms",
                 columns: table => new
                 {
@@ -134,33 +119,6 @@ namespace TicketsAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Solicituds",
-                columns: table => new
-                {
-                    IdSolicitud = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    tipoSolicitud = table.Column<int>(type: "int", nullable: false),
-                    DescripcionSolicitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Justificativo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    estadoSolicitud = table.Column<int>(type: "int", nullable: false),
-                    DetalleGestion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaIngreso = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaGestion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdUsuario = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Solicituds", x => x.IdSolicitud);
-                    table.ForeignKey(
-                        name: "FK_Solicituds_Usuarios_IdUsuario",
-                        column: x => x.IdUsuario,
-                        principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FormFields",
                 columns: table => new
                 {
@@ -206,7 +164,7 @@ namespace TicketsAPI.Migrations
                     IdOption = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FormFieldIdFormField = table.Column<long>(type: "bigint", nullable: true),
+                    idFormField = table.Column<long>(type: "bigint", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     UserRegister = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateRegister = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -222,10 +180,11 @@ namespace TicketsAPI.Migrations
                 {
                     table.PrimaryKey("PK_Options", x => x.IdOption);
                     table.ForeignKey(
-                        name: "FK_Options_FormFields_FormFieldIdFormField",
-                        column: x => x.FormFieldIdFormField,
+                        name: "FK_Options_FormFields_idFormField",
+                        column: x => x.idFormField,
                         principalTable: "FormFields",
-                        principalColumn: "IdFormField");
+                        principalColumn: "IdFormField",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,14 +268,9 @@ namespace TicketsAPI.Migrations
                 column: "FormId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Options_FormFieldIdFormField",
+                name: "IX_Options_idFormField",
                 table: "Options",
-                column: "FormFieldIdFormField");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Solicituds_IdUsuario",
-                table: "Solicituds",
-                column: "IdUsuario");
+                column: "idFormField");
         }
 
         /// <inheritdoc />
@@ -326,16 +280,10 @@ namespace TicketsAPI.Migrations
                 name: "FilledFormField");
 
             migrationBuilder.DropTable(
-                name: "Solicituds");
-
-            migrationBuilder.DropTable(
                 name: "FilledForms");
 
             migrationBuilder.DropTable(
                 name: "Options");
-
-            migrationBuilder.DropTable(
-                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "FormFields");
