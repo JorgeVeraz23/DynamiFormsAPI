@@ -52,7 +52,7 @@
 
 ![Descripción de la imagen](images/PantallaInicio.PNG)
 ![Descripción de la imagen](images/PantallaFormulariosDisponibles.PNG)
-![Descripción de la imagen](images/VerFormularioDinamicoCreado.PNG)
+![Descripción de la imagen](images/VerFormularioDinamicoCreado.png)
 ![Descripción de la imagen](images/VerFormularioDinamicoCreado2.PNG)
 ![Descripción de la imagen](images/CrearNuevoFormulario.PNG)
 ![Descripción de la imagen](images/CrearGrupoFormulario.PNG)
