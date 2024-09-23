@@ -159,45 +159,53 @@ namespace TicketsAPI.Repository
             return formDto;
         }
 
-        public async Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long idForm)
+
+        public async Task<List<FormNewDto>> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long idForm)
         {
-            // Obtener los formularios llenados junto con las respuestas
-            var filledForms = await _context.FilledForms
-                .Include(f => f.Form)
-                .Include(f => f.FilledFormFields)
-                .Where(f => f.FormId == idForm)
+            var form = await _context.Forms
+                .Include(f => f.FormGroups)
+                    .ThenInclude(fg => fg.FormFields)
+                        .ThenInclude(ff => ff.FieldType)
+                .Include(f => f.FilledForms)
+                    .ThenInclude(ff => ff.FilledFormFields)
+                .Where(x => x.IdForm == idForm)
+                .Select(f => new FormNewDto
+                {
+                    IdForm = f.IdForm,
+                    Name = f.Name,
+                    Description = f.Description,
+                    FormGroups = f.FormGroups.Select(fg => new FormGroupNewDto
+                    {
+                        IdFormGroup = fg.IdFormGroup,
+                        Name = fg.Name,
+                        FormFields = fg.FormFields.Select(ff => new FormFieldNewDto
+                        {
+                            IdFormField = ff.IdFormField,
+                            Name = ff.Name,
+                            FieldType = ff.FieldType.Name // Aquí se asume que FieldType tiene una propiedad Name
+                        }).ToList()
+                    }).ToList(),
+                    FilledForms = f.FilledForms.Select(fff => new FilledFormNewDto
+                    {
+                        IdFilledForm = fff.IdFilledForm,
+                        FillDate = fff.FillDate,
+                        FilledFormFields = fff.FilledFormFields.Select(fff => new FilledFormFieldNewDto
+                        {
+                            IdFilledFormField = fff.IdFilledFormField,
+                            IsChecked = fff.IsChecked,
+                            TextValue = fff.TextValue,
+                            NumericValue = fff.NumericValue,
+                            DateTimeValue = fff.DateTimeValue,
+                            SelectedOptionId = fff.SelectedOptionId
+                        }).ToList()
+                    }).ToList()
+                })
                 .ToListAsync();
 
-            // Verificar si no hay formularios llenados
-            if (filledForms == null || !filledForms.Any())
-            {
-                return null;
-            }
-
-            // Obtener el primer formulario para extraer los datos
-            var firstForm = filledForms.FirstOrDefault();
-
-            // Mapear los resultados al DTO
-            var result = new FormWithResponsesDto
-            {
-                IdForm = idForm,
-                Name = firstForm.Form.Name,
-                Description = firstForm.Form.Description,
-                Responses = filledForms.SelectMany(f => f.FilledFormFields)
-                    .Select(r => new FilledFormFieldRDto
-                    {
-                        IdFilledFormField = r.IdFilledFormField,
-                        TextValue = r.TextValue,
-                        NumericValue = r.NumericValue,
-                        DateTimeValue = r.DateTimeValue,
-                        IsChecked = r.IsChecked,
-                        SelectedOptionId = r.SelectedOptionId
-                    }).ToList()
-            };
-
-            // Retornar el resultado
-            return result;
+            return form;
         }
+
+
 
     }
 }

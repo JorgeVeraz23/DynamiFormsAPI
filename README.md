@@ -3,15 +3,15 @@
 ## Restaurar la Base de Datos
 
 1. **Restaurar la Base de Datos desde el Archivo `.bak`:**
-   - **Archivo de Respaldo:** `FormDynamicDB.bak`
+   - **Archivo de Respaldo:** `DynamicDB.bak`
    - **Descripción:** Este archivo `.bak` contiene la información necesaria para ejecutar el proyecto. Asegúrate de restaurar este archivo en tu servidor SQL para tener acceso a los datos requeridos por la aplicación.
 
 2. **Pasos para Restaurar:**
    - Abre **SQL Server Management Studio (SSMS)**.
    - Conéctate a tu servidor SQL.
    - Haz clic derecho en **Bases de Datos** y selecciona **Restaurar Base de Datos**.
-   - En la ventana de restauración, elige **Dispositivo** y selecciona el archivo `FormDynamicDB.bak`.
-   - Asegúrate de que la base de datos restaurada se llame `FormDynamicDB` o el nombre que desees utilizar.
+   - En la ventana de restauración, elige **Dispositivo** y selecciona el archivo `DynamicDB.bak`.
+   - Asegúrate de que la base de datos restaurada se llame `DynamicDB` o el nombre que desees utilizar.
 
 ## Configuración del Backend
 
@@ -50,6 +50,12 @@
 
 ¡Con estos pasos, deberías estar listo para usar la aplicación Dynamic Forms! Si encuentras algún problema, no dudes en consultar la documentación o ponerte en contacto con el soporte.
 
-![Descripción de la imagen](images/FormulariosDispibles.PNG)
-![Descripción de la imagen](images/FormularioDeMascotaTraidoDinamicamente.PNG)
-![Descripción de la imagen](images/FormularioDePersonaTraidoDinamicamente.PNG)
+![Descripción de la imagen](images/PantallaInicio.PNG)
+![Descripción de la imagen](images/PantallaFormulariosDisponibles.PNG)
+![Descripción de la imagen](images/VerFormularioDinamicoCreado.PNG)
+![Descripción de la imagen](images/VerFormularioDinamicoCreado2.PNG)
+![Descripción de la imagen](images/CrearNuevoFormulario.PNG)
+![Descripción de la imagen](images/CrearGrupoFormulario.PNG)
+![Descripción de la imagen](images/CrearCampo.PNG)
+![Descripción de la imagen](images/CrearCampoConOpciones.PNG)
+![Descripción de la imagen](images/OpcionesTipoCampoParaCrear.PNG)

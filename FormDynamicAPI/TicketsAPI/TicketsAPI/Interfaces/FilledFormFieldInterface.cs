@@ -1,4 +1,5 @@
 ﻿using TicketsAPI.DTO;
+using TicketsAPI.Entities;
 
 namespace TicketsAPI.Interfaces
 {
@@ -11,7 +12,7 @@ namespace TicketsAPI.Interfaces
         public Task<FilledFormFieldDTO> GetFilledFormField(long id);
         public Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsync(long formId);
         //GetFormWithGroupsAndFieldsAndResponsesAsyncNew
-        public Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long formId);
+        public Task<List<FormNewDto>> GetFormWithGroupsAndFieldsAndResponsesAsyncNew(long formId);
 
     }
 }

@@ -43,6 +43,7 @@ namespace TicketsAPI.DTO
         public DateTime? DateTimeValue { get; set; }
         public bool? IsChecked { get; set; }
         public long? SelectedOptionId { get; set; }
+        public string? OptionName { get; set; }
     }
 
 
