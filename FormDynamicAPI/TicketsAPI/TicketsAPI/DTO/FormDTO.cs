@@ -61,9 +61,9 @@ namespace TicketsAPI.DTO
         public int Index { get; set; }
         public bool IsOptional { get; set; }
         public string FieldType { get; set; } = string.Empty;
-        public List<OptionDynamicDTO>? Options { get; set; } // Opciones para campos select
+        public List<OptionDynamicDTO>? Options { get; set; } 
 
-        // Valor llenado (respuesta) para el campo
+ 
         public string? FilledValue { get; set; }
     }
 

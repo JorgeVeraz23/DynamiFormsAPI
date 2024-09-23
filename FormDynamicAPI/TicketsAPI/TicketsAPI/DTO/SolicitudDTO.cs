@@ -5,7 +5,7 @@
         public long IdSolicitud { get; set; }
         public EnumTipoSolicitud tipoSolicitud { get; set; }
         public string DescripcionSolicitud { get; set; }
-        public IFormFile Justificativo { get; set; } // Este debe ser IFormFile
+        public IFormFile Justificativo { get; set; }
         public string DetalleGestion { get; set; }
         public DateTime FechaIngreso { get; set; }
 
@@ -17,7 +17,7 @@
         public long IdSolicitud { get; set; }
         public EnumTipoSolicitud tipoSolicitud { get; set; }
         public string DescripcionSolicitud { get; set; }
-        public string Justificativo { get; set; } // Este debe ser IFormFile
+        public string Justificativo { get; set; }
 
         public string DetalleGestion { get; set; }
         public DateTime FechaIngreso { get; set; }
@@ -31,7 +31,7 @@
         public EnumTipoSolicitud tipoSolicitud { get; set; }
         public EnumEstadoSolicitud estadoSolicitud { get; set; }
         public string DescripcionSolicitud { get; set; }
-        public string Justificativo { get; set; } // Este debe ser IFormFile
+        public string Justificativo { get; set; }
 
         public string DetalleGestion { get; set; }
         public DateTime FechaIngreso { get; set; }

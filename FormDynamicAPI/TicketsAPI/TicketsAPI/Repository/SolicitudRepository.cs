@@ -21,11 +21,11 @@ namespace TicketsAPI.Repository
         {
             try
             {
-                //Verifica si se subio un archivo
+   
                 string filePath = null;
                 if(solicitud.Justificativo != null)
                 {
-                    //Guardar el archivo en el servidor
+               
                     filePath = Path.Combine("uploads", solicitud.Justificativo.FileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -77,7 +77,7 @@ namespace TicketsAPI.Repository
                     FechaIngreso = c.FechaIngreso,
                 }).ToListAsync() ;
 
-                //Retorna la lista de solicitudes, puede estar vacia si no hay resultados
+       
                 return solicitudesUsuario;
             }
             catch(Exception ex)
@@ -137,7 +137,7 @@ namespace TicketsAPI.Repository
             }
         }
 
-        //Enpoint de obtener solicitudes mediante filtro de administrador
+
         public async Task<List<MostrarSolicitudAdministradorDTO>> GetAllSolitudesByFilter(long idUsuario, DateTime fechaIngreso)
         {
             try
@@ -210,14 +210,13 @@ namespace TicketsAPI.Repository
                     };
                 }
 
-                //Actualiza los valores de la solicitud existente
+ 
                 solicitudToUpdate.estadoSolicitud = solicitud.estadoSolicitud;
                 solicitudToUpdate.FechaGestion = solicitud.FechaGestion;
                 solicitudToUpdate.DetalleGestion = solicitud.DetalleGestion;
                 solicitudToUpdate.FechaActualizacion = solicitud.FechaActualizacion;
 
 
-                //Guarda los cambios en la base de datos
                 await _context.SaveChangesAsync();
 
                 return new MessageInfoSolicitudDTO

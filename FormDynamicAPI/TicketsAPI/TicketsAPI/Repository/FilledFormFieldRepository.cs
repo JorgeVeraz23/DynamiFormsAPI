@@ -136,7 +136,7 @@ namespace TicketsAPI.Repository
             var form = await _context.Forms
                 .Include(f => f.FormGroups)
                 .ThenInclude(g => g.FormFields)
-                .FirstOrDefaultAsync(f => f.IdForm == filledForm.FormId); // Usa el formId del filledForm
+                .FirstOrDefaultAsync(f => f.IdForm == filledForm.FormId);
 
             if (form == null) return null;
 
@@ -182,7 +182,7 @@ namespace TicketsAPI.Repository
                         {
                             IdFormField = ff.IdFormField,
                             Name = ff.Name,
-                            FieldType = ff.FieldType.Name // Aquí se asume que FieldType tiene una propiedad Name
+                            FieldType = ff.FieldType.Name 
                         }).ToList()
                     }).ToList(),
                     FilledForms = f.FilledForms.Select(fff => new FilledFormNewDto

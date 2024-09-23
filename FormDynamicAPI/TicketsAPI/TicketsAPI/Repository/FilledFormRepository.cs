@@ -46,13 +46,13 @@ namespace TicketsAPI.Repository
         public async Task<List<KeyValueDTO>> GetFilledFormsKeyValueAsync()
         {
             return await _context.FilledForms
-                .Include(ff => ff.Form) // Asegúrate de que la relación está configurada
+                .Include(ff => ff.Form) 
                 .Select(ff => new KeyValueDTO
                 {
                     Key = ff.Form.IdForm,
                     Value = ff.Form.Name
                 })
-                .Distinct() // Elimina duplicados si es necesario
+                .Distinct() 
                 .ToListAsync();
         }
 

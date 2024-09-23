@@ -73,8 +73,8 @@ namespace TicketsAPI.Repository
                 FormGroupId = formFieldDto.FormGroupId,
             };
 
-            // Si el FieldType es un dropdown, agregamos las opciones
-            if (formFieldDto.FieldTypeId == 3 /* ID del FieldType para Dropdown */)
+ 
+            if (formFieldDto.FieldTypeId == 3 )
             {
                 formField.Options = formFieldDto.DropdownOptions?.Select(option => new Option
                 {

@@ -41,7 +41,7 @@ namespace TicketsAPI.Repository
 
         public async Task<MessageInfoSolicitudDTO> CrearFormulario(FormDTO formDTO)
         {
-            // Crear una instancia de la entidad Form
+
             Form form = new Form();
             form.Name = formDTO.Name;
             form.Description = formDTO.Description;
@@ -49,20 +49,19 @@ namespace TicketsAPI.Repository
             form.DateRegister = DateTime.Now;
 
 
-            // Agregar el nuevo formulario al contexto
+
             await _context.Forms.AddAsync(form);
 
-            // Guardar los cambios en la base de datos
+
             await _context.SaveChangesAsync();
 
-            // Crear el mensaje de respuesta
             var message = new MessageInfoSolicitudDTO
             {
                 Cod = "201",
                 Mensaje = "Formulario creado exitosamente"
             };
 
-            // Retornar el mensaje de respuesta
+
             return message;
         }
 
@@ -102,20 +101,14 @@ namespace TicketsAPI.Repository
 
         public async Task<FormDynamicDTO> MostrarFormularioConGruposYCampos(long idForm)
         {
-            // Consulta a la base de datos con Include y ThenInclude
-            //var form = await _context.Forms
-            //    .Include(f => f.FormGroups)                // Incluye los grupos de formulario relacionados
-            //        .ThenInclude(fg => fg.FormFields)      // Incluye los campos de formulario dentro de cada grupo
-            //            .ThenInclude(ff => ff.FieldType)   // Incluye el tipo de campo relacionado con cada FormField
-            //    .FirstOrDefaultAsync(f => f.IdForm == idForm);  // Filtra por el Id del formulario
-
+        
             var form = await _context.Forms
         .Include(f => f.FormGroups)
             .ThenInclude(fg => fg.FormFields)
                 .ThenInclude(ff => ff.FieldType)
         .Include(f => f.FormGroups)
             .ThenInclude(fg => fg.FormFields)
-                .ThenInclude(ff => ff.Options) // Incluir las opciones aquí
+                .ThenInclude(ff => ff.Options) 
         .FirstOrDefaultAsync(f => f.IdForm == idForm);
 
             if (form == null)
@@ -123,7 +116,6 @@ namespace TicketsAPI.Repository
                  throw new ArgumentNullException("formulario ingresado es invalido");
             }
 
-            // Creación de un DTO para devolver los datos relevantes
             var formDto = new FormDynamicDTO
             {
                 IdForm = form.IdForm,
@@ -139,7 +131,7 @@ namespace TicketsAPI.Repository
                         Name = field.Name,
                         IsOptional = field.IsOptional,
                         Index = field.Index,
-                        FieldType = field.FieldType.Name, // Incluimos el tipo de campo (FieldType)
+                        FieldType = field.FieldType.Name, 
                         Options = field.Options.Select(option => new OptionDynamicDTO
                         {
                             IdOption = option.IdOption,

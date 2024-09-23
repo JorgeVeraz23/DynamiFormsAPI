@@ -34,7 +34,7 @@ namespace TicketsAPI.Controllers
 
             return Ok(response);
         }
-        //GetFormWithGroupsAndFieldsAndResponsesAsync
+
         [HttpGet("GetFormWithGroupsAndFieldsAndResponsesAsync")]
         public async Task<ActionResult> GetFormWithGroupsAndFieldsAndResponsesAsync(long id)
         {
