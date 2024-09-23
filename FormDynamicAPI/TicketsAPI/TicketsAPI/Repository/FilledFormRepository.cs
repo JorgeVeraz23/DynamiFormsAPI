@@ -9,6 +9,8 @@ namespace TicketsAPI.Repository
     {
 
         MessageInfoSolicitudDTO infoDTO = new MessageInfoSolicitudDTO();
+        MessageInfoSolicitudIdDTO infoIdDTO = new MessageInfoSolicitudIdDTO();
+
         private readonly ApplicationDbContext _context;
 
         public FilledFormRepository(ApplicationDbContext context)
@@ -17,7 +19,7 @@ namespace TicketsAPI.Repository
         }
 
 
-        public async Task<MessageInfoSolicitudDTO> CreateFilledForm(FilledFormDTO filledFormDTO)
+        public async Task<MessageInfoSolicitudIdDTO> CreateFilledForm(FilledFormDTO filledFormDTO)
         {
             FilledForm filledForm = new FilledForm
             {
@@ -31,15 +33,30 @@ namespace TicketsAPI.Repository
             await _context.FilledForms.AddAsync(filledForm);
             await _context.SaveChangesAsync();
 
-            infoDTO.Cod = "201";
-            infoDTO.Mensaje = "Filled Form Creado exitoamente";
+            infoIdDTO.Cod = "201";
+            infoIdDTO.Mensaje = "Filled Form Creado exitoamente";
+            infoIdDTO.Id = filledForm.IdFilledForm;
 
-            return infoDTO;
+
+
+            return infoIdDTO;
 
         }
 
+        public async Task<List<KeyValueDTO>> GetFilledFormsKeyValueAsync()
+        {
+            return await _context.FilledForms
+                .Include(ff => ff.Form) // Asegúrate de que la relación está configurada
+                .Select(ff => new KeyValueDTO
+                {
+                    Key = ff.Form.IdForm,
+                    Value = ff.Form.Name
+                })
+                .Distinct() // Elimina duplicados si es necesario
+                .ToListAsync();
+        }
 
-        
+
 
         public async Task<MessageInfoSolicitudDTO> DeleteFilledForm(long id)
         {

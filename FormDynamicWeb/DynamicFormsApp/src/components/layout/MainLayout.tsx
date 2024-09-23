@@ -34,6 +34,12 @@ const MainLayout = () => {
           </ListItemIcon>
           <ListItemText primary="Formularios" />
         </ListItemButton>
+        <ListItemButton onClick={() => navigate('/filled-form-page')}>
+          <ListItemIcon>
+            <AssignmentIcon />
+          </ListItemIcon>
+          <ListItemText primary="Formularios Lleno" />
+        </ListItemButton>
         <ListItemButton onClick={() => navigate('/create-form-page')}>
           <ListItemIcon>
             <AddIcon />
@@ -58,57 +64,58 @@ const MainLayout = () => {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-      <CssBaseline />
-      <Header handleDrawerToggle={handleDrawerToggle} drawerWidth={drawerWidth} />
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="menu options"
+    <CssBaseline />
+    <Header handleDrawerToggle={handleDrawerToggle} drawerWidth={drawerWidth} />
+    <Box
+      component="nav"
+      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      aria-label="menu options"
+    >
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true
+        }}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+        }}
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+    </Box>
+    <Box
   component="main"
   sx={{ 
     flexGrow: 1, 
     p: 3, 
-    ml: `${drawerWidth}px`,   // Ajuste del margen izquierdo
+    ml: `${drawerWidth}px`,
+    pt: 8, // Ajusta según la altura del Header
     display: 'flex', 
-    justifyContent: 'center',  // Centrar horizontalmente
-    alignItems: 'center',      // Centrar verticalmente
-    minHeight: '100vh',
-    width: '100%'              // Asegurar que ocupe todo el ancho
+    justifyContent: 'center',
+    alignItems: 'flex-start', 
+    minHeight: 'calc(100vh - 128px)', // Ajusta para que el footer no tape el contenido
+    width: '100%'
   }}
 >
-  <Toolbar />
-  <Outlet />
-</Box>
 
-      <Footer />
+      <Toolbar />
+      <Outlet />
     </Box>
+    <Footer />
+  </Box>
   );
 };
 

@@ -10,9 +10,11 @@ const Header = ({ handleDrawerToggle, drawerWidth }: { handleDrawerToggle: () =>
   sx={{
     width: { sm: `calc(100% - ${drawerWidth}px)` },
     ml: { sm: `${drawerWidth}px` },
-    bgcolor: '#1976d2' // Un azul más oscuro y profundo
+    bgcolor: '#1976d2',
+    zIndex: (theme) => theme.zIndex.drawer + 1 // Asegúrate de que el header esté encima del drawer
   }}
 >
+
   <Toolbar>
     <IconButton
       color="inherit"

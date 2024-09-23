@@ -37,6 +37,20 @@ namespace TicketsAPI.Controllers
 
         }
 
+        [HttpGet("GetFilledFormsKeyValue")]
+        public async Task<ActionResult<List<KeyValueDTO>>> GetFilledFormsKeyValue()
+        {
+            var filledForms = await _filledFormInterface.GetFilledFormsKeyValueAsync();
+
+            if (filledForms == null || !filledForms.Any())
+            {
+                return NotFound("No se encontraron formularios llenados.");
+            }
+
+            return Ok(filledForms);
+        }
+
+
 
         [HttpPost("CrearFilledForm")]
         public async Task<ActionResult> CrearFilledForm(FilledFormDTO filledForm)

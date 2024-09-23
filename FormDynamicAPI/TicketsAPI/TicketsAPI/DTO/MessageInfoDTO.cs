@@ -10,4 +10,14 @@
         public string Cod { get; set; }
         public string Mensaje { get; set; }
     }
+
+
+    public class MessageInfoSolicitudIdDTO
+    {
+        public string Cod { get; set; }
+        public string Mensaje { get; set; }
+        public long Id { get; set; }
+    }
+
+
 }

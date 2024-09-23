@@ -14,7 +14,8 @@ import FormDisplay from '../pages/DynamicFormPages/EditFormPage';
 import CreateFormPage from '../pages/DynamicFormPages/CreateFormPage'
 import CreateFormGroupPage from '../pages/DynamicFormPages/CreateFormGroupPage'
 import CreateFormFieldPage from '../pages/DynamicFormPages/CreateFormFieldPage'
-
+import FormResponsesDisplay from '../pages/DynamicFormPages/FormResponsePage'
+import FilledFormSelector from '../pages/DynamicFormPages/FilledFormSelectorPage';
 
 const AppRoutes = () => {
   return (
@@ -23,8 +24,10 @@ const AppRoutes = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="form-page" element={<FormCarPage />} />
+          <Route path="filled-form-page" element={<FilledFormSelector />} />
           {/* <Route path='/edit-form/:id' element={<EditFormPage />} /> */}
           <Route path='/form-display/:id' element={<FormDisplay />} />
+          <Route path='/form-response-display/:id' element={<FormResponsesDisplay />} />
           <Route path='create-form-page' element={<CreateFormPage/>} />
           <Route path='create-form-group' element={<CreateFormGroupPage />} />
           <Route path='create-form-field' element={<CreateFormFieldPage />} />

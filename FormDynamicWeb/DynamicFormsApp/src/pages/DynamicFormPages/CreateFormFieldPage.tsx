@@ -148,7 +148,7 @@ const CreateFormFilePage: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginTop: '20px' }}>
       <Paper elevation={3} style={{ padding: 20 }}>
         <Typography variant="h5" component="h2" gutterBottom>
           Crear Campo de Formulario

@@ -20,7 +20,7 @@ namespace TicketsAPI.Repository
         public async Task<MessageInfoSolicitudDTO> CreateFilledFormField(CreateFilledFormFieldDTO createFilledFormFieldDTO)
         {
 
-            if(createFilledFormFieldDTO.SelectedOptionId == 0)
+            if (createFilledFormFieldDTO.SelectedOptionId == 0)
             {
                 createFilledFormFieldDTO.SelectedOptionId = null;
             }
@@ -32,8 +32,8 @@ namespace TicketsAPI.Repository
                 NumericValue = createFilledFormFieldDTO.NumericValue,
                 DateTimeValue = createFilledFormFieldDTO.DateTimeValue,
                 SelectedOptionId = createFilledFormFieldDTO.SelectedOptionId,
-                FilledFormId = createFilledFormFieldDTO.FormFieldId,
-           
+                FilledFormId = createFilledFormFieldDTO.FilledFormId,
+
                 Active = true,
                 DateRegister = DateTime.Now,
                 UserRegister = "SYSTEM",
@@ -48,7 +48,7 @@ namespace TicketsAPI.Repository
             infoDTO.Mensaje = "Filled Form Field creado exitosamente";
 
             return infoDTO;
-           
+
 
         }
 
@@ -69,7 +69,7 @@ namespace TicketsAPI.Repository
             infoDTO.Mensaje = "Filled Form Field editado correctamente";
 
             return infoDTO;
-            
+
         }
 
         public async Task<MessageInfoSolicitudDTO> EliminarFilledFormField(long id)
@@ -127,10 +127,16 @@ namespace TicketsAPI.Repository
 
         public async Task<FormWithResponsesDto> GetFormWithGroupsAndFieldsAndResponsesAsync(long filledFormId)
         {
+            var filledForm = await _context.FilledForms
+                .Include(ff => ff.FilledFormFields)
+                .FirstOrDefaultAsync(ff => ff.IdFilledForm == filledFormId);
+
+            if (filledForm == null) return null;
+
             var form = await _context.Forms
-            .Include(f => f.FilledForms)
-                .ThenInclude(ff => ff.FilledFormFields)
-            .FirstOrDefaultAsync(f => f.IdForm == filledFormId);
+                .Include(f => f.FormGroups)
+                .ThenInclude(g => g.FormFields)
+                .FirstOrDefaultAsync(f => f.IdForm == filledForm.FormId); // Usa el formId del filledForm
 
             if (form == null) return null;
 
@@ -139,7 +145,7 @@ namespace TicketsAPI.Repository
                 IdForm = form.IdForm,
                 Name = form.Name,
                 Description = form.Description,
-                Responses = form.FilledForms.SelectMany(ff => ff.FilledFormFields).Select(ff => new FilledFormFieldRDto
+                Responses = filledForm.FilledFormFields.Select(ff => new FilledFormFieldRDto
                 {
                     IdFilledFormField = ff.IdFilledFormField,
                     TextValue = ff.TextValue,
@@ -151,7 +157,7 @@ namespace TicketsAPI.Repository
             };
 
             return formDto;
-
         }
+
     }
 }

@@ -96,7 +96,7 @@ const CreateFormGroupPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: 4 }}>
+    <Container sx={{ marginTop: '20px' }}>
       <Paper elevation={6} sx={{ padding: 4, borderRadius: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom align="center" color="primary">
           Crear Grupo de Formulario

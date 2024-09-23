@@ -25,6 +25,9 @@ export const GETALL_OPTION = `${OPTION_PREFIX}ObtenerTodasLasOpciones`;
 //#endregion
 
 //#region FilledForms
+//https://localhost:7016/api/FilledForm/GetFilledFormsKeyValue
+const FILLEDFORM_PREFIX = "FilledForm/";
+export const GETALL_FILLEDFORMFILLED = `${FILLEDFORM_PREFIX}GetFilledFormsKeyValue`
 //#endregion
 
 //#region FilledFormsField

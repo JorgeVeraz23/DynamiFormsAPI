@@ -77,7 +77,7 @@
         public long? SelectedOptionId { get; set; }
 
         // ID del campo en el formulario original
-        public long FormFieldId { get; set; }
+        public long FilledFormId { get; set; }
     }
 
 

@@ -5,7 +5,7 @@ import formGroupReducer from "./slice/FormGroupSlice"
 import FormFieldReducer from "./slice/FormFieldSlice";
 // import FieldTypeReducer from "./slice/FieldTypeSlice";
 import FieldTypeReducer from "./slice/FieldTypeSlice";
-
+import filledFormReducer from "./slice/filledFormSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
         formGroup: formGroupReducer,
         formField: FormFieldReducer,
         fielType: FieldTypeReducer,
+        filledForm: filledFormReducer,
     },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself

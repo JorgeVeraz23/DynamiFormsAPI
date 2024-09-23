@@ -1,20 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Grid, Paper, CircularProgress, Alert, Card, CardContent, Select, MenuItem, FormControl, InputLabel, TextField, Checkbox, FormControlLabel, RadioGroup, Radio, Button, Slider, Switch } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Grid,
+  Paper,
+  CircularProgress,
+  Alert,
+  Card,
+  CardContent,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Button,
+  Slider,
+  Switch,
+} from "@mui/material";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
 const FormDisplay = () => {
   const [formData, setFormData] = useState(null);
+  const [filledFormId, setFilledFormId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
   const [fieldsEnabled, setFieldsEnabled] = useState(false);
+  const [filledFields, setFilledFields] = useState({});
 
   useEffect(() => {
     const fetchForm = async () => {
       try {
         const response = await axios.get(`https://localhost:7016/api/Form/MostrarFormulariosConCamposYGrupos?id=${id}`);
         setFormData(response.data);
+
+        // Crear el FilledForm al cargar el formulario
+        const newFilledFormId = await createFilledForm(response.data.idForm);
+        setFilledFormId(newFilledFormId);
       } catch (err) {
         setError("Error al cargar el formulario");
       } finally {
@@ -25,11 +52,65 @@ const FormDisplay = () => {
     fetchForm();
   }, [id]);
 
+  const createFilledForm = async (formId) => {
+    const response = await axios.post('https://localhost:7016/api/FilledForm/CrearFilledForm', {
+      idFilledForm: 0,
+      formId: formId,
+    });
+    return response.data.id;
+  };
+
+  const handleInputChange = (fieldId, fieldType) => (event, value) => {
+    const newValue = fieldType === "Slider" ? value : event.target.value;
+    const checked = fieldType === "CheckBox" || fieldType === "Switch" ? event.target.checked : null;
+
+    const fieldData = {
+      isChecked: fieldType === "CheckBox" || fieldType === "Switch" ? checked : null,
+      textValue: fieldType === "TextField" ? newValue : null,
+      numericValue: fieldType === "NumberField" ? newValue : null,
+      dateTimeValue: fieldType === "DatePicker" ? new Date(newValue).toISOString() : null,
+      selectedOptionId: fieldType === "DropDown" || fieldType === "RadioButton" ? newValue : null,
+      sliderValue: fieldType === "Slider" ? newValue : null,
+      formFieldId: fieldId,
+    };
+
+    setFilledFields(prev => ({ ...prev, [fieldId]: fieldData }));
+  };
+
+  const handleSubmit = async () => {
+    if (!filledFormId) {
+      alert("No se ha podido crear el filledForm.");
+      return;
+    }
+  
+    try {
+      const promises = Object.keys(filledFields).map(async (fieldId) => {
+        const fieldData = filledFields[fieldId];
+  
+        return await axios.post(`https://localhost:7016/api/FilledFormField/CrearFilledFormField`, {
+          filledFormId: filledFormId,  // Enviamos el filledFormId aquí
+          isChecked: fieldData.isChecked,
+          textValue: fieldData.textValue,
+          numericValue: fieldData.numericValue,
+          dateTimeValue: fieldData.dateTimeValue,
+          selectedOptionId: fieldData.selectedOptionId,
+        });
+      });
+  
+      await Promise.all(promises);
+  
+      alert("Formulario enviado correctamente");
+    } catch (err) {
+      alert("Error al enviar el formulario");
+    }
+  };
+  
+
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
-    <Container>
+    <Container  sx={{ marginTop: '20px', marginBottom: '40px' }}>
       {formData && (
         <Paper elevation={3} style={{ padding: 20 }}>
           <Typography variant="h4" component="h1" gutterBottom>
@@ -55,31 +136,26 @@ const FormDisplay = () => {
                       <Typography variant="body2" gutterBottom>
                         {field.name}
                       </Typography>
+
                       {field.fieldType === "TextField" && (
                         <TextField
                           fullWidth
                           variant="outlined"
                           placeholder={field.name}
                           disabled={!fieldsEnabled}
+                          onChange={handleInputChange(field.idFormField, "TextField")}
+                          value={filledFields[field.idFormField]?.textValue || ''}
                         />
                       )}
-                      {field.fieldType === "TextArea" && (
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          placeholder={field.name}
-                          multiline
-                          rows={4}
-                          disabled={!fieldsEnabled}
-                        />
-                      )}
+
                       {field.fieldType === "DropDown" && (
                         <FormControl fullWidth variant="outlined">
                           <InputLabel>{field.name}</InputLabel>
                           <Select
                             label={field.name}
-                            defaultValue=""
                             disabled={!fieldsEnabled}
+                            onChange={handleInputChange(field.idFormField, "DropDown")}
+                            value={filledFields[field.idFormField]?.selectedOptionId || ''}
                           >
                             <MenuItem value=""><em>Seleccione</em></MenuItem>
                             {field.options.map(option => (
@@ -90,14 +166,16 @@ const FormDisplay = () => {
                           </Select>
                         </FormControl>
                       )}
+
                       {field.fieldType === "CheckBox" && (
                         <FormControlLabel
-                          control={<Checkbox disabled={!fieldsEnabled} />}
+                          control={<Checkbox disabled={!fieldsEnabled} checked={filledFields[field.idFormField]?.isChecked || false} onChange={handleInputChange(field.idFormField, "CheckBox")} />}
                           label={field.name}
                         />
                       )}
+
                       {field.fieldType === "RadioButton" && (
-                        <RadioGroup disabled={!fieldsEnabled}>
+                        <RadioGroup disabled={!fieldsEnabled} value={filledFields[field.idFormField]?.selectedOptionId || ''} onChange={handleInputChange(field.idFormField, "RadioButton")}>
                           {field.options.map(option => (
                             <FormControlLabel
                               key={option.idOption}
@@ -108,15 +186,19 @@ const FormDisplay = () => {
                           ))}
                         </RadioGroup>
                       )}
-                      {field.fieldType === "NumberField" || field.fieldType === "PhoneNumberField" && (
+
+                      {(field.fieldType === "NumberField" || field.fieldType === "PhoneNumberField") && (
                         <TextField
                           fullWidth
                           variant="outlined"
                           type="number"
                           placeholder={field.name}
                           disabled={!fieldsEnabled}
+                          onChange={handleInputChange(field.idFormField, "NumberField")}
+                          value={filledFields[field.idFormField]?.numericValue || ''}
                         />
                       )}
+
                       {field.fieldType === "DatePicker" && (
                         <TextField
                           fullWidth
@@ -125,36 +207,37 @@ const FormDisplay = () => {
                           placeholder={field.name}
                           InputLabelProps={{ shrink: true }}
                           disabled={!fieldsEnabled}
+                          onChange={handleInputChange(field.idFormField, "DatePicker")}
+                          value={filledFields[field.idFormField]?.dateTimeValue?.split('T')[0] || ''}
                         />
                       )}
+
                       {field.fieldType === "Slider" && (
                         <Slider
                           defaultValue={30}
                           aria-labelledby="continuous-slider"
                           disabled={!fieldsEnabled}
+                          onChange={(event, value) => handleInputChange(field.idFormField, "Slider")(event, value)}
+                          value={filledFields[field.idFormField]?.sliderValue || 30}
                         />
                       )}
+
                       {field.fieldType === "Switch" && (
                         <FormControlLabel
-                          control={<Switch disabled={!fieldsEnabled} />}
+                          control={<Switch disabled={!fieldsEnabled} checked={filledFields[field.idFormField]?.isChecked || false} onChange={handleInputChange(field.idFormField, "Switch")} />}
                           label={field.name}
                         />
                       )}
-                      {field.fieldType === "ColorPicker" && (
-                        <TextField
-                          type="color"
-                          label={field.name}
-                          variant="outlined"
-                          disabled={!fieldsEnabled}
-                        />
-                      )}
-                      {/* Agrega más tipos de campo según sea necesario */}
                     </Grid>
                   ))}
                 </Grid>
               </CardContent>
             </Card>
           ))}
+
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Enviar Formulario
+          </Button>
         </Paper>
       )}
     </Container>
