@@ -57,10 +57,12 @@ const FormDisplay = () => {
                             label={field.name}
                             defaultValue=""
                           >
-                            {/* Aquí deberías llenar las opciones del dropdown si las tienes */}
                             <MenuItem value=""><em>Seleccione</em></MenuItem>
-                            <MenuItem value={1}>Opción 1</MenuItem>
-                            <MenuItem value={2}>Opción 2</MenuItem>
+                            {field.options.map(option => (
+                              <MenuItem key={option.idOption} value={option.idOption}>
+                                {option.name}
+                              </MenuItem>
+                            ))}
                           </Select>
                         </FormControl>
                       )}
@@ -81,7 +83,6 @@ const FormDisplay = () => {
 };
 
 export default FormDisplay;
-
 
 
 
