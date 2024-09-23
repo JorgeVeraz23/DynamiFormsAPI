@@ -1,9 +1,8 @@
-// import { FormEntity } from "data/Entity/FormEntity";
+
 import { FormFieldEntity } from "data/Entity/FormFieldEntity";
 import axiosClient from "../../api/apiClient";
 import { AxiosException } from "../../api/exception";
-// import { GETALL_FORM, GETFORM_BYID, CREATE_FORM, UPDATE_FORM, DELETE_FORM, SELECTOR_FORMS } from "../../url/url";
-// import IFormRepository from "../repository/FormRepository";
+
 import { GETALL_FORMFIELD, GET_FORMFIELD, CREATE_FORMFIELD, UPDATE_FORMFIELD, DELETE_FORMFIELD, SELECTOR_FORMFIELD } from "../../url/url";
 import IFormFieldRepository from "data/repository/FormFieldRepository";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";

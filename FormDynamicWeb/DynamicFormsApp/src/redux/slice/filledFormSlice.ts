@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
-// import { getFileTypeSelectorAction } from "../action/FieldTypeAction";
+
 import { getFilledFormSelectorAction } from "../action/FilledFormAction";
 
 interface FieldTypeState {
@@ -42,6 +42,6 @@ const filledFormSlice = createSlice({
 },
 });
 
-// Exportar acciones y el reducer
+
 export const { resetFieldTypeState } = filledFormSlice.actions;
 export default filledFormSlice.reducer;

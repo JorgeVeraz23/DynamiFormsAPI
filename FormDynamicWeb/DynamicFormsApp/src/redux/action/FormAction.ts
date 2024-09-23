@@ -10,7 +10,7 @@ export interface CreateFormResponse {
     message: string;
 }
 
-// Acción para obtener todos los formularios
+
 export const getAllFormAction = createAsyncThunk<FormEntity[], void>(
     "form/GetAllFormAction",
     async (_, thunkAPI) => {
@@ -24,7 +24,7 @@ export const getAllFormAction = createAsyncThunk<FormEntity[], void>(
     }
 );
 
-// Acción para obtener los formularios del selector
+
 export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     "form/GetFormSelectorAction",
     async (_, thunkAPI) => {
@@ -38,7 +38,7 @@ export const getFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     }
 );
 
-// Acción para obtener un formulario por ID
+
 export const getFormByIdAction = createAsyncThunk<FormEntity, number>(
     "form/GetFormByIdAction",
     async (id, thunkAPI) => {
@@ -52,7 +52,6 @@ export const getFormByIdAction = createAsyncThunk<FormEntity, number>(
     }
 );
 
-// Acción para eliminar un formulario
 export const deleteFormAction = createAsyncThunk<number, number>(
     "form/DeleteFormAction",
     async (id, thunkAPI) => {
@@ -66,7 +65,7 @@ export const deleteFormAction = createAsyncThunk<number, number>(
     }
 );
 
-// Acción para crear un formulario
+
 export const createFormAction = createAsyncThunk<CreateFormResponse, FormEntity>(
     "form/CreateFormAction",
     async (data, thunkAPI) => {
@@ -80,7 +79,6 @@ export const createFormAction = createAsyncThunk<CreateFormResponse, FormEntity>
     }
 );
 
-// Acción para editar un formulario
 export const editFormAction = createAsyncThunk<FormEntity, FormEntity>(
     "form/EditFormAction",
     async (data, thunkAPI) => {

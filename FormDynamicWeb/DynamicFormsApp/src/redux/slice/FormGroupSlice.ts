@@ -5,14 +5,14 @@ import {
     deleteFormGroupAction,
     createFormGroupAction,
     editFormGroupAction,
-    getFormGroupSelectorAction // Importa la nueva acción
+    getFormGroupSelectorAction 
 } from "../action/FormGroupAction";
 
 import { CreateFormResponse } from "redux/action/FormAction";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
-// Tipos para el estado
+
 interface FormGroupState {
     formsGroup: FormGroupEntity[];
     selectedFormGroup: FormGroupEntity | null;
@@ -21,7 +21,7 @@ interface FormGroupState {
     error: string | null;
 }
 
-// Estado inicial tipado
+
 const initialState: FormGroupState = {
     formsGroup: [],
     selectedFormGroup: null,
@@ -30,7 +30,6 @@ const initialState: FormGroupState = {
     error: null
 };
 
-// Slice con tipado
 const formGroupSlice = createSlice({
     name: "formGroup",
     initialState,
@@ -47,7 +46,7 @@ const formGroupSlice = createSlice({
             })
             .addCase(getAllFormGroupAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
-                state.error = action.payload as string; // Asegúrate de convertirlo a string
+                state.error = action.payload as string; 
             })
             .addCase(getFormGroupByIdAction.pending, (state) => {
                 state.loading = true;
@@ -107,7 +106,7 @@ const formGroupSlice = createSlice({
             .addCase(getFormGroupSelectorAction.fulfilled, (state, action: PayloadAction<KeyValueEntity[]>) => {
                 console.log("Datos de tipos de campo almacenados:", action.payload);
                 state.loading = false;
-                state.KeyValueSelectorFormGroup = action.payload; // Aquí puedes ajustar según cómo quieras manejar el estado
+                state.KeyValueSelectorFormGroup = action.payload; 
             })
             .addCase(getFormGroupSelectorAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;

@@ -1,4 +1,4 @@
-// Asegúrate de tener un tipo que refleje la respuesta de la API
+
 export interface FormDynamicDTO {
     idForm: number;
     name: string;

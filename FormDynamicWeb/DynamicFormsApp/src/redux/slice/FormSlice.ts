@@ -12,7 +12,7 @@ import { FormEntity } from "data/Entity/FormEntity";
 import { FormGroupEntity } from "data/Entity/FormGroupEntity";
 import { KeyValueEntity } from "data/Entity/KeyValueEntity";
 
-// Tipos para el estado
+
 interface FormState {
     forms: FormEntity[];
     selectedForm: FormEntity | null;
@@ -21,7 +21,7 @@ interface FormState {
     error: string | null;
 }
 
-// Estado inicial tipado
+
 const initialState: FormState = {
     forms: [],
     selectedForm: null,
@@ -30,7 +30,7 @@ const initialState: FormState = {
     error: null
 };
 
-// Slice con tipado
+
 const formSlice = createSlice({
     name: "form",
     initialState,
@@ -47,7 +47,7 @@ const formSlice = createSlice({
             })
             .addCase(getAllFormAction.rejected, (state, action: PayloadAction<string | unknown>) => {
                 state.loading = false;
-                state.error = action.payload as string; // Asegúrate de convertirlo a string
+                state.error = action.payload as string; 
             })
             .addCase(getFormByIdAction.pending, (state) => {
                 state.loading = true;

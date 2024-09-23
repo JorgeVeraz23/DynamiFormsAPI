@@ -39,7 +39,6 @@ const FormDisplay = () => {
         const response = await axios.get(`https://localhost:7016/api/Form/MostrarFormulariosConCamposYGrupos?id=${id}`);
         setFormData(response.data);
 
-        // Crear el FilledForm al cargar el formulario
         const newFilledFormId = await createFilledForm(response.data.idForm);
         setFilledFormId(newFilledFormId);
       } catch (err) {

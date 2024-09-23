@@ -14,7 +14,7 @@ const Footer = () => {
     bottom: 0,
     marginTop: "10px",
     paddingTop: "10px",
-    height: '60px' // Asegúrate de definir una altura
+    height: '60px' 
   }}
 >
       <Typography variant="body2">© 2024 Dynamic Forms App. All rights reserved.</Typography>

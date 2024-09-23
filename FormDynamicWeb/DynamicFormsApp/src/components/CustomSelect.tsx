@@ -1,7 +1,7 @@
-// CustomSelect.tsx
+
 import { Box, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
-// import Select from 'react-select';
+
 import Select from 'react-select'
 
 
@@ -89,7 +89,7 @@ export default function CustomSelect<T>(props: CustomSelectProps<T>) {
                 options={options}
                 onChange={(option: OptionType<T>) => handleSelectChange(option)}
                 styles={customStyles}
-                menuPortalTarget={document.body} // Renderiza el menú en el document.body
+                menuPortalTarget={document.body} 
             />
             {isRequired && valueControl?.value === "" && (
                 <Typography fontSize={12} color="red">

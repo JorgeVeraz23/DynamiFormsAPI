@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// import FormRepositoryImpl from "../../data/repositoryImpl/FormRepositoryImpl";
-// import { FormEntity } from "data/Entity/FormEntity";
+
 import FormFieldRepositoryImpl from "../../data/repositoryImpl/FormFieldRepositoryImpl";
 import { FormFieldEntity } from "data/Entity/FormFieldEntity";
 
@@ -13,7 +12,6 @@ export interface CreateFormResponse {
     message: string;
 }
 
-// Acción para obtener todos los formularios
 export const getAllFormFieldAction = createAsyncThunk<FormFieldEntity[], void>(
     "formField/GetAllFormFieldAction",
     async (_, thunkAPI) => {
@@ -27,7 +25,7 @@ export const getAllFormFieldAction = createAsyncThunk<FormFieldEntity[], void>(
     }
 );
 
-// Acción para obtener los formularios del selector
+
 export const getFormFieldSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     "formField/GetFormFieldSelectorAction",
     async (_, thunkAPI) => {
@@ -41,7 +39,7 @@ export const getFormFieldSelectorAction = createAsyncThunk<KeyValueEntity[], voi
     }
 );
 
-// Acción para obtener un formulario por ID
+
 export const getFormFieldByIdAction = createAsyncThunk<FormFieldEntity, number>(
     "formField/GetFormFieldByIdAction",
     async (id, thunkAPI) => {
@@ -55,7 +53,7 @@ export const getFormFieldByIdAction = createAsyncThunk<FormFieldEntity, number>(
     }
 );
 
-// Acción para eliminar un formulario
+
 export const deleteFormFieldAction = createAsyncThunk<number, number>(
     "formField/DeleteFormFieldAction",
     async (id, thunkAPI) => {
@@ -69,7 +67,7 @@ export const deleteFormFieldAction = createAsyncThunk<number, number>(
     }
 );
 
-// Acción para crear un formulario
+
 export const createFormFieldAction = createAsyncThunk<CreateFormResponse, FormFieldEntity>(
     "formField/CreateFormFieldAction",
     async (data, thunkAPI) => {
@@ -83,7 +81,7 @@ export const createFormFieldAction = createAsyncThunk<CreateFormResponse, FormFi
     }
 );
 
-// Acción para editar un formulario
+
 export const editFormFieldAction = createAsyncThunk<FormFieldEntity, FormFieldEntity>(
     "formField/editFormFieldAction",
     async (data, thunkAPI) => {

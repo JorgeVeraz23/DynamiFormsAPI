@@ -1,4 +1,4 @@
-// src/components/Header.tsx
+
 import React from 'react';
 import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,7 +11,7 @@ const Header = ({ handleDrawerToggle, drawerWidth }: { handleDrawerToggle: () =>
     width: { sm: `calc(100% - ${drawerWidth}px)` },
     ml: { sm: `${drawerWidth}px` },
     bgcolor: '#1976d2',
-    zIndex: (theme) => theme.zIndex.drawer + 1 // Asegúrate de que el header esté encima del drawer
+    zIndex: (theme) => theme.zIndex.drawer + 1 
   }}
 >
 

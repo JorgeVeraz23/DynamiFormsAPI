@@ -22,26 +22,26 @@ import Autocomplete from '@mui/material/Autocomplete';
 const CreateFormGroupPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  // Estado local para los valores del formulario
+
   const [formGroup, setFormGroup] = useState<FormGroupEntity>({
     idFormGroup: 0,
     name: "",
     formId: 0,
   });
 
-  const [selectedForm, setSelectedForm] = useState<FormEntity | null>(null); // Estado para el valor del Autocomplete
+  const [selectedForm, setSelectedForm] = useState<FormEntity | null>(null); 
   const [error, setError] = useState(false);
 
-  // Obtener el estado desde el store de Redux
+
   const { loading, error: formGroupError } = useSelector((state: RootState) => state.formGroup);
   const { forms, loading: formsLoading } = useSelector((state: RootState) => state.form);
 
   useEffect(() => {
-    // Obtener los formularios al cargar el componente
+  
     dispatch(getAllFormAction());
   }, [dispatch]);
 
-  // Manejar cambios en los campos del formulario
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string, value: unknown }>) => {
     const { name, value } = e.target as HTMLInputElement;
     setFormGroup({
@@ -69,11 +69,10 @@ const CreateFormGroupPage: React.FC = () => {
 
     setError(false);
 
-    // Despachar acción para crear el grupo de formularios
     const response = await dispatch(createFormGroupAction(formGroup)) as { payload: any };
 
     if (response.payload.success) {
-      // Muestra el alert de éxito
+ 
       Swal.fire({
         title: "Grupo de formulario creado",
         text: response.payload.message,
@@ -81,11 +80,11 @@ const CreateFormGroupPage: React.FC = () => {
         confirmButtonText: "Aceptar",
       });
 
-      // Limpiar los campos del formulario
+
       setFormGroup({ idFormGroup: 0, name: "", formId: 0 });
-      setSelectedForm(null); // Limpiar el valor del Autocomplete
+      setSelectedForm(null); 
     } else {
-      // Mostrar alert de error
+ 
       Swal.fire({
         title: "Error",
         text: response.payload.message,
@@ -121,10 +120,10 @@ const CreateFormGroupPage: React.FC = () => {
               <CircularProgress />
             ) : (
               <Autocomplete
-                value={selectedForm} // Vinculado al estado para que se limpie correctamente
-                options={forms} // Lista de formularios disponibles
-                getOptionLabel={(option: FormEntity) => option.name} // Etiqueta mostrada
-                onChange={handleSelectChange} // Cambiar el valor seleccionado
+                value={selectedForm} 
+                options={forms} 
+                getOptionLabel={(option: FormEntity) => option.name} 
+                onChange={handleSelectChange} 
                 renderInput={(params) => (
                   <TextField
                     {...params}

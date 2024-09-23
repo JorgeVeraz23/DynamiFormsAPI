@@ -1,11 +1,10 @@
-// src/routes/index.tsx
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import MainLayout from '../components/layout/MainLayout';
 import Home from '../pages/DynamicFormPages/Home';
 import About from '../pages/DynamicFormPages/About';
-// import { FormCardPage } from '../pages/DynamicFormPages/FormCardPage';
 import FormCarPage from "../pages/DynamicFormPages/FormCardPage"
 import PetForm from '../pages/DynamicFormPages/PetForm';
 
@@ -25,7 +24,6 @@ const AppRoutes = () => {
           <Route index element={<Home />} />
           <Route path="form-page" element={<FormCarPage />} />
           <Route path="filled-form-page" element={<FilledFormSelector />} />
-          {/* <Route path='/edit-form/:id' element={<EditFormPage />} /> */}
           <Route path='/form-display/:id' element={<FormDisplay />} />
           <Route path='/form-response-display/:id' element={<FormResponsesDisplay />} />
           <Route path='create-form-page' element={<CreateFormPage/>} />

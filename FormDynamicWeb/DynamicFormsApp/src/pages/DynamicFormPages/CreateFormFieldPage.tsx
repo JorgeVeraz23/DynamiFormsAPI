@@ -31,7 +31,6 @@ import { getFormGroupSelectorAction } from "../../redux/action/FormGroupAction";
 const CreateFormFilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  // Estado para opciones del dropdown
   const [dropdownOptions, setDropdownOptions] = useState<{ idOption: number, name: string }[]>([]);
   const [newOption, setNewOption] = useState<string>("");
 
@@ -88,7 +87,6 @@ const CreateFormFilePage: React.FC = () => {
     });
   };
 
-  // Manejar opciones del dropdown
   const handleAddOption = () => {
     if (newOption.trim()) {
       setDropdownOptions([...dropdownOptions, { idOption: 0, name: newOption }]);
@@ -110,10 +108,10 @@ const CreateFormFilePage: React.FC = () => {
 
     setError(false);
 
-    // Crear payload incluyendo las opciones del dropdown si es el tipo seleccionado
+   
     const payload = {
       ...formFile,
-      dropdownOptions: formFile.fieldTypeId === 3 ? dropdownOptions : [], // 1 es un ejemplo del id del tipo dropdown
+      dropdownOptions: formFile.fieldTypeId === 3 ? dropdownOptions : [],
     };
 
     const response = await dispatch(createFormFieldAction(payload)) as { payload: any };
@@ -228,7 +226,7 @@ const CreateFormFilePage: React.FC = () => {
               />
             </Grid>
 
-            {/* Mostrar sección de opciones si el tipo es dropdown */}
+
             {formFile.fieldTypeId === 3 && (
               <Grid item xs={12}>
                 <Typography variant="h6">Opciones del Dropdown</Typography>

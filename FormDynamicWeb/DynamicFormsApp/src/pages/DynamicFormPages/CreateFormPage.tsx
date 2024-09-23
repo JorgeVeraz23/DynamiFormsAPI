@@ -16,8 +16,7 @@ import Swal from 'sweetalert2';
 
 const CreateFormPage: React.FC = () => {
   const dispatch = useAppDispatch();
- 
-  // Estado para el formulario basado en la entidad FormEntity
+
   const [form, setForm] = useState<FormEntity>({
     idForm: 0,
     name: '',
@@ -26,7 +25,7 @@ const CreateFormPage: React.FC = () => {
   
   const [error, setError] = useState(false);
 
-  // Función para manejar el cambio de valores de los campos
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string, value: unknown }>) => {
     const { name, value } = e.target as HTMLInputElement;
     setForm({
@@ -35,36 +34,34 @@ const CreateFormPage: React.FC = () => {
     });
   };
 
-  // Función para manejar el envío del formulario
+
   const handleSubmit = async () => {
     if (!form.name || !form.description) {
       setError(true);
       return;
     }
 
-    setError(false); // Resetea el error en caso de que los campos estén completos
+    setError(false); 
 
-    // Despacha la acción con el formulario y espera la respuesta
     const response = await dispatch(createFormAction(form)) as { payload: CreateFormResponse };
 
     if (response.payload.success) {
-      // Limpia los campos del formulario
+
       setForm({ idForm: 0, name: '', description: '' });
-        // Despacha la acción para obtener todos los formularios
+
         await dispatch(getAllFormAction());
 
-      // Muestra el alert de éxito
       Swal.fire({
         title: 'Formulario Creado',
-        text: response.payload.message, // Mensaje de respuesta de la API
+        text: response.payload.message, 
         icon: 'success',
         confirmButtonText: 'Aceptar',
       });
     } else {
-      // Muestra un alert de error si hubo un problema
+ 
       Swal.fire({
         title: 'Error',
-        text: response.payload.message, // Mensaje de error de la API
+        text: response.payload.message, 
         icon: 'error',
         confirmButtonText: 'Aceptar',
       });
@@ -84,7 +81,7 @@ const CreateFormPage: React.FC = () => {
               fullWidth
               label="Nombre del Formulario"
               variant="outlined"
-              name="name" // Importante para identificar el campo en el estado
+              name="name" 
               value={form.name}
               onChange={handleInputChange}
               error={error && form.name === ''}
@@ -99,7 +96,7 @@ const CreateFormPage: React.FC = () => {
               multiline
               rows={4}
               variant="outlined"
-              name="description" // Identifica el campo de descripción en el estado
+              name="description" 
               value={form.description}
               onChange={handleInputChange}
               error={error && form.description === ''}

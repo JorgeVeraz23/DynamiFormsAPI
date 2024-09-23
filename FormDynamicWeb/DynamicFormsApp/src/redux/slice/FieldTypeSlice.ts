@@ -41,6 +41,6 @@ const fieldTypeSlice = createSlice({
 },
 });
 
-// Exportar acciones y el reducer
+
 export const { resetFieldTypeState } = fieldTypeSlice.actions;
 export default fieldTypeSlice.reducer;

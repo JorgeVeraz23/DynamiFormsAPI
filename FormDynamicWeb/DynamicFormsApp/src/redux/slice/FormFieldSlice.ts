@@ -30,10 +30,10 @@ const formFieldSlice = createSlice({
   name: "formField",
   initialState,
   reducers: {
-    // Puedes definir reductores adicionales si es necesario.
+  
   },
   extraReducers: (builder) => {
-    // Obtener todos los FormFields
+
     builder.addCase(getAllFormFieldAction.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -47,7 +47,6 @@ const formFieldSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // Obtener el selector de FormFields
     builder.addCase(getFormFieldSelectorAction.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -61,7 +60,7 @@ const formFieldSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // Obtener FormField por ID
+
     builder.addCase(getFormFieldByIdAction.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -75,7 +74,6 @@ const formFieldSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // Eliminar FormField
     builder.addCase(deleteFormFieldAction.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -89,7 +87,6 @@ const formFieldSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // Crear FormField
     builder.addCase(createFormFieldAction.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -102,7 +99,7 @@ const formFieldSlice = createSlice({
       state.error = (action.payload as { success: boolean; message: string }).message;
     });
 
-    // Editar FormField
+
     builder.addCase(editFormFieldAction.pending, (state) => {
       state.loading = true;
       state.error = null;

@@ -14,7 +14,6 @@ export interface CreateFormResponse {
 
 
 
-// Acción para obtener los formularios del selector
 export const getFilledFormSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     "filledForm/GetFilledFormSelectorAction",
     async (_, thunkAPI) => {

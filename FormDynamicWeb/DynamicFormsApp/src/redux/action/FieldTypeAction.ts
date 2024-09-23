@@ -14,7 +14,7 @@ export interface CreateFormResponse {
 
 
 
-// Acción para obtener los formularios del selector
+
 export const getFileTypeSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     "fileType/GetFileTypeSelectorAction",
     async (_, thunkAPI) => {

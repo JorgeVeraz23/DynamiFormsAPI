@@ -8,7 +8,7 @@ const repository = new FormGroupRepositoryImpl();
 
 
 
-// Acción para obtener todos los formularios
+
 export const getAllFormGroupAction = createAsyncThunk<FormGroupEntity[], void>(
     "formGroup/GetAllFormGroupAction",
     async (_, thunkAPI) => {
@@ -22,7 +22,7 @@ export const getAllFormGroupAction = createAsyncThunk<FormGroupEntity[], void>(
     }
 );
 
-// Acción para obtener los formularios del selector
+
 export const getFormGroupSelectorAction = createAsyncThunk<KeyValueEntity[], void>(
     "formGroup/GetFormGroupSelectorAction",
     async (_, thunkAPI) => {
@@ -38,7 +38,7 @@ export const getFormGroupSelectorAction = createAsyncThunk<KeyValueEntity[], voi
     }
 );
 
-// Acción para obtener un formulario por ID
+
 export const getFormGroupByIdAction = createAsyncThunk<FormGroupEntity, number>(
     "formGroup/GetFormGroupByIdAction",
     async (id, thunkAPI) => {
@@ -52,7 +52,7 @@ export const getFormGroupByIdAction = createAsyncThunk<FormGroupEntity, number>(
     }
 );
 
-// Acción para eliminar un formulario
+
 export const deleteFormGroupAction = createAsyncThunk<number, number>(
     "formGroup/DeleteFormGroupAction",
     async (id, thunkAPI) => {
@@ -66,7 +66,7 @@ export const deleteFormGroupAction = createAsyncThunk<number, number>(
     }
 );
 
-// Acción para crear un formulario
+
 export const createFormGroupAction = createAsyncThunk<CreateFormResponse, FormGroupEntity>(
     "formGroup/CreateFormGroupAction",
     async (data, thunkAPI) => {
@@ -80,7 +80,7 @@ export const createFormGroupAction = createAsyncThunk<CreateFormResponse, FormGr
     }
 );
 
-// Acción para editar un formulario
+
 export const editFormGroupAction = createAsyncThunk<FormGroupEntity, FormGroupEntity>(
     "formGroup/EditFormGroupAction",
     async (data, thunkAPI) => {

@@ -11,7 +11,7 @@ const FilledFormSelector = () => {
   useEffect(() => {
     dispatch(getFilledFormSelectorAction());
 
-    // Limpia el estado al desmontar el componente
+
     return () => {
       dispatch(resetFieldTypeState());
     };
@@ -32,7 +32,7 @@ const FilledFormSelector = () => {
             onChange={(event, value) => {
               if (value) {
                 console.log('Formulario seleccionado:', value);
-                // Aquí puedes manejar lo que sucede al seleccionar un formulario
+ 
               }
             }}
             style={{ width: '300px' }}

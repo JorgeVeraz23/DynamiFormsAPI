@@ -1,4 +1,4 @@
-// src/layouts/MainLayout.tsx
+
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, CssBaseline, Drawer, List, ListItemIcon, ListItemText, Toolbar, Divider, ListItemButton } from '@mui/material';
@@ -12,8 +12,7 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
-const drawerWidth = 240;  // Define the drawer width here
-
+const drawerWidth = 240;
 const MainLayout = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,11 +102,11 @@ const MainLayout = () => {
     flexGrow: 1, 
     p: 3, 
     ml: `${drawerWidth}px`,
-    pt: 8, // Ajusta según la altura del Header
+    pt: 8, 
     display: 'flex', 
     justifyContent: 'center',
     alignItems: 'flex-start', 
-    minHeight: 'calc(100vh - 128px)', // Ajusta para que el footer no tape el contenido
+    minHeight: 'calc(100vh - 128px)', 
     width: '100%'
   }}
 >
