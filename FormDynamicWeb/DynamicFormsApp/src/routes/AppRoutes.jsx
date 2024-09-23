@@ -9,7 +9,7 @@ import About from '../pages/DynamicFormPages/About';
 import FormCarPage from "../pages/DynamicFormPages/FormCardPage"
 import PetForm from '../pages/DynamicFormPages/PetForm';
 
-import { EditFormPage } from '../pages/DynamicFormPages/EditFormPage';
+import FormDisplay from '../pages/DynamicFormPages/EditFormPage';
 
 import CreateFormPage from '../pages/DynamicFormPages/CreateFormPage'
 import CreateFormGroupPage from '../pages/DynamicFormPages/CreateFormGroupPage'
@@ -23,7 +23,8 @@ const AppRoutes = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="form-page" element={<FormCarPage />} />
-          <Route path='/edit-form/:id' element={<EditFormPage />} />
+          {/* <Route path='/edit-form/:id' element={<EditFormPage />} /> */}
+          <Route path='/form-display/:id' element={<FormDisplay />} />
           <Route path='create-form-page' element={<CreateFormPage/>} />
           <Route path='create-form-group' element={<CreateFormGroupPage />} />
           <Route path='create-form-field' element={<CreateFormFieldPage />} />

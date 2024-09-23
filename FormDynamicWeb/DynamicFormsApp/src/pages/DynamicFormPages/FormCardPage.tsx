@@ -34,7 +34,7 @@ const FormCardPage: React.FC = () => {
   const handleView = (id: number) => {
     dispatch(getFormByIdAction(id)).then((result) => {
       if (getFormByIdAction.fulfilled.match(result)) {
-        navigate(`/edit-form/${id}`);
+        navigate(`/form-display/${id}`);
       }
     });
   };
