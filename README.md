@@ -50,12 +50,12 @@
 
 ¡Con estos pasos, deberías estar listo para usar la aplicación Dynamic Forms! Si encuentras algún problema, no dudes en consultar la documentación o ponerte en contacto con el soporte.
 
-![Descripción de la imagen](images/PantallaInicio.PNG)
-![Descripción de la imagen](images/PantallaFormulariosDisponibles.PNG)
+![Descripción de la imagen](images/PantallaInicio.png)
+![Descripción de la imagen](images/PantallaFormulariosDisponibles.png)
 ![Descripción de la imagen](images/VerFormularioDinamicoCreado.png)
-![Descripción de la imagen](images/VerFormularioDinamicoCreado2.PNG)
-![Descripción de la imagen](images/CrearNuevoFormulario.PNG)
-![Descripción de la imagen](images/CrearGrupoFormulario.PNG)
-![Descripción de la imagen](images/CrearCampo.PNG)
-![Descripción de la imagen](images/CrearCampoConOpciones.PNG)
-![Descripción de la imagen](images/OpcionesTipoCampoParaCrear.PNG)
+![Descripción de la imagen](images/VerFormularioDinamicoCreado2.png)
+![Descripción de la imagen](images/CrearNuevoFormulario.png)
+![Descripción de la imagen](images/CrearGrupoFormulario.png)
+![Descripción de la imagen](images/CrearCampo.png)
+![Descripción de la imagen](images/CrearCampoConOpciones.png)
+![Descripción de la imagen](images/OpcionesTipoCampoParaCrear.png)
