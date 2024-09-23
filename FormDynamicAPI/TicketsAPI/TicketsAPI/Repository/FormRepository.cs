@@ -103,11 +103,20 @@ namespace TicketsAPI.Repository
         public async Task<FormDynamicDTO> MostrarFormularioConGruposYCampos(long idForm)
         {
             // Consulta a la base de datos con Include y ThenInclude
+            //var form = await _context.Forms
+            //    .Include(f => f.FormGroups)                // Incluye los grupos de formulario relacionados
+            //        .ThenInclude(fg => fg.FormFields)      // Incluye los campos de formulario dentro de cada grupo
+            //            .ThenInclude(ff => ff.FieldType)   // Incluye el tipo de campo relacionado con cada FormField
+            //    .FirstOrDefaultAsync(f => f.IdForm == idForm);  // Filtra por el Id del formulario
+
             var form = await _context.Forms
-                .Include(f => f.FormGroups)                // Incluye los grupos de formulario relacionados
-                    .ThenInclude(fg => fg.FormFields)      // Incluye los campos de formulario dentro de cada grupo
-                        .ThenInclude(ff => ff.FieldType)   // Incluye el tipo de campo relacionado con cada FormField
-                .FirstOrDefaultAsync(f => f.IdForm == idForm);  // Filtra por el Id del formulario
+        .Include(f => f.FormGroups)
+            .ThenInclude(fg => fg.FormFields)
+                .ThenInclude(ff => ff.FieldType)
+        .Include(f => f.FormGroups)
+            .ThenInclude(fg => fg.FormFields)
+                .ThenInclude(ff => ff.Options) // Incluir las opciones aquí
+        .FirstOrDefaultAsync(f => f.IdForm == idForm);
 
             if (form == null)
             {
@@ -130,7 +139,12 @@ namespace TicketsAPI.Repository
                         Name = field.Name,
                         IsOptional = field.IsOptional,
                         Index = field.Index,
-                        FieldType = field.FieldType.Name // Incluimos el tipo de campo (FieldType)
+                        FieldType = field.FieldType.Name, // Incluimos el tipo de campo (FieldType)
+                        Options = field.Options.Select(option => new OptionDynamicDTO
+                        {
+                            IdOption = option.IdOption,
+                            Name = option.Name,
+                        }).ToList(),
                     }).ToList()
                 }).ToList()
             };

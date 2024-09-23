@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Grid, Paper, CircularProgress, Alert } from "@mui/material";
+import { Container, Typography, Grid, Paper, CircularProgress, Alert, Card, CardContent, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
@@ -31,31 +31,48 @@ const FormDisplay = () => {
     <Container>
       {formData && (
         <Paper elevation={3} style={{ padding: 20 }}>
-          <Typography variant="h5" component="h2">
+          <Typography variant="h4" component="h1" gutterBottom>
             {formData.name}
           </Typography>
-          <Typography variant="body1">{formData.description}</Typography>
+          <Typography variant="body1" paragraph>
+            {formData.description}
+          </Typography>
 
           {formData.formGroups.map(group => (
-            <div key={group.idFormGroup}>
-              <Typography variant="h6">{group.name}</Typography>
-              <Grid container spacing={2}>
-                {group.formFields.map(field => (
-                  <Grid item xs={12} key={field.idFormField}>
-                    <Typography variant="body2">{field.name}</Typography>
-                    {field.fieldType === "DropDown" && (
-                      <select>
-                        {/* Aquí deberías llenar las opciones del dropdown si las tienes */}
-                      </select>
-                    )}
-                    {field.fieldType === "CheckBox" && (
-                      <input type="checkbox" />
-                    )}
-                    {/* Agrega más tipos de campo según sea necesario */}
-                  </Grid>
-                ))}
-              </Grid>
-            </div>
+            <Card key={group.idFormGroup} variant="outlined" sx={{ marginBottom: 2 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {group.name}
+                </Typography>
+                <Grid container spacing={2}>
+                  {group.formFields.map(field => (
+                    <Grid item xs={12} sm={6} key={field.idFormField}>
+                      <Typography variant="body2" gutterBottom>
+                        {field.name}
+                      </Typography>
+                      {field.fieldType === "DropDown" && (
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel>{field.name}</InputLabel>
+                          <Select
+                            label={field.name}
+                            defaultValue=""
+                          >
+                            {/* Aquí deberías llenar las opciones del dropdown si las tienes */}
+                            <MenuItem value=""><em>Seleccione</em></MenuItem>
+                            <MenuItem value={1}>Opción 1</MenuItem>
+                            <MenuItem value={2}>Opción 2</MenuItem>
+                          </Select>
+                        </FormControl>
+                      )}
+                      {field.fieldType === "CheckBox" && (
+                        <input type="checkbox" />
+                      )}
+                      {/* Agrega más tipos de campo según sea necesario */}
+                    </Grid>
+                  ))}
+                </Grid>
+              </CardContent>
+            </Card>
           ))}
         </Paper>
       )}
@@ -64,6 +81,7 @@ const FormDisplay = () => {
 };
 
 export default FormDisplay;
+
 
 
 
